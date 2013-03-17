@@ -19,12 +19,14 @@ public class AppClient {
 	BluetoothAdapter btAdapter;
 	
 	public AppClient() {
-		btAdapter = BluetoothAdapter.getDefaultAdapter();
+		connectToSever();
 	}
 	
 	@TargetApi(Build.VERSION_CODES.GINGERBREAD_MR1)
-	public void connectToSever() {
+	private void connectToSever() {
 		try {
+			btAdapter = BluetoothAdapter.getDefaultAdapter();
+			
 			Log.d(TAG, "getting local device");
 			// remote MAC here:
 			BluetoothDevice device = btAdapter
@@ -41,7 +43,5 @@ public class AppClient {
 			Log.e(TAG, "Error connecting to device", e);
 		}
 	}
-	
-	
 
 }
