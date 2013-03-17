@@ -1,8 +1,6 @@
 package itt.t00154755.mouseserver;
 
-import java.io.DataInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 
 import javax.bluetooth.LocalDevice;
 import javax.microedition.io.Connector;
@@ -29,9 +27,8 @@ public class AppServer {
 				.open(connString);
 		System.out.println("accepting on " + pcDevice.getBluetoothAddress());
 		StreamConnection streamConnection = connectionNotifier.acceptAndOpen();
-		InputStream dataIn = new DataInputStream(streamConnection.openInputStream());
 
-		ServerCommsThread sct = new ServerCommsThread(dataIn);
+		ServerCommsThread sct = new ServerCommsThread(streamConnection);
 		sct.start();
 
 	}
