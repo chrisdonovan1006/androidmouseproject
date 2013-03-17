@@ -1,4 +1,4 @@
-package itt.t00154755.mouseapp;
+package itt.t00154755.mouseserver;
 
 import java.io.Serializable;
 
@@ -13,13 +13,12 @@ public class AccelerometerObject implements Serializable{
 	 * 
 	 */
 	public AccelerometerObject() {
+		// 
 		
 	}
 
 	public AccelerometerObject(float[] values) {
-		setX(values[0]);
-		setY(values[1]);
-		setZ(values[2]);
+		
 	}
 	public float getX() {
 		return x;

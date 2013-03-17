@@ -7,12 +7,7 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.os.Build;
 import android.util.Log;
-/**
- * 
- * @author Christopher
- *
- *{@link}http://mobisocial.stanford.edu/news/2011/03/bluetooth-across-android-and-a-desktop/
- */
+
 public class AppClient {
 
 	private static final String TAG = "Android Phone";

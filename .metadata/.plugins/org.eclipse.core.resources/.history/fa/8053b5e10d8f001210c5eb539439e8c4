@@ -19,7 +19,7 @@ public class App extends Activity {
         send.setOnClickListener( new Button.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// starts the connection process - server must be running
+				// TODO Auto-generated method stub//DO SOMETHING! {RUN SOME FUNCTION ... DO CHECKS... ETC}
 				AppClient appClient = new AppClient();
 			} 
         });

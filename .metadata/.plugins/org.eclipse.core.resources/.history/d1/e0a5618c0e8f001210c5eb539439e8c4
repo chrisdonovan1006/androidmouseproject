@@ -1,6 +1,4 @@
-package itt.t00154755.mouseapp;
-
-import java.io.Serializable;
+package itt.t00154755.mouseserver;
 
 public class AccelerometerObject implements Serializable{
 
@@ -8,18 +6,17 @@ public class AccelerometerObject implements Serializable{
 	
 	private float x;
 	private float y;
-	private float z;
+	private float[] accData;
 	/**
 	 * 
 	 */
 	public AccelerometerObject() {
+		// 
 		
 	}
 
 	public AccelerometerObject(float[] values) {
-		setX(values[0]);
-		setY(values[1]);
-		setZ(values[2]);
+		setAccData(accData);
 	}
 	public float getX() {
 		return x;
@@ -35,17 +32,21 @@ public class AccelerometerObject implements Serializable{
 		this.y = y;
 	}
 	
-	public float getZ() {
-		return z;
+	/**
+	 * @return the accData
+	 */
+	public float[] getAccData() {
+		return accData;
 	}
-
-	public void setZ(float z) {
-		this.z = z;
+	/**
+	 * @param accData the accData to set
+	 */
+	public void setAccData(float[] accData) {
+		this.accData = accData;
 	}
-
 	@Override
 	public String toString() {
-		String output = "X-Axis: " +getX() + "\nY-Axis: " + getY() + "\nZ-Axis: " + getY();
+		String output = "X-Axis: " +getX() + "\nY-Axis: " + getY() + "\n";
 		return output;
 	}
 }
