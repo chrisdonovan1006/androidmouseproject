@@ -1,0 +1,5 @@
+package mouseserver;
+
+public class AccelerometerObject {
+
+}
