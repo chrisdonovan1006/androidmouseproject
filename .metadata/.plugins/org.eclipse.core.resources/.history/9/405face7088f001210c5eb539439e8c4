@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 
 public class App extends Activity {
@@ -20,7 +21,6 @@ public class App extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub//DO SOMETHING! {RUN SOME FUNCTION ... DO CHECKS... ETC}
-				AppClient appClient = new AppClient();
 			} 
         });
     }

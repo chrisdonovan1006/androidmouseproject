@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 
 public class App extends Activity {
+	private AppClient appClient;
 	private Button send;
 	
     @Override
@@ -20,7 +21,7 @@ public class App extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub//DO SOMETHING! {RUN SOME FUNCTION ... DO CHECKS... ETC}
-				AppClient appClient = new AppClient();
+				appClient = new AppClient();
 			} 
         });
     }
