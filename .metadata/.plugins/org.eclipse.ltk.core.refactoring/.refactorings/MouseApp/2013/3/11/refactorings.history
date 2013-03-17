@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Extract method &apos;private void writeOutToTheServer(BluetoothSocket socket) throws IOException &apos; from &apos;itt.t00154755.mouseapp.AppClient.connectToSever()&apos; to &apos;itt.t00154755.mouseapp.AppClient&apos;&#x0D;&#x0A;- Original project: &apos;MouseApp&apos;&#x0D;&#x0A;- Method name: &apos;writeOutToTheServer&apos;&#x0D;&#x0A;- Destination type: &apos;itt.t00154755.mouseapp.AppClient&apos;&#x0D;&#x0A;- Declared visibility: &apos;private&apos;&#x0D;&#x0A;- Declare thrown runtime exceptions&#x0D;&#x0A;- Generate method comment" comments="true" description="Extract method &apos;writeOutToTheServer&apos;" destination="0" exceptions="true" flags="786434" id="org.eclipse.jdt.ui.extract.method" input="/src&lt;itt.t00154755.mouseapp{AppClient.java" name="writeOutToTheServer" replace="false" selection="1209 54" stamp="1363545606049" version="1.0" visibility="2"/>
+</session>

@@ -1,5 +1,6 @@
 package itt.t00154755.mouseapp;
 
+import java.io.IOException;
 import java.util.UUID;
 import android.annotation.TargetApi;
 import android.bluetooth.BluetoothAdapter;
@@ -7,21 +8,26 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.os.Build;
 import android.util.Log;
+
 /**
  * 
  * @author Christopher
- *
- *{@link}http://mobisocial.stanford.edu/news/2011/03/bluetooth-across-android-and-a-desktop/
+ * 
+ *         {@link}
+ *         http://mobisocial.stanford.edu/news/2011/03/bluetooth-across-android-
+ *         and-a-desktop/
  */
 public class AppClient {
 
 	private static final String TAG = "Android Phone";
 	BluetoothAdapter btAdapter;
-	
+	private boolean available = false;
+	String acceloData;
+
 	public AppClient() {
 		btAdapter = BluetoothAdapter.getDefaultAdapter();
 	}
-	
+
 	@TargetApi(Build.VERSION_CODES.GINGERBREAD_MR1)
 	public void connectToSever() {
 		try {
@@ -36,12 +42,27 @@ public class AppClient {
 			Log.d(TAG, "about to connect");
 			socket.connect();
 			Log.d(TAG, "Connected!");
-			socket.getOutputStream().write("Hello, world!".getBytes());
+			available = true;
 		} catch (Exception e) {
 			Log.e(TAG, "Error connecting to device", e);
 		}
 	}
-	
-	
+
+	/**
+	 * @param socket
+	 * @throws IOException
+	 */
+	private void writeOutToTheServer(BluetoothSocket socket) throws IOException {
+		socket.getOutputStream().write(acceloData.getBytes());
+	}
+
+	public void sendDataToServer(String acceloData) {
+		this.acceloData = acceloData;
+
+	}
+
+	public boolean isAvailable() {
+		return available;
+	}
 
 }
