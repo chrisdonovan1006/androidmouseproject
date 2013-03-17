@@ -41,8 +41,6 @@ public class AppClient {
 					.createRfcommSocketToServiceRecord(UUID
 							.fromString("00000000-0000-0000-0000-00000000ABCD"));
 			Log.d(TAG, "about to connect");
-			
-			btAdapter.cancelDiscovery();
 			socket.connect();
 			Log.d(TAG, "Connected!");
 			available = true;
@@ -55,12 +53,16 @@ public class AppClient {
 	 * @param socket
 	 * @throws IOException
 	 */
-	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
-	public void writeOutToTheServer(String acceloData) throws IOException {
-		while(true){
+	private void writeOutToTheServer(String acceloData) throws IOException {
+		while (socket.isConnected()){
 			socket.getOutputStream().write(acceloData.getBytes());
 		}
-			
+		
+	}
+
+	public void sendDataToServer(String acceloData) {
+		this.acceloData = acceloData;
+
 	}
 
 	public boolean isAvailable() {

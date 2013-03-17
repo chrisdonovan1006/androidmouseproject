@@ -57,10 +57,7 @@ public class AppClient {
 	 */
 	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 	public void writeOutToTheServer(String acceloData) throws IOException {
-		while(true){
 			socket.getOutputStream().write(acceloData.getBytes());
-		}
-			
 	}
 
 	public boolean isAvailable() {

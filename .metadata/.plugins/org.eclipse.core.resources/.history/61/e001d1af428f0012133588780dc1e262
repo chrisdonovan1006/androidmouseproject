@@ -45,18 +45,14 @@ public class App extends Activity {
 
 	}
 
-	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 	@Override
 	protected void onStart() {
 		// TODO Auto-generated method stub
 		super.onStart();
 		appClient = new AppClient();
 		appClient.connectToSever();
-		
-		if (appClient.socket.isConnected()){
-			whenConnected();
-		}
-		
+
+		whenConnected();
 
 	}
 
@@ -123,8 +119,6 @@ public class App extends Activity {
 			Log.d(TAG, "In sensorchanged of of AcceleratorUpdater");
 			acceloData = "" + event.values[0] + "," + event.values[1]
 					+ "," + event.values[2];
-			
-			setAcceloData(acceloData);
 			Log.d(TAG, acceloData);
 
 		}
@@ -145,10 +139,10 @@ public class App extends Activity {
 			accHandler.post(new Runnable() {
 				@Override
 				public void run() {
-
+					
 					try {
-						app.passStringDataToServer(getAcceloData());
-						//updateTimer.cancel();
+						app.passStringDataToServer(acceloData);
+						updateTimer.cancel();
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -156,14 +150,6 @@ public class App extends Activity {
 					
 				}
 			});
-		}
-
-		public String getAcceloData() {
-			return acceloData;
-		}
-
-		public void setAcceloData(String acceloData) {
-			this.acceloData = acceloData;
 		}
 
 	}

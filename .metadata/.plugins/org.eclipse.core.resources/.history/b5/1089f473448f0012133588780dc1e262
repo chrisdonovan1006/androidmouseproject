@@ -148,7 +148,7 @@ public class App extends Activity {
 
 					try {
 						app.passStringDataToServer(getAcceloData());
-						//updateTimer.cancel();
+						updateTimer.cancel();
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();

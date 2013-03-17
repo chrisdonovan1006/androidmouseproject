@@ -45,27 +45,18 @@ public class App extends Activity {
 
 	}
 
-	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 	@Override
 	protected void onStart() {
 		// TODO Auto-generated method stub
 		super.onStart();
 		appClient = new AppClient();
 		appClient.connectToSever();
-		
-		if (appClient.socket.isConnected()){
-			whenConnected();
-		}
-		
 
-	}
-
-	private void whenConnected() {
 		Log.d(TAG, "starting the update timer, updates every .0032 of a second");
 		updateTimer = new Timer();
-		updateTimer.schedule(new AcceleratorUpdater(new Handler(), this), 5000,
+		updateTimer.schedule(new AcceleratorUpdater(new Handler(), this), 2000,
 				32);
-		
+
 	}
 
 	@Override
@@ -78,9 +69,10 @@ public class App extends Activity {
 	@TargetApi(Build.VERSION_CODES.GINGERBREAD)
 	protected void passStringDataToServer(String acceloData) throws IOException {
 		// pass the string which contains the data array to the server
-
+		if (acceloData.length() != 0) {
 			appClient.writeOutToTheServer(acceloData);
 			Log.i(TAG, "data st 1 " + acceloData);
+		}
 	}
 
 	private class AcceleratorUpdater extends TimerTask implements
@@ -121,12 +113,8 @@ public class App extends Activity {
 		public void onSensorChanged(SensorEvent event) {
 			//
 			Log.d(TAG, "In sensorchanged of of AcceleratorUpdater");
-			acceloData = "" + event.values[0] + "," + event.values[1]
-					+ "," + event.values[2];
-			
-			setAcceloData(acceloData);
-			Log.d(TAG, acceloData);
 
+			acceloData = createNewAccelerometerObject(event);
 		}
 
 		/**
@@ -137,7 +125,13 @@ public class App extends Activity {
 		 *            the SensorEvent from the accelerometer sensor
 		 * @return acceloData the string representation of the array events
 		 */
+		public String createNewAccelerometerObject(SensorEvent event) {
+			Log.d(TAG, "In create new object AcceleratorUpdater");
+			String dataString = "" + event.values[0] + "," + event.values[1]
+					+ "," + event.values[2];
 
+			return dataString;
+		}
 
 		@Override
 		public void run() {
@@ -147,23 +141,14 @@ public class App extends Activity {
 				public void run() {
 
 					try {
-						app.passStringDataToServer(getAcceloData());
-						//updateTimer.cancel();
+						app.passStringDataToServer(acceloData);
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					
+					updateTimer.cancel();
 				}
 			});
-		}
-
-		public String getAcceloData() {
-			return acceloData;
-		}
-
-		public void setAcceloData(String acceloData) {
-			this.acceloData = acceloData;
 		}
 
 	}
