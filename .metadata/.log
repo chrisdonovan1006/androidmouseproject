@@ -1,0 +1,10 @@
+!SESSION 2013-03-17 12:35:32.754 -----------------------------------------------
+eclipse.buildId=v21.0.1-543035
+java.version=1.7.0_17
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=en_IE
+Framework arguments:  -product com.android.ide.eclipse.adt.package.product
+Command-line arguments:  -os win32 -ws win32 -arch x86 -product com.android.ide.eclipse.adt.package.product
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-03-17 12:37:03.899
+!MESSAGE Failed to load properties file for project 'MouseApp'
