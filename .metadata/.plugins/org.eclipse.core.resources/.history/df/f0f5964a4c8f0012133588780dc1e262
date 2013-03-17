@@ -1,8 +1,9 @@
 package itt.t00154755.mouseapp;
 
+import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.UUID;
-
 import android.annotation.TargetApi;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -46,7 +47,6 @@ public class AppClient {
 			socket.connect();
 			Log.d(TAG, "Connected!");
 			available = true;
-			
 		} catch (Exception e) {
 			Log.e(TAG, "Error connecting to device", e);
 		}
@@ -72,7 +72,7 @@ public class AppClient {
 		private static final String TAG = "Client Comms Thread";
 		private BluetoothSocket socket;
 		private String acceloData;
-
+		OutputStream dataOut = null;
 		
 		public ClientCommsThread(BluetoothSocket socket, String acceloData) {
 			System.out.println(TAG);
@@ -83,6 +83,7 @@ public class AppClient {
 		@Override
 		public void run(){
 			try {
+				dataOut = new DataOutputStream(socket.getOutputStream());
 				while (true) {
 					try {
 						socket.getOutputStream().write(acceloData.getBytes());

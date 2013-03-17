@@ -6,7 +6,6 @@ import java.io.InputStream;
 public class ServerCommsThread extends Thread {
 	private static final String TAG = "Server Comms Thread";
 	InputStream dataIn;
-	String acceloData;
 
 	public ServerCommsThread(InputStream dataIn) {
 		System.out.println(TAG);
@@ -20,7 +19,7 @@ public class ServerCommsThread extends Thread {
 					byte[] bytes = new byte[1024];
 					int r;
 					while ((r = dataIn.read(bytes)) > 0) {
-						acceloData = (new String(bytes, 0, r));
+						System.out.println(new String(bytes, 0, r));
 					}
 				} catch (IOException e) {
 					System.err.println(e.getMessage());
