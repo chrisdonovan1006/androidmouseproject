@@ -15,6 +15,7 @@ public class CursorRobot
 	private static final String TAG = "Server Communication Thread";
 	private ServerUtils sUtils = new ServerUtils();
 	private String acceloData;
+	private AccelerometerObject accobj = new AccelerometerObject();
 
 	public void sendToRobot(String acceloData) 
 	{
@@ -88,25 +89,64 @@ public class CursorRobot
 					} 
 					else
 					{
+						findNewX();
+						findNewY();
+						
 						Point p = new Point(450, 450);
 						p.getLocation();
 						int startX = p.x;
 						int startY = p.y;
 
-						int x = (int) Math.abs(accData[0]);
-						int y = (int) Math.abs(accData[1]);
-						int z = (int) Math.abs(accData[2]);
+						accobj.setX(startX);
+						accobj.setY(startY);
+
+						int x = (int) Math.ceil(accData[0]);
+						int y = (int) Math.ceil(accData[1]);
+						int z = (int) Math.ceil(accData[2]);
 						
-						int currentX = findNewX(startX, x);
-						int currentY = findNewY(startY, y);		
+						int previousX;
+						int previousY;
+						int currentX;
+						int currentY;
+						
+						previousX = previousY = currentX = currentY = 0;
+						
 						
 						try 
 						{
 							while (true) 
 							{
 								robot = new Robot();
-								robot.mouseMove(currentX, currentY);
-								
+								robot.mouseMove(startX, startY);
+								if (x < 0 && y < 0) 
+								{
+									accobj.setX(startX = -x);
+									accobj.setY(startY = -y);
+									robot.mouseMove(accobj.getX(),
+											accobj.getY());
+								} 
+								else if (x > 0 && y > 0) 
+								{
+									accobj.setX(startX = +x);
+									accobj.setY(startY = +y);
+									robot.mouseMove(accobj.getX(),
+											accobj.getY());
+								} 
+								else if (x > 0 && y < 0) 
+								{
+									accobj.setX(startX = +x);
+									accobj.setY(startY = -y);
+									robot.mouseMove(accobj.getX(),
+											accobj.getY());
+								} 
+								else if (x < 0 && y > 0) 
+								{
+									accobj.setX(startX = -x);
+									accobj.setY(startY = +y);
+									robot.mouseMove(accobj.getX(),
+											accobj.getY());
+								}
+
 								System.out.println("mouse started at: " + x
 										+ " : " + y + " : " + z);
 							}// end of inner while loop
@@ -123,13 +163,16 @@ public class CursorRobot
 				}// end of else
 			}// end of run while outer loop
 		}// end of run method
-		private int findNewY(int previousY, int y) {
-			return previousY + y;
-		}
-		private int findNewX(int previousX, int x) {
-			return previousX + x;
-		}
 	}// end of MouseMoveThread
+	
+	private void findNewY() {
+		// 
+		
+	}
+	private void findNewX() {
+		// 
+		
+	}
 	
 }// end of class
 

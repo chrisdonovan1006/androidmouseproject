@@ -93,9 +93,9 @@ public class CursorRobot
 						int startX = p.x;
 						int startY = p.y;
 
-						int x = (int) Math.abs(accData[0]);
-						int y = (int) Math.abs(accData[1]);
-						int z = (int) Math.abs(accData[2]);
+						int x = (int) Math.ceil(accData[0]);
+						int y = (int) Math.ceil(accData[1]);
+						int z = (int) Math.ceil(accData[2]);
 						
 						int currentX = findNewX(startX, x);
 						int currentY = findNewY(startY, y);		

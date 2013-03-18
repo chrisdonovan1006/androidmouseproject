@@ -15,6 +15,7 @@ public class CursorRobot
 	private static final String TAG = "Server Communication Thread";
 	private ServerUtils sUtils = new ServerUtils();
 	private String acceloData;
+	private AccelerometerObject accobj = new AccelerometerObject();
 
 	public void sendToRobot(String acceloData) 
 	{
@@ -88,17 +89,21 @@ public class CursorRobot
 					} 
 					else
 					{
+						
+						
 						Point p = new Point(450, 450);
 						p.getLocation();
 						int startX = p.x;
 						int startY = p.y;
 
-						int x = (int) Math.abs(accData[0]);
-						int y = (int) Math.abs(accData[1]);
-						int z = (int) Math.abs(accData[2]);
+						int x = (int) Math.ceil(accData[0]);
+						int y = (int) Math.ceil(accData[1]);
+						int z = (int) Math.ceil(accData[2]);
 						
-						int currentX = findNewX(startX, x);
-						int currentY = findNewY(startY, y);		
+						int previousX = startX + x;
+						int previousY = startY + y;
+						int currentX = findNewX(previousX, x);
+						int currentY = findNewY(previousY, y);		
 						
 						try 
 						{
@@ -124,12 +129,23 @@ public class CursorRobot
 			}// end of run while outer loop
 		}// end of run method
 		private int findNewY(int previousY, int y) {
-			return previousY + y;
+			// TODO Auto-generated method stub
+			return 0;
 		}
 		private int findNewX(int previousX, int x) {
-			return previousX + x;
+			// TODO Auto-generated method stub
+			return 0;
 		}
 	}// end of MouseMoveThread
+	
+	private void findNewY() {
+		// 
+		
+	}
+	private void findNewX() {
+		// 
+		
+	}
 	
 }// end of class
 

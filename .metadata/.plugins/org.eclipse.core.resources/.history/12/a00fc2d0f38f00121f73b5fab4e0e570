@@ -35,11 +35,9 @@ public class App extends Activity
 
 		send = (Button) findViewById(R.id.send);
 
-		send.setOnClickListener(new Button.OnClickListener() 
-		{
+		send.setOnClickListener(new Button.OnClickListener() {
 			@Override
-			public void onClick(View v) 
-			{
+			public void onClick(View v) {
 				// starts the connection process - server must be running
 				Log.i(TAG, "client connecting to server");
 				appClient = new AppClient();
@@ -118,8 +116,7 @@ public class App extends Activity
 			Log.d(TAG, "In AcceleratorUpdater reg listener");
 			sm = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
-			if (sm.getSensorList(Sensor.TYPE_ACCELEROMETER).size() != 0) 
-			{
+			if (sm.getSensorList(Sensor.TYPE_ACCELEROMETER).size() != 0) {
 				s = sm.getSensorList(Sensor.TYPE_ACCELEROMETER).get(0);
 				sm.registerListener(this, s, SensorManager.SENSOR_DELAY_NORMAL);
 			}
@@ -177,4 +174,4 @@ public class App extends Activity
 		}
 	}
 
-}// end of the class
+}

@@ -36,9 +36,11 @@ public class AppClient {
 		{
 			Log.d(TAG, "getting local device");
 			// remote MAC here:
-			BluetoothDevice device = btAdapter.getRemoteDevice("00:15:83:3D:0A:57");
+			BluetoothDevice device = btAdapter
+					.getRemoteDevice("00:15:83:3D:0A:57");
 			Log.d(TAG, "connecting to service");
-			socket = device.createInsecureRfcommSocketToServiceRecord(UUID.fromString("00000000-0000-0000-0000-00000000ABCD"));
+			socket = device.createInsecureRfcommSocketToServiceRecord(UUID
+					.fromString("00000000-0000-0000-0000-00000000ABCD"));
 			Log.d(TAG, "about to connect");
 
 			btAdapter.cancelDiscovery();
