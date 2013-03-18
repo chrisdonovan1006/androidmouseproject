@@ -65,33 +65,26 @@ public class CursorRobot {
 						int startY = 450;
 						
 						accobj.setX(startX);
-						accobj.setY(startY);
-						
-						
 						int x = (int) Math.ceil(accData[0]);
 						int y = (int) Math.ceil(accData[1]);
 						int z = (int) Math.ceil(accData[2]);
 						
+						int[] lp = new int[2];
 						try {
 							while(true){
 							robot = new Robot();
 							robot.mouseMove(startX, startY);
+							int xx, yy;
 							if (x < 0 && y < 0){
-								accobj.setX(startX =- x);
-								accobj.setY(startY =- y);
-								robot.mouseMove(accobj.getX(), accobj.getY());
+								xx = startX - x;
+								yy = startY - y;
+								robot.mouseMove(startX - x, startY - y);
 							}else if (x > 0 && y > 0){
-								accobj.setX(startX =+ x);
-								accobj.setY(startY =+ y);
-								robot.mouseMove(accobj.getX(), accobj.getY());
+								robot.mouseMove(startX + x, startY + y);
 							}else if (x > 0 && y < 0){
-								accobj.setX(startX =+ x);
-								accobj.setY(startY =- y);
-								robot.mouseMove(accobj.getX(), accobj.getY());
+								robot.mouseMove(startX + x, startY - y);
 							}else if (x < 0 && y > 0){
-								accobj.setX(startX =- x);
-								accobj.setY(startY =+ y);
-								robot.mouseMove(accobj.getX(), accobj.getY());
+								robot.mouseMove(startX - x, startY + y);
 							}
 							
 							System.out.println("mouse started at: " + x

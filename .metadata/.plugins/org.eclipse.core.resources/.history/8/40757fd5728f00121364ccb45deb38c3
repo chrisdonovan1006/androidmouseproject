@@ -77,7 +77,8 @@ public class CursorRobot {
 							robot = new Robot();
 							robot.mouseMove(startX, startY);
 							if (x < 0 && y < 0){
-								accobj.setX(startX =- x);
+								 
+								 accobj.setX(startX =- x);
 								accobj.setY(startY =- y);
 								robot.mouseMove(accobj.getX(), accobj.getY());
 							}else if (x > 0 && y > 0){

@@ -5,7 +5,6 @@ import java.awt.Robot;
 
 public class CursorRobot {
 	String acceloData;
-	AccelerometerObject accobj = new AccelerometerObject();
 
 	public void sendToRobot(String acceloData) {
 		this.acceloData = acceloData;
@@ -63,35 +62,22 @@ public class CursorRobot {
 						
 						int startX = 450;
 						int startY = 450;
-						
-						accobj.setX(startX);
-						accobj.setY(startY);
-						
-						
 						int x = (int) Math.ceil(accData[0]);
 						int y = (int) Math.ceil(accData[1]);
 						int z = (int) Math.ceil(accData[2]);
-						
+
 						try {
 							while(true){
 							robot = new Robot();
 							robot.mouseMove(startX, startY);
 							if (x < 0 && y < 0){
-								accobj.setX(startX =- x);
-								accobj.setY(startY =- y);
-								robot.mouseMove(accobj.getX(), accobj.getY());
+								robot.mouseMove(startX - x, startY - y);
 							}else if (x > 0 && y > 0){
-								accobj.setX(startX =+ x);
-								accobj.setY(startY =+ y);
-								robot.mouseMove(accobj.getX(), accobj.getY());
+								robot.mouseMove(startX + x, startY + y);
 							}else if (x > 0 && y < 0){
-								accobj.setX(startX =+ x);
-								accobj.setY(startY =- y);
-								robot.mouseMove(accobj.getX(), accobj.getY());
+								robot.mouseMove(startX + x, startY - y);
 							}else if (x < 0 && y > 0){
-								accobj.setX(startX =- x);
-								accobj.setY(startY =+ y);
-								robot.mouseMove(accobj.getX(), accobj.getY());
+								robot.mouseMove(startX - x, startY + y);
 							}
 							
 							System.out.println("mouse started at: " + x
