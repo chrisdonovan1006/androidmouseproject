@@ -1,0 +1,63 @@
+#
+# There is insufficient memory for the Java Runtime Environment to continue.
+# Native memory allocation (malloc) failed to allocate 32756 bytes for ChunkPool::allocate
+# Possible reasons:
+#   The system is out of physical RAM or swap space
+#   In 32 bit mode, the process size limit was hit
+# Possible solutions:
+#   Reduce memory load on the system
+#   Increase physical memory or swap space
+#   Check if swap backing store is full
+#   Use 64 bit Java on a 64 bit OS
+#   Decrease Java heap size (-Xmx/-Xms)
+#   Decrease number of Java threads
+#   Decrease Java thread stack sizes (-Xss)
+#   Set larger code cache with -XX:ReservedCodeCacheSize=
+# This output file may be truncated or incomplete.
+#
+#  Out of Memory Error (allocation.cpp:222), pid=6880, tid=6396
+#
+# JRE version: 7.0_17-b02
+# Java VM: Java HotSpot(TM) Client VM (23.7-b01 mixed mode, sharing windows-x86 )
+# Failed to write core dump. Minidumps are not enabled by default on client versions of Windows
+#
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x00872800):  VMThread [stack: 0x03fe0000,0x04030000] [id=6396]
+
+Stack: [0x03fe0000,0x04030000],  sp=0x0402f014,  free space=316k
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+V  [jvm.dll+0x16f261]
+V  [jvm.dll+0x169535]
+V  [jvm.dll+0x5e845]
+V  [jvm.dll+0x5ea02]
+V  [jvm.dll+0x5ebb3]
+V  [jvm.dll+0x70f0a]
+V  [jvm.dll+0x4b3de]
+V  [jvm.dll+0x4b6e5]
+V  [jvm.dll+0x4baae]
+V  [jvm.dll+0x126a35]
+V  [jvm.dll+0x127ac6]
+V  [jvm.dll+0x14715b]
+V  [jvm.dll+0x145ba1]
+V  [jvm.dll+0x71460]
+V  [jvm.dll+0x6b42f]
+V  [jvm.dll+0x6561a]
+V  [jvm.dll+0x6ae72]
+V  [jvm.dll+0x624b3]
+V  [jvm.dll+0x177326]
+V  [jvm.dll+0x14f475]
+V  [jvm.dll+0x14e5de]
+V  [jvm.dll+0x14e967]
+V  [jvm.dll+0x14ee32]
+V  [jvm.dll+0x17ee89]
+C  [msvcr100.dll+0x5c6de]
+C  [msvcr100.dll+0x5c788]
+C  [KERNEL32.dll+0x28543]
+C  [ntdll.dll+0x5ac69]
+C  [ntdll.dll+0x5ac3c]
+
+JavaThread 0x1736e800 (nid = 10312) was being processed
+Java frames: (J=compiled Java code, j=interpreted, Vv=VM code)
+J  sun.awt.windows.WRobotPeer.create()V

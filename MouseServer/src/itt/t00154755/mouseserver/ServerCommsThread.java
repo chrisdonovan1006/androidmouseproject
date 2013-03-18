@@ -2,6 +2,8 @@ package itt.t00154755.mouseserver;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 public class ServerCommsThread extends Thread {
 	private static final String TAG = "Server Comms Thread";
@@ -15,6 +17,9 @@ public class ServerCommsThread extends Thread {
 	}
 
 	public void run() {
+
+		Deque<String> queue = new ArrayDeque<String>();
+		
 		try {
 			while (true) {
 				try {
@@ -23,8 +28,18 @@ public class ServerCommsThread extends Thread {
 					while ((r = dataIn.read(bytes)) > 0) {
 						acceloData = (new String(bytes, 0, r));
 						
-						cr.sendToRobot(acceloData);
+						synchronized (acceloData) {
+							
+							cr = new CursorRobot();
+							queue.addFirst(acceloData);
+
+							while (!queue.isEmpty()) {
+								cr.sendToRobot(queue.removeFirst());
+							}
+
+						}
 					}
+
 				} catch (IOException e) {
 					System.err.println(e.getMessage());
 				}
@@ -35,15 +50,13 @@ public class ServerCommsThread extends Thread {
 			e.getCause();
 
 		} finally {
-			/*
-			 * try { if (dataIn != null) { dataIn.close(); }
-			 * 
-			 * } catch (IOException e) { // TODO Auto-generated catch block
-			 * e.printStackTrace(); } try { if (streamConnection != null) {
-			 * streamConnection.close(); } } catch (IOException e) { // TODO
-			 * Auto-generated catch block e.printStackTrace(); }
-			 */
+			try {
+				if (dataIn != null) {
+					dataIn.close();
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
-
 	}
 }

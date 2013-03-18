@@ -1,0 +1,13 @@
+package itt.t00154755.mouseserver;
+
+public class RunApp {
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

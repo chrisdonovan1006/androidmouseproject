@@ -23,9 +23,9 @@ public class App extends Activity {
 	protected static final String TAG = "Main App";
 	private Button send;
 	private Timer updateTimer;
-	private AppUtils a;
 	private AppClient appClient;
-
+	
+	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -37,33 +37,27 @@ public class App extends Activity {
 			@Override
 			public void onClick(View v) {
 				// starts the connection process - server must be running
-				a.info(TAG, "client connecting to server");
+				Log.i(TAG, "client connecting to server");
 				appClient = new AppClient();
 				appClient.connectToSever();
+				
+
+					whenConnected();
+
 			}
 		});
 
 	}
 
-	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 	@Override
 	protected void onStart() {
-		// TODO Auto-generated method stub
 		super.onStart();
-		appClient = new AppClient();
-		appClient.connectToSever();
-		
-		if (appClient.socket.isConnected()){
-			whenConnected();
-		}
-		
-
 	}
 
 	private void whenConnected() {
 		Log.d(TAG, "starting the update timer, updates every .0032 of a second");
 		updateTimer = new Timer();
-		updateTimer.schedule(new AcceleratorUpdater(new Handler(), this), 5000,
+		updateTimer.schedule(new AcceleratorUpdater(new Handler(), this), 250,
 				32);
 		
 	}

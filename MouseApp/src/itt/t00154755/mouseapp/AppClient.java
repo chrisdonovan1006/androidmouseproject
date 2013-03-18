@@ -46,7 +46,7 @@ public class AppClient {
 			socket.connect();
 			Log.d(TAG, "Connected!");
 			available = true;
-			
+
 		} catch (Exception e) {
 			Log.e(TAG, "Error connecting to device", e);
 		}
@@ -73,7 +73,6 @@ public class AppClient {
 		private BluetoothSocket socket;
 		private String acceloData;
 
-		
 		public ClientCommsThread(BluetoothSocket socket, String acceloData) {
 			System.out.println(TAG);
 			this.socket = socket;
@@ -81,7 +80,7 @@ public class AppClient {
 		}
 
 		@Override
-		public void run(){
+		public void run() {
 			try {
 				while (true) {
 					try {
@@ -96,23 +95,14 @@ public class AppClient {
 				e.getCause();
 
 			} finally {
-				/*try {
-					if (dataOut != null) {
-						dataOut.close();
-					}
-
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
 				try {
 					if (socket != null) {
 						socket.close();
 					}
+
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}*/
+				}
 			}
 
 		}
