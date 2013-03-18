@@ -1,0 +1,96 @@
+package itt.t00154755.mouseserver;
+
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import javax.bluetooth.BluetoothStateException;
+import javax.bluetooth.LocalDevice;
+import javax.microedition.io.Connector;
+import javax.microedition.io.StreamConnection;
+import javax.microedition.io.StreamConnectionNotifier;
+
+/**
+ * 
+ * @author Christopher
+ *
+ * This class creates a stream connection using the Bluecove API.
+ * The stream listens for a RFComm client once a client is found the
+ * stream connection is closed, to ensure that only one client is connected.
+ * 
+ */
+public class AppServer extends Thread
+{
+	// string name of class
+	private final String TAG = "App Server";
+	private ServerUtils sUtil;
+	// class variables
+	private LocalDevice pcDevice;
+	private final String connString = "btspp://localhost:"
+			+ "0000000000000000000000000000ABCD;name=App Server;"
+			+ "authenticate=false;encrypt=false;master=false";
+
+	/**
+	 * AppServer constructor initializes a new server once it is calls.
+	 * 
+	 */
+	public AppServer() 
+	{
+		try 
+		{
+			pcDevice = LocalDevice.getLocalDevice();
+		} 
+		catch (BluetoothStateException bse) 
+		{
+			sUtil.error( TAG, bse );
+		}
+	}// end of constructor
+
+	
+	/**
+	 * Over the run method form the Thread Class.
+	 * 
+	 */
+	@Override
+	public void run() 
+	{
+		// create a new Stream Connection Notifier
+		StreamConnectionNotifier connectionNotifier = null;
+		try 
+		{
+			// in
+			connectionNotifier = (StreamConnectionNotifier) Connector.open(connString);
+		} 
+		catch (IOException ioe) 
+		{
+			sUtil.error( TAG, ioe );
+		}
+		
+		sUtil.info( "Server running on:\n " + 
+		"PC Address: " + pcDevice.getBluetoothAddress() + "\n" + 
+		"PC Name: " + pcDevice.getFriendlyName());
+		
+		StreamConnection streamConnection = null;
+		try 
+		{
+			streamConnection = connectionNotifier.acceptAndOpen();
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+		
+		InputStream dataIn = null;
+		try 
+		{
+			dataIn = new DataInputStream(streamConnection.openInputStream());
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+
+		ServerCommsThread sct = new ServerCommsThread(dataIn);
+		sct.start();
+	}
+	
+}// end of Class

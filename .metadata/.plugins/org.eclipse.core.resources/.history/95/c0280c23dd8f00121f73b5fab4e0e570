@@ -1,0 +1,71 @@
+package itt.t00154755.mouseserver;
+
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.logging.Logger;
+
+import javax.bluetooth.BluetoothStateException;
+import javax.bluetooth.LocalDevice;
+import javax.microedition.io.Connector;
+import javax.microedition.io.StreamConnection;
+import javax.microedition.io.StreamConnectionNotifier;
+
+
+/**
+ * 
+ * @author Christopher
+ *
+ * This class creates a stream connection using the Bluecove API.
+ * The stream listens for a RFComm client once a client is found the
+ * stream connection is closed, to ensure that only one client is connected.
+ * 
+ */
+public class AppServer extends Thread{
+	// string name of class
+	private final String TAG = "App Server";
+	private ServerUtils sUtil;
+	// final class variables
+	private final LocalDevice pcDevice;
+	private final String connString = "btspp://localhost:"
+			+ "0000000000000000000000000000ABCD;name=App Server;"
+			+ "authenticate=false;encrypt=false;master=false";
+
+	public AppServer() {
+		try {
+			pcDevice = LocalDevice.getLocalDevice();
+		} catch (BluetoothStateException bse) {
+			sUtil.error( TAG, bse );
+		}
+	}
+
+	public void run() {
+		StreamConnectionNotifier connectionNotifier = null;
+		try {
+			connectionNotifier = (StreamConnectionNotifier) Connector
+					.open(connString);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("accepting on " + pcDevice.getBluetoothAddress());
+		StreamConnection streamConnection = null;
+		try {
+			streamConnection = connectionNotifier.acceptAndOpen();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		InputStream dataIn = null;
+		try {
+			dataIn = new DataInputStream(streamConnection.openInputStream());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		ServerCommsThread sct = new ServerCommsThread(dataIn);
+		sct.start();
+		
+	}
+}

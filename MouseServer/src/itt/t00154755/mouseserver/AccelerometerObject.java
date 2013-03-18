@@ -42,7 +42,11 @@ public class AccelerometerObject{
 
 	@Override
 	public String toString() {
-		String output = "X-Axis: " +getX() + "\nY-Axis: " + getY() + "\nZ-Axis: " + getY();
+		String output = 
+				"X-Axis: " +getX() + 
+				"\nY-Axis: " + getY() + 
+				"\nZ-Axis: " + getY();
+		
 		return output;
 	}
 }

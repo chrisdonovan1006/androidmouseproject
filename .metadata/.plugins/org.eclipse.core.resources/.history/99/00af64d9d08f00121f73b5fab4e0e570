@@ -1,0 +1,35 @@
+package itt.t00154755.mouseserver;
+
+
+/**
+ * @author Christopher
+ * 
+ * This is a utility class used to store some methods.
+ * 
+ */
+public class ServerUtils {
+	
+	/**
+	 * Used to output an error message to the screen.
+	 * 
+	 * @param tag 
+	 * 		each class has a String tag to identify.
+	 * @param e
+	 * 		the Exception that is being thrown.
+	 */
+	public void error(String tag, Exception e){
+		System.out.println(tag);
+		
+	}
+	
+	/**
+	 * Used to output a message to the screen.
+	 * 
+	 * @param s
+	 * 		the String that will be output to the screen.
+	 */
+	public void info(String s){
+		System.out.println(s);
+	}
+	
+}

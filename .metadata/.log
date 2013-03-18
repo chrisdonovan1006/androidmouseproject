@@ -499,3 +499,37 @@ Command-line arguments:  -os win32 -ws win32 -arch x86 -product com.android.ide.
 
 !ENTRY org.eclipse.core.resources 2 10035 2013-03-18 00:04:09.003
 !MESSAGE The workspace exited with unsaved changes in the previous session; refreshing workspace to recover changes.
+!SESSION 2013-03-18 13:24:24.579 -----------------------------------------------
+eclipse.buildId=v21.0.1-543035
+java.version=1.7.0_17
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=en_IE
+Framework arguments:  -product com.android.ide.eclipse.adt.package.product
+Command-line arguments:  -os win32 -ws win32 -arch x86 -product com.android.ide.eclipse.adt.package.product
+
+!ENTRY org.eclipse.jdt.ui 4 10001 2013-03-18 15:38:02.399
+!MESSAGE Internal Error
+!STACK 0
+java.lang.Exception: Illegal ASTNode positions: previousEnd=279, childStart=278, member==MouseServer/src<itt.t00154755.mouseserver{AppServer.java[AppServer, Javadoc:
+/**
+ * 
+ * @author Christopher Donovan
+ *
+ * This class creates a stream connection using the Bluecove API.
+ * The stream listens for a RFComm client once a client is found the
+ * stream connection is closed, to ensure that only one client is connected.
+ * {@code\n}
+ * {@link http://docs.oracle.com/javase/tutorial/networking/index.html}
+ * {@link http://docs.oracle.com/javase/tutorial/essential/exceptions/index.html}
+ * 
+ */
+	at org.eclipse.jdt.internal.ui.text.javadoc.JavadocContentAccess2.handleContentElements(JavadocContentAccess2.java:1040)
+	at org.eclipse.jdt.internal.ui.text.javadoc.JavadocContentAccess2.handleContentElements(JavadocContentAccess2.java:1028)
+	at org.eclipse.jdt.internal.ui.text.javadoc.JavadocContentAccess2.handleBlockTags(JavadocContentAccess2.java:1361)
+	at org.eclipse.jdt.internal.ui.text.javadoc.JavadocContentAccess2.toHTML(JavadocContentAccess2.java:801)
+	at org.eclipse.jdt.internal.ui.text.javadoc.JavadocContentAccess2.javadoc2HTML(JavadocContentAccess2.java:624)
+	at org.eclipse.jdt.internal.ui.text.javadoc.JavadocContentAccess2.getHTMLContentFromSource(JavadocContentAccess2.java:576)
+	at org.eclipse.jdt.internal.ui.text.javadoc.JavadocContentAccess2.getHTMLContent(JavadocContentAccess2.java:459)
+	at org.eclipse.jdt.internal.ui.infoviews.JavadocView.getJavadocHtml(JavadocView.java:1113)
+	at org.eclipse.jdt.internal.ui.infoviews.JavadocView.computeInput(JavadocView.java:975)
+	at org.eclipse.jdt.internal.ui.infoviews.AbstractInfoView$2.run(AbstractInfoView.java:622)
