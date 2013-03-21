@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import javax.bluetooth.BluetoothStateException;
 import javax.bluetooth.LocalDevice;
+import javax.bluetooth.RemoteDevice;
+import javax.bluetooth.UUID;
 import javax.microedition.io.Connector;
 import javax.microedition.io.StreamConnection;
 import javax.microedition.io.StreamConnectionNotifier;
@@ -29,12 +31,12 @@ public class AppServer extends Thread
 	// string name of class
 	private final String TAG = "App Server";
 	private ServerUtils sUtils = new ServerUtils();
+	private final UUID SPP_UUID = new UUID("1011", true);
 	// host device
 	private LocalDevice pcDevice;
 	// the connection string
-	private final String connString = "btspp://localhost:"
-			+ "0000000000000000000000000000ABCD;name=App Server;"
-			+ "authenticate=false;encrypt=false;master=false";
+	private final String connString = "btspp://localhost:" + SPP_UUID
+			+ ";name=Java Server for Mouse App";
 
 	/**
 	 * AppServer constructor initializes a new server once it is calls.
@@ -48,7 +50,7 @@ public class AppServer extends Thread
 		} 
 		catch (BluetoothStateException bse) 
 		{
-			sUtils.error( TAG, bse );
+			sUtils.error( TAG, bse, 1);
 		}
 	}// end of constructor
 
@@ -66,19 +68,20 @@ public class AppServer extends Thread
 		{
 			// register the notifier
 			connectionNotifier = (StreamConnectionNotifier) Connector.open(connString);
+			
+			// display the details of the connected host device
+			String hostDetails = "\nServer running on:\n" + 
+				"PC Address: " + pcDevice.getBluetoothAddress() + "\n" + 
+				"PC Name: " + pcDevice.getFriendlyName() + "\n";
+		
+			sUtils.info( hostDetails );
+			
 		} 
 		catch (IOException ioe) 
 		{
 			// throw the error
-			sUtils.error( TAG, ioe );
+			sUtils.error( TAG, ioe, 2 );
 		}
-		
-		// display the details of the connected host device
-		String hostDetails = "\nServer running on:\n" + 
-				"PC Address: " + pcDevice.getBluetoothAddress() + "\n" + 
-				"PC Name: " + pcDevice.getFriendlyName() + "\n";
-		
-		sUtils.info( hostDetails );
 		
 		// create a new Stream Connection
 		StreamConnection streamConnection = null;
@@ -86,11 +89,31 @@ public class AppServer extends Thread
 		{
 			// register the connection
 			streamConnection = connectionNotifier.acceptAndOpen();
+			
+			//display the connected phone
+			RemoteDevice androidPhone = null;
+		    try {
+			androidPhone = RemoteDevice
+				.getRemoteDevice(streamConnection);
+		    } catch (IOException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		    }
+		    sUtils.info("Remote device address: "
+			    + androidPhone.getBluetoothAddress());
+		    try {
+		    	sUtils.info("Remote device name: "
+				+ androidPhone.getFriendlyName(true));
+		    } catch (IOException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		    }
+			
 		} 
 		catch (IOException ioe) 
 		{
 			// throw the error
-			sUtils.error( TAG, ioe );
+			sUtils.error( TAG, ioe, 3 );
 		}
 		
 		// create a new InputStream
@@ -99,17 +122,17 @@ public class AppServer extends Thread
 		{
 			// register the InputStream
 			dataIn = new DataInputStream(streamConnection.openInputStream());
+			
+			// create a new Server Communication Thread, using the InputStream
+			ServerCommsThread sct = new ServerCommsThread(dataIn);
+			// start the thread
+			sct.start();
 		} 
 		catch (IOException ioe) 
 		{
 			// throw the error
-			sUtils.error( TAG, ioe );
+			sUtils.error( TAG, ioe, 4 );
 		}
-		
-		// create a new Server Communication Thread, using the InputStream
-		ServerCommsThread sct = new ServerCommsThread(dataIn);
-		// start the thread
-		sct.start();
 		
 	}// end of the run method
 	

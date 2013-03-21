@@ -3,72 +3,142 @@ package itt.t00154755.mouseapp;
 // imports
 import java.io.IOException;
 import java.util.UUID;
-import android.annotation.TargetApi;
+
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
-import android.os.Build;
-import android.util.Log;
 
 /**
  * 
  * @author Christopher Donovan
  * <p>
  * {@link http://mobisocial.stanford.edu/news/2011/03/bluetooth-across-android-and-a-desktop/}
+ * {@link http://developer.android.com/guide/topics/connectivity/bluetooth.html#EnablingDiscoverability}
  */
-public class AppClient {
-
-	private static final String TAG = "Android Phone";
-	BluetoothAdapter btAdapter;
-	private boolean available = false;
-	String acceloData;
-	BluetoothSocket socket;
+public class AppClient
+{
+	private final String TAG = "Android Phone";
+	//private final int REQUEST_ENABLE_BT = 1; // constant from the Bluetooth API
+	private final UUID SPP_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+	private final String ADDRESS = "00:15:83:3D:0A:57";
+	private BluetoothAdapter btAdapter;
+	private String acceloData;
+	private AppUtils cUtils = new AppUtils();
 
 	public AppClient() 
 	{
 		btAdapter = BluetoothAdapter.getDefaultAdapter();
+		connectToServer();
 	}
-
-	@TargetApi(Build.VERSION_CODES.GINGERBREAD_MR1)
-	public void connectToSever() 
+	
+	public void connectToServer() 
 	{
 		try 
 		{
-			Log.d(TAG, "getting local device");
+			cUtils.info(TAG, "getting local device");
 			// remote MAC here:
-			BluetoothDevice device = btAdapter.getRemoteDevice("00:15:83:3D:0A:57");
-			Log.d(TAG, "connecting to service");
-			socket = device.createInsecureRfcommSocketToServiceRecord(UUID.fromString("00000000-0000-0000-0000-00000000ABCD"));
-			Log.d(TAG, "about to connect");
-
-			btAdapter.cancelDiscovery();
-			socket.connect();
-			Log.d(TAG, "Connected!");
-			available = true;
-
+			BluetoothDevice device = btAdapter.getRemoteDevice(ADDRESS);
+			
+			getAccelerometerDataString(acceloData);
+			
+			ConnectionThread ct = new ConnectionThread(device, acceloData);
+			ct.start();
 		} 
 		catch (Exception e) 
 		{
-			Log.e(TAG, "Error connecting to device", e);
+			cUtils.error(TAG, "Error connecting to device", e);
 		}
 	}
 
-	/**
-	 * @param socket
-	 * @throws IOException
+	public void getAccelerometerDataString(String acceloData) 
+	{
+		this.acceloData = acceloData;
+	}
+	
+//~~~~~~~~~~~~~~~~Start of the ConnectionThread~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	
+	/*
+	 * 
+	 *
 	 */
-	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
-	public void writeOutToTheServer(String acceloData) throws IOException 
+	private class ConnectionThread extends Thread 
 	{
-		ClientCommsThread cct = new ClientCommsThread(socket, acceloData);
-		cct.start();
-	}
+	    private final BluetoothSocket btSocket;
+	    private final BluetoothDevice btDevice;
+	    private String acceloData;
+	 
+	    public ConnectionThread(BluetoothDevice device, String acceloData) 
+	    {
+	        // Use a temporary object that is later assigned to mmSocket,
+	        // because mmSocket is final
+	        BluetoothSocket tmp = null;
+	        btDevice = device;
+	        this.acceloData = acceloData;
+	 
+	        // Get a BluetoothSocket to connect with the given BluetoothDevice
+	        try 
+	        {
+	            // MY_UUID is the app's UUID string, also used by the server code
+	            tmp = btDevice.createRfcommSocketToServiceRecord(SPP_UUID);
+	        } 
+	        catch (IOException e) 
+	        {
+	        	cUtils.error(TAG, "failed to sreate a RFCOMM service record", e);
+	        }
+	        btSocket = tmp;
+	    }
+	 
+	    public void run() 
+	    {
+	        // Cancel discovery because it will slow down the connection
+	        btAdapter.cancelDiscovery();
+	 
+	        try 
+	        {
+	            // Connect the device through the socket. This will block
+	            // until it succeeds or throws an exception
+	            btSocket.connect();
+	        } 
+	        catch (IOException connectException) 
+	        {
+	            // Unable to connect; close the socket and get out
+	            try
+	            {
+	                btSocket.close();
+	            } 
+	            catch (IOException closeException) 
+	            { 
+	            	cancel();
+	            }
+	            return;
+	        }
+	 
+	        // Do work to manage the connection (in a separate thread)
+	        ClientCommsThread cct = new ClientCommsThread(btSocket, acceloData);
+	        cct.start();
+	    }
+	 
+	    /** Will cancel an in-progress connection, and close the socket */
+	    public void cancel() 
+	    {
+	        try 
+	        {
+	            btSocket.close();
+	        } 
+	        catch (IOException e) 
+	        { 
+	        	cUtils.error(TAG, "failed to close the socket ", e);
+	        }
+	    }
+	}// end of Connection Thread
 
-	public boolean isAvailable() 
-	{
-		return available;
-	}
-
+	
+//~~~~~~~~~~~~~~~~Start of the ClientCommsThread~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	
+	/*
+	*
+	*
+	*/
 	private class ClientCommsThread extends Thread 
 	{
 		private static final String TAG = "Client Comms Thread";
@@ -89,22 +159,13 @@ public class AppClient {
 			{
 				while (true) 
 				{
-					try 
-					{
-						socket.getOutputStream().write(acceloData.getBytes());
-					} 
-					catch (IOException e) 
-					{
-						System.err.println(e.getMessage());
-					}
+					socket.getOutputStream().write(acceloData.getBytes());
 				}
 			} 
 			catch (Exception e) 
 			{
 				// print the error stack
-				e.printStackTrace();
-				e.getCause();
-
+				cUtils.error(TAG, "failed to write to the server ", e);
 			} 
 			finally 
 			{
@@ -114,13 +175,12 @@ public class AppClient {
 					{
 						socket.close();
 					}
-
 				} 
 				catch (IOException e) 
 				{
-					e.printStackTrace();
+					cUtils.error(TAG, "failed to close the socket ", e);
 				}
 			}
 		}
-	}
+	}// end of Client Comms Thread
 }

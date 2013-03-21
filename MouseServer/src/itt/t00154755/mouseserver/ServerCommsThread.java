@@ -78,7 +78,7 @@ public class ServerCommsThread extends Thread
 				} 
 				catch (IOException ioe) {
 					// print the error stack
-					sUtils.error( TAG, ioe );
+					sUtils.error( TAG, ioe, 1 );
 					// exit the program
 					System.exit(-1);
 				}
@@ -86,7 +86,7 @@ public class ServerCommsThread extends Thread
 		} 
 		catch (Exception e) {
 			// print the error stack
-			sUtils.error( TAG, e );
+			sUtils.error( TAG, e, 2 );
 			// exit the program
 			System.exit(-1);
 		} 
@@ -104,7 +104,7 @@ public class ServerCommsThread extends Thread
 			} 
 			catch (IOException ioe) 
 			{
-				sUtils.error( TAG, ioe );
+				sUtils.error( TAG, ioe, 3 );
 				// exit the program
 				System.exit(-1);
 			}

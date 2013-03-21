@@ -15,10 +15,13 @@ public class ServerUtils
 	 * 		each class has a String name to identify errors or info.
 	 * @param e
 	 * 		the Exception that is being thrown.
+	 * @param e
+	 * 		the position of the error (eg. 1st, 2nd, etc..).
 	 */
-	public void error( String tag, Exception e ) 
+	public void error( String tag, Exception e, int position ) 
 	{
-		System.err.print( "Exception: " + tag + "\n" + e.getMessage() + "\n" + e.getCause() );
+		System.err.print( "...Exception: " + tag + "\n" + e.getMessage() + "\n" 
+				+ e.getCause() + "\n" + position + "\n" );
 		
 	}// end of error message
 	
@@ -30,7 +33,7 @@ public class ServerUtils
 	 */
 	public void info( String s ) 
 	{
-		System.out.print( s );
+		System.out.print( "..."+ s + "\n...end of message\n");
 	}// end of info methods
 	
 }// end of class

@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import android.annotation.TargetApi;
+import android.app.Activity;
+import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -11,9 +14,6 @@ import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.annotation.TargetApi;
-import android.app.Activity;
-import android.content.Context;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -22,11 +22,14 @@ import android.widget.Button;
 public class App extends Activity 
 {
 	protected static final String TAG = "Main App";
-	private Button send;
-	private Timer updateTimer;
-	private AppClient appClient;
 	
-	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+	private AppUtils cUtils = new AppUtils();
+	private AppClient appClient;
+	private Timer updateTimer;
+	private Button send;
+	
+
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
 	{
@@ -41,9 +44,9 @@ public class App extends Activity
 			public void onClick(View v) 
 			{
 				// starts the connection process - server must be running
-				Log.i(TAG, "client connecting to server");
+				cUtils.info(TAG, "client connecting to server");
 				appClient = new AppClient();
-				appClient.connectToSever();
+				// appClient.connectToServer();
 				
 				whenConnected();
 			}
@@ -72,7 +75,7 @@ public class App extends Activity
 
 	private void whenConnected() 
 	{
-		Log.d(TAG, "starting the update timer, updates every .0032 of a second");
+		cUtils.debug(TAG, "starting the update timer, updates every .0032 of a second");
 		updateTimer = new Timer();
 		updateTimer.schedule(new AcceleratorUpdater(new Handler(), this), 250, 32);
 	}
@@ -85,14 +88,37 @@ public class App extends Activity
 		return true;
 	}
 
-	@TargetApi(Build.VERSION_CODES.GINGERBREAD)
 	protected void passStringDataToServer(String acceloData) throws IOException 
 	{
 		// pass the string which contains the data array to the server
-		appClient.writeOutToTheServer(acceloData);
-		Log.i(TAG, "data st 1 " + acceloData);
+		appClient.getAccelerometerDataString(acceloData);
+		cUtils.info(TAG, "passing data to the server..");
 	}
 
+/*	private void checkBTState() 
+	{
+		// Check for Bluetooth support and then check to make sure it is turned
+		// on
+
+		// Emulator doesn't support Bluetooth and will return null
+		if (btAdapter == null) 
+		{
+			Log.e("Error", "Bluetooth Not supported. Aborting.");
+		} else {
+			if (btAdapter.isEnabled()) 
+			{
+				cUtils.info(TAG, "\n...Bluetooth is enabled...");
+			} else 
+			{
+				// Prompt user to turn on Bluetooth
+				Intent enableBtIntent = new Intent(
+						BluetoothAdapter.ACTION_REQUEST_ENABLE);
+				//startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+			}
+		}
+	}// end of checkBTState method
+*/	
+	
 	private class AcceleratorUpdater extends TimerTask implements SensorEventListener 
 	{
 		Handler accHandler;
@@ -105,7 +131,7 @@ public class App extends Activity
 			this.accHandler = accHandler;
 			this.app = app;
 
-			Log.d(TAG, "In AcceleratorUpdater update const");
+			cUtils.debug(TAG, "In AcceleratorUpdater update const");
 			registerListener();
 		}
 
@@ -115,7 +141,8 @@ public class App extends Activity
 			SensorManager sm;
 			Sensor s;
 
-			Log.d(TAG, "In AcceleratorUpdater reg listener");
+			cUtils.debug(TAG, "In AcceleratorUpdater reg listener");
+			
 			sm = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
 			if (sm.getSensorList(Sensor.TYPE_ACCELEROMETER).size() != 0) 
@@ -134,24 +161,22 @@ public class App extends Activity
 		@Override
 		public void onSensorChanged(SensorEvent event) 
 		{
-			Log.d(TAG, "In sensorchanged of of AcceleratorUpdater");
+			cUtils.debug(TAG, "In sensorchanged of of AcceleratorUpdater");
 			acceloData = "" + event.values[0] + "," + event.values[1]
 					+ "," + event.values[2];
 			
 			setAcceloData(acceloData);
-			Log.d(TAG, acceloData);
 		}
 
 		@Override
 		public void run() 
 		{
-			Log.d(TAG, "In AcceleratorUpdater run");
+			cUtils.debug(TAG, "In AcceleratorUpdater run");
 			accHandler.post(new Runnable() 
 			{
 				@Override
 				public void run() 
 				{
-
 					try 
 					{
 						app.passStringDataToServer(getAcceloData());
@@ -159,8 +184,7 @@ public class App extends Activity
 					} 
 					catch (IOException e) 
 					{
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						cUtils.error(TAG, "failed to pass the string", e);
 					}	
 				}
 			});

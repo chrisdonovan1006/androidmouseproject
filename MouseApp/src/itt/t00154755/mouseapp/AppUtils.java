@@ -13,4 +13,8 @@ public class AppUtils {
 		Log.i(tag, position);
 	}
 	
+	public void debug(String tag, String position){
+		Log.d(tag, position);
+	}
+	
 }
