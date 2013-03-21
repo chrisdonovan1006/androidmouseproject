@@ -12,6 +12,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -63,15 +64,18 @@ public class App extends Activity
 	protected void onStop() 
 	{
 		super.onStop();
+		if (updateTimer != null)
+		{
+			updateTimer.cancel();
+		}
 		
-		updateTimer.cancel();
 	}
 
 	private void whenConnected() 
 	{
 		cUtils.debug(TAG, "starting the update timer, updates every .0032 of a second");
 		updateTimer = new Timer();
-		updateTimer.schedule(new AcceleratorUpdater(new Handler(), this), 100, 32);
+		updateTimer.schedule(new AcceleratorUpdater(new Handler(), this), 250, 32);
 	}
 
 	@Override
@@ -87,31 +91,7 @@ public class App extends Activity
 		// pass the string which contains the data array to the server
 		appClient.getAccelerometerDataString(acceloData);
 		cUtils.info(TAG, "passing data to the server..");
-	}
-
-/*	private void checkBTState() 
-	{
-		// Check for Bluetooth support and then check to make sure it is turned
-		// on
-
-		// Emulator doesn't support Bluetooth and will return null
-		if (btAdapter == null) 
-		{
-			Log.e("Error", "Bluetooth Not supported. Aborting.");
-		} else {
-			if (btAdapter.isEnabled()) 
-			{
-				cUtils.info(TAG, "\n...Bluetooth is enabled...");
-			} else 
-			{
-				// Prompt user to turn on Bluetooth
-				Intent enableBtIntent = new Intent(
-						BluetoothAdapter.ACTION_REQUEST_ENABLE);
-				//startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-			}
-		}
-	}// end of checkBTState method
-*/	
+	}	
 	
 	private class AcceleratorUpdater extends TimerTask implements SensorEventListener 
 	{
@@ -168,17 +148,25 @@ public class App extends Activity
 			cUtils.debug(TAG, "In AcceleratorUpdater run");
 			accHandler.post(new Runnable() 
 			{
+				String accelData = getAcceloData();
+				
 				@Override
-				public void run() 
+				public void run()
 				{
 					try 
 					{
-						app.passStringDataToServer(getAcceloData());
-						//updateTimer.cancel();
+						if (accelData == null)
+						{
+							//do nothing
+						}
+						else
+						{
+							app.passStringDataToServer(accelData);
+						}
 					} 
 					catch (IOException e) 
 					{
-						cUtils.error(TAG, "failed to pass the string", e);
+						Log.e(TAG, e.getMessage());
 					}	
 				}
 			});

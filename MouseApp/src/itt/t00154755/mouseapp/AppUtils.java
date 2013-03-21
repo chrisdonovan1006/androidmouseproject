@@ -4,9 +4,8 @@ import android.util.Log;
 
 public class AppUtils {
 	
-	public void error(String tag, String position, Exception e){
-		Log.e(tag, position);
-		e.printStackTrace();
+	public void error(String tag, String e){
+		Log.e(tag, e);
 	}
 	
 	public void info(String tag, String position){

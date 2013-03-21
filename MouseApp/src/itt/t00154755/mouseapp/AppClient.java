@@ -7,6 +7,7 @@ import java.util.UUID;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.util.Log;
 
 /**
  * 
@@ -18,7 +19,7 @@ import android.bluetooth.BluetoothSocket;
 public class AppClient
 {
 	private final String TAG = "Android Phone";
-	private final UUID SPP_UUID = UUID.fromString("2fc42b80-923a-11e2-9e96-0800200c9a66");
+	private final UUID SPP_UUID = UUID.fromString("27012f0c-68af-4fbf-8dbe-6bbaf7aa432a");
 	private final String ADDRESS = "00:15:83:3D:0A:57";
 	private BluetoothAdapter btAdapter;
 	private String acceloData;
@@ -43,9 +44,8 @@ public class AppClient
 	        	cUtils.info(TAG, "create the RFComm record");
 	        	try {
 					btSocket = btDevice.createRfcommSocketToServiceRecord(SPP_UUID);
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+				} catch (IOException ioe){
+					Log.e(TAG, ioe.getMessage());
 				}
 		
 	        	// Cancel discovery because it will slow down the connection
@@ -55,14 +55,21 @@ public class AppClient
 	        	cUtils.info(TAG, "app client connect");
 	        	try {
 					btSocket.connect();
-				} catch (IOException e) {
+					
+					if(btSocket != null)
+					{
+						// Do work to manage the connection (in a separate thread)
+						ClientCommsThread cct = new ClientCommsThread(btSocket, acceloData);
+						cct.start();
+					}
+					
+					
+				} catch (IOException ioe) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					Log.e(TAG, ioe.getMessage());
 				}
 				
-	        	// Do work to manage the connection (in a separate thread)
-	        	ClientCommsThread cct = new ClientCommsThread(btSocket, acceloData);
-	        	cct.start();
+	        	
 
 	        // print the error stack
 			//cUtils.error(TAG, "failed to connect to the server ", ioe);
@@ -82,7 +89,7 @@ public class AppClient
 
 		public ClientCommsThread(BluetoothSocket socket, String acceloData) 
 		{
-			System.out.println(TAG);
+			cUtils.info(TAG, "in the constructor..");
 			this.socket = socket;
 			this.acceloData = acceloData;
 		}
@@ -92,15 +99,24 @@ public class AppClient
 		{
 			try 
 			{
-				while (true) 
-				{
-					socket.getOutputStream().write(acceloData.getBytes());
-				}
+
+					if (socket == null || acceloData == null )
+					{
+						// do nothing
+						// drop the packets
+						cUtils.info(TAG, "do nothing...");
+					}
+					else
+					{
+						socket.getOutputStream().write(acceloData.getBytes());
+						cUtils.info(TAG, acceloData);
+					}
+					
 			} 
 			catch (Exception e) 
 			{
 				// print the error stack
-				cUtils.error(TAG, "failed to write to the server ", e);
+				Log.e(TAG, e.getMessage());
 			} 
 			finally 
 			{
@@ -114,7 +130,7 @@ public class AppClient
 				catch (IOException e) 
 				{
 					// print the error stack
-					cUtils.error(TAG, "failed to close the socket ", e);
+					Log.e(TAG, e.getMessage());
 				}
 			}// end of finally
 		}// outer try

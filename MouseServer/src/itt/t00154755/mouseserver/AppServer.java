@@ -28,11 +28,12 @@ import javax.microedition.io.StreamConnectionNotifier;
  *         ://docs.oracle.com/javase/tutorial/essential/exceptions/index.html}
  * 
  */
-public class AppServer extends Thread {
+public class AppServer extends Thread 
+{
 	// string name of class
 	private final String TAG = "App Server";
 	private ServerUtils sUtils = new ServerUtils();
-	private final UUID SPP_UUID = new UUID("1101", false);
+	private final UUID SPP_UUID = new UUID("27012f0c68af4fbf8dbe6bbaf7aa432a", false);
 	// host device
 	private LocalDevice pcDevice;
 	// the connection string
@@ -43,7 +44,8 @@ public class AppServer extends Thread {
 	 * AppServer constructor initializes a new server once it is calls.
 	 * 
 	 */
-	public AppServer() {
+	public AppServer() 
+	{
 		try 
 		{
 			sUtils.info("connected devices");

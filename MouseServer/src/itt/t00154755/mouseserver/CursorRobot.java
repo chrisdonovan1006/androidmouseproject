@@ -100,38 +100,42 @@ public class CursorRobot
 	private class MouseMoveThread extends Thread 
 	{
 		Robot robot;
-			@Override
-			public void run() {
-				while (true) {
-					if (acceloData.length() == 0 || acceloData == null) 
+		@Override
+		public void run()
+		{
+			while (true) 
+			{
+				if (acceloData.length() == 0 || acceloData == null) 
+				{
+					//do nothing;
+				}
+				else 
+				{
+					float[] accData = covertStringToFloatArray(acceloData);
+					int[] xyAccData = covertFloatArrayToIntArray(accData);
+					int x = xyAccData[0];
+					int y = xyAccData[1];
+					int moveX = 640;
+					int moveY = 400;
+					try 
 					{
-						//do nothing;
+						robot = new Robot();
+					} 
+					catch (AWTException eAWT) 
+					{
+						sUtils.error(TAG, eAWT, 2);
 					}
-					else {
-						float[] accData = covertStringToFloatArray(acceloData);
-						int[] xyAccData = covertFloatArrayToIntArray(accData);
-						int x = xyAccData[0];
-						int y = xyAccData[1];
-						int moveX = 640;
-						int moveY = 400;
-						try {
-							robot = new Robot();
-						} catch (AWTException eAWT) {
-							sUtils.error(TAG, eAWT, 2);
-						}
-						while (true) {
-							moveX = findNewX(moveX, x);
-							moveY = findNewY(moveY, y);
-
-							robot.mouseMove(moveX, moveY);
-
+					while (true) 
+					{
+						moveX = findNewX(moveX, x);
+						moveY = findNewY(moveY, y);
+						robot.mouseMove(moveX, moveY);
 							System.out.println("mouse moved: " + moveX + " : "
 									+ moveY);
-						}
 					}
 				}
-
-			}// end of run method
+			}
+		}// end of run method
 	}// end of MouseMoveThread
 	
 }// end of class
