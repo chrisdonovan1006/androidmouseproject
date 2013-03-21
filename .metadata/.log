@@ -1370,3 +1370,6 @@ Caused by: java.lang.IllegalStateException: startLine (39) does not match endLin
 	at org.eclipse.swt.widgets.RunnableLock.run(RunnableLock.java:35)
 	at org.eclipse.swt.widgets.Synchronizer.runAsyncMessages(Synchronizer.java:135)
 	... 23 more
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2013-03-21 14:22:38.934
+!MESSAGE main.xml: Couldn't resolve resource @string/send

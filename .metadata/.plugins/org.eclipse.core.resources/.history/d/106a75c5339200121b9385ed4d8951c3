@@ -1,0 +1,22 @@
+/**
+ * 
+ */
+package itt.t00154755.mouseapp;
+
+import android.app.Activity;
+
+/**
+ * @author Christopher
+ *
+ */
+public class AppBluetooth extends Activity{
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

@@ -1,0 +1,20 @@
+/**
+ * 
+ */
+package itt.t00154755.mouseapp;
+
+/**
+ * @author Christopher
+ *
+ */
+public class AppBluetooth {
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

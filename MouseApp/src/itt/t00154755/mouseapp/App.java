@@ -4,17 +4,14 @@ import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -22,14 +19,11 @@ import android.widget.Button;
 public class App extends Activity 
 {
 	protected static final String TAG = "Main App";
-	
 	private AppUtils cUtils = new AppUtils();
 	private AppClient appClient;
 	private Timer updateTimer;
 	private Button send;
 	
-
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
 	{
@@ -46,7 +40,7 @@ public class App extends Activity
 				// starts the connection process - server must be running
 				cUtils.info(TAG, "client connecting to server");
 				appClient = new AppClient();
-				// appClient.connectToServer();
+				appClient.connectToServer();
 				
 				whenConnected();
 			}
@@ -77,7 +71,7 @@ public class App extends Activity
 	{
 		cUtils.debug(TAG, "starting the update timer, updates every .0032 of a second");
 		updateTimer = new Timer();
-		updateTimer.schedule(new AcceleratorUpdater(new Handler(), this), 250, 32);
+		updateTimer.schedule(new AcceleratorUpdater(new Handler(), this), 100, 32);
 	}
 
 	@Override
@@ -131,7 +125,7 @@ public class App extends Activity
 			this.accHandler = accHandler;
 			this.app = app;
 
-			cUtils.debug(TAG, "In AcceleratorUpdater update const");
+			cUtils.debug(TAG, "In AcceleratorUpdater update constructor");
 			registerListener();
 		}
 

@@ -33,7 +33,7 @@ public class ServerUtils
 	 */
 	public void info( String s ) 
 	{
-		System.out.print( "..."+ s + "\n...end of message\n");
+		System.out.print( "..."+ s + "\n");
 	}// end of info methods
 	
 }// end of class
