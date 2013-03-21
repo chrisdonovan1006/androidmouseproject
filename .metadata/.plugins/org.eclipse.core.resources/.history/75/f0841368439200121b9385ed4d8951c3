@@ -32,7 +32,7 @@ public class AppServer extends Thread {
 	// string name of class
 	private final String TAG = "App Server";
 	private ServerUtils sUtils = new ServerUtils();
-	private final UUID SPP_UUID = new UUID("1101", false);
+	private final UUID SPP_UUID = new UUID("1011", false);
 	// host device
 	private LocalDevice pcDevice;
 	// the connection string

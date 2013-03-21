@@ -35,38 +35,33 @@ public class AppClient
 	public void connectToServer() 
 	{
 		// MY_UUID is the app's UUID string, also used by the server code
-
+	    try {
+	        while (true)
+	        {
 	        	cUtils.info(TAG, "getting local device");
 	        	// remote MAC here:
 	        	btDevice = btAdapter.getRemoteDevice(ADDRESS);
 				
 	        	cUtils.info(TAG, "create the RFComm record");
-	        	try {
-					btSocket = btDevice.createRfcommSocketToServiceRecord(SPP_UUID);
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+	        	btSocket = btDevice.createRfcommSocketToServiceRecord(SPP_UUID);
 		
 	        	// Cancel discovery because it will slow down the connection
 	        	cUtils.info(TAG, "cancel discovery");
 	        	btAdapter.cancelDiscovery();
 	        
 	        	cUtils.info(TAG, "app client connect");
-	        	try {
-					btSocket.connect();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+	        	btSocket.connect();
 				
 	        	// Do work to manage the connection (in a separate thread)
 	        	ClientCommsThread cct = new ClientCommsThread(btSocket, acceloData);
 	        	cct.start();
-
+	        }
+		} 
+	    catch (IOException ioe) 
+	    {
 	        // print the error stack
-			//cUtils.error(TAG, "failed to connect to the server ", ioe);
-   
+			cUtils.error(TAG, "failed to connect to the server ", ioe);
+		}    
 	}
 
 	public void getAccelerometerDataString(String acceloData) 

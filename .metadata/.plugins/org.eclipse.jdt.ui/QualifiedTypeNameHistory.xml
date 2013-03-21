@@ -2,9 +2,6 @@
 <qualifiedTypeNameHistroy>
 <fullyQualifiedTypeName name="android.view.View"/>
 <fullyQualifiedTypeName name="android.bluetooth.BluetoothDevice"/>
-<fullyQualifiedTypeName name="android.bluetooth.BluetoothAdapter"/>
-<fullyQualifiedTypeName name="javax.bluetooth.UUID"/>
-<fullyQualifiedTypeName name="java.util.UUID"/>
 <fullyQualifiedTypeName name="android.widget.Button"/>
 <fullyQualifiedTypeName name="itt.t00154755.mouseapp.R.id"/>
 <fullyQualifiedTypeName name="android.view.View.OnClickListener"/>
@@ -30,4 +27,10 @@
 <fullyQualifiedTypeName name="java.util.Deque"/>
 <fullyQualifiedTypeName name="java.util.logging.Logger"/>
 <fullyQualifiedTypeName name="java.awt.Point"/>
+<fullyQualifiedTypeName name="java.util.UUID"/>
+<fullyQualifiedTypeName name="javax.bluetooth.RemoteDevice"/>
+<fullyQualifiedTypeName name="javax.bluetooth.UUID"/>
+<fullyQualifiedTypeName name="android.bluetooth.BluetoothAdapter"/>
+<fullyQualifiedTypeName name="android.content.Intent"/>
+<fullyQualifiedTypeName name="javax.bluetooth.DiscoveryAgent"/>
 </qualifiedTypeNameHistroy>
