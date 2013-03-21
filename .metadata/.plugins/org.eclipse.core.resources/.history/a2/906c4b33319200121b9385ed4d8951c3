@@ -98,10 +98,6 @@ public class AppClient
 	            // Connect the device through the socket. This will block
 	            // until it succeeds or throws an exception
 	            btSocket.connect();
-	            
-	             // Do work to manage the connection (in a separate thread)
-	            ClientCommsThread cct = new ClientCommsThread(btSocket, acceloData);
-	            cct.start();
 	        } 
 	        catch (IOException connectException) 
 	        {
@@ -117,7 +113,9 @@ public class AppClient
 	            return;
 	        }
 	 
-	       
+	        // Do work to manage the connection (in a separate thread)
+	        ClientCommsThread cct = new ClientCommsThread(btSocket, acceloData);
+	        cct.start();
 	    }
 	 
 	    /** Will cancel an in-progress connection, and close the socket */
