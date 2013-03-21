@@ -99,24 +99,13 @@ public class AppClient
 		{
 			try 
 			{
-
-					if (socket == null || acceloData == null )
-					{
-						// do nothing
-						// drop the packets
-						cUtils.info(TAG, "do nothing...");
-					}
-					else
-					{
-						socket.getOutputStream().write(acceloData.getBytes());
-						cUtils.info(TAG, acceloData);
-					}
-					
+				socket.getOutputStream().write(acceloData.getBytes());
+				cUtils.info(TAG, acceloData);	
 			} 
 			catch (Exception e) 
 			{
 				// print the error stack
-				Log.e(TAG, e.getMessage());
+				e.getMessage();
 			} 
 			finally 
 			{

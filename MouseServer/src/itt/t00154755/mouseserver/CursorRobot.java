@@ -6,7 +6,7 @@ import java.awt.Robot;
 
 /**
  * 
- * @author Christopher
+ * @author Christopher Donovan
  *
  */
 public class CursorRobot 
@@ -65,9 +65,9 @@ public class CursorRobot
 
 		int newPos;
 		if (y < 0) {
-			newPos = currentY - y;
+			newPos = currentY - (y * 10);
 		} else {
-			newPos = currentY + y;
+			newPos = currentY + (y * 10);
 		}
 
 		return newPos;
@@ -77,9 +77,9 @@ public class CursorRobot
 
 		int newPos;
 		if (x < 0) {
-			newPos = currentX - x;
+			newPos = currentX - (x * 10);
 		} else {
-			newPos = currentX + x;
+			newPos = currentX + (x * 10);
 		}
 
 		return newPos;
@@ -107,6 +107,7 @@ public class CursorRobot
 			{
 				if (acceloData.length() == 0 || acceloData == null) 
 				{
+					System.out.println("acceloData is empty - Robot");
 					//do nothing;
 				}
 				else 
@@ -130,8 +131,7 @@ public class CursorRobot
 						moveX = findNewX(moveX, x);
 						moveY = findNewY(moveY, y);
 						robot.mouseMove(moveX, moveY);
-							System.out.println("mouse moved: " + moveX + " : "
-									+ moveY);
+							System.out.println("mouse moved: " + moveX + " : " + moveY);
 					}
 				}
 			}

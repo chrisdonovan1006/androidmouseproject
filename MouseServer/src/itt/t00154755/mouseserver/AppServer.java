@@ -39,12 +39,19 @@ public class AppServer extends Thread
 	// the connection string
 	private final String connString = "btspp://localhost:" + SPP_UUID
 			+ ";name=Java Server for Mouse App";
+	// create a new InputStream
+	private InputStream dataIn;
 
 	/**
 	 * AppServer constructor initializes a new server once it is calls.
 	 * 
 	 */
 	public AppServer() 
+	{
+		init();
+	}// end of constructor
+
+	public void init()
 	{
 		try 
 		{
@@ -55,15 +62,6 @@ public class AppServer extends Thread
 		{
 			sUtils.error(TAG, bse, 1);
 		}
-	}// end of constructor
-
-	/**
-	 * Override the run method from the Thread Class.
-	 * 
-	 */
-	@Override
-	public void run()
-	{
 		// create a new Stream Connection Notifier
 		StreamConnectionNotifier connectionNotifier = null;
 
@@ -76,7 +74,7 @@ public class AppServer extends Thread
 		} 
 		catch (IOException e) 
 		{
-			// TODO Auto-generated catch block
+			// 
 			e.printStackTrace();
 		}
 
@@ -94,10 +92,10 @@ public class AppServer extends Thread
 		} 
 		catch (BluetoothStateException e)
 		{
-			// TODO Auto-generated catch block
+			// 
 			e.printStackTrace();
 		}
-
+		
 		// create a new Stream Connection
 		StreamConnection streamConnection = null;
 
@@ -109,10 +107,10 @@ public class AppServer extends Thread
 		}
 		catch (IOException e) 
 		{
-			// TODO Auto-generated catch block
+			// 
 			e.printStackTrace();
 		}
-
+	
 		// display the connected phone
 		RemoteDevice androidPhone = null;
 
@@ -123,7 +121,7 @@ public class AppServer extends Thread
 		} 
 		catch (IOException e) 
 		{
-			// TODO Auto-generated catch block
+			// 
 			e.printStackTrace();
 		}
 
@@ -136,28 +134,36 @@ public class AppServer extends Thread
 		} 
 		catch (IOException e)
 		{
-			// TODO Auto-generated catch block
+			// 
 			e.printStackTrace();
 		}
-
-		// create a new InputStream
-		InputStream dataIn = null;
-
-		// register the InputStream
-		try 
-		{
+		
+		try {
 			dataIn = new DataInputStream(streamConnection.openInputStream());
-			
-			// create a new Server Communication Thread, using the InputStream
-			ServerCommsThread sct = new ServerCommsThread(dataIn);
-			// start the thread
-			sct.start();	
-		} 
-		catch (IOException e) 
-		{
-			// TODO Auto-generated catch block
+		} catch (IOException e) {
+			//
 			e.printStackTrace();
 		}
 	}// end of the run method
+	/**
+	 * Override the run method from the Thread Class.
+	 * 
+	 */
+
+	@Override
+	public void run()
+	{
+		while (true)
+		{
+			passTheDataToTheServer(dataIn);
+		}
+	}
+
+	private void passTheDataToTheServer(InputStream dataIn) 
+	{
+		ServerCommsOut serverOut = null;
+		serverOut = new ServerCommsOut(dataIn);
+		serverOut.start();	
+	}
 
 }// end of Class

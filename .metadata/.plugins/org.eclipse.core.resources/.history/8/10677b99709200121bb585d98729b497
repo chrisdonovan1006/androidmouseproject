@@ -1,0 +1,95 @@
+// package
+package itt.t00154755.mouseserver;
+
+//imports
+import java.io.IOException;
+import java.io.InputStream;
+
+/**
+ * 
+ * @author Christopher Donovan
+ * <p>
+ * This is the Server Communication Thread, used to
+ * send the Accelerometer data to the Robot Class.
+ * 
+ */
+public class ServerCommsThread extends Thread 
+{
+	// class variables
+	private static final String TAG = "Server Communication Thread";
+	private ServerUtils sUtils = new ServerUtils();
+	private InputStream dataIn;
+	private CursorRobot cRobot;
+
+	/**
+	 * 
+	 * AppServer constructor initializes a new server once it is calls.
+	 * 
+	 * @param dataIn 
+	 * 		the InputStream that was opened in the Server Class.
+	 * 
+	 */
+	public ServerCommsThread(InputStream dataIn) 
+	{
+		sUtils.info( TAG );
+		this.dataIn = dataIn;
+	}
+	
+	/**
+	 * 
+	 * Override the run method of the Thread Class.
+	 */
+	@Override
+	public void run() 
+	{
+		// create a sort of infinite loop that runs
+		// while the program is running
+		while(true) 
+		{
+			try 
+			{
+				System.out.println(TAG + " Begin reading the bytes into the String");
+				// create a new byte array
+				byte[] bytes = new byte[1024];
+				int r;
+				// read in the bytes
+				while ((r = dataIn.read(bytes)) > 0) 
+				{
+					String acceloData = (new String(bytes, 0, r));
+						
+					synchronized (acceloData) 
+					{
+						System.out.println(TAG + " Send the String to the Robot");
+						cRobot.sendToRobot(acceloData);
+					}
+				}
+			} 
+			catch (IOException ioe)
+			{
+				// print the error stack
+				sUtils.error( TAG, ioe, 1 );
+				// exit the program
+				System.exit(-1);
+			}
+			finally 
+			{
+				try 
+				{
+					if (dataIn != null) 
+					{
+						// ensure the InputStream is closed on exit
+						dataIn.close();
+						// exit the program
+						System.exit(0);
+					}
+				} 
+				catch (IOException ioe) 
+				{
+					sUtils.error( TAG, ioe, 3 );
+					// exit the program
+					System.exit(-1);
+				}
+			}
+		}
+	}
+}// end of Class

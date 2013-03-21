@@ -24,6 +24,7 @@ public class App extends Activity
 	private AppClient appClient;
 	private Timer updateTimer;
 	private Button send;
+	private  boolean connected = false;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
@@ -43,7 +44,12 @@ public class App extends Activity
 				appClient = new AppClient();
 				appClient.connectToServer();
 				
-				whenConnected();
+				setConnected(true);
+				
+				while(connected == true)
+				{
+					whenConnected();
+				}
 			}
 		});
 	}
@@ -75,7 +81,7 @@ public class App extends Activity
 	{
 		cUtils.debug(TAG, "starting the update timer, updates every .0032 of a second");
 		updateTimer = new Timer();
-		updateTimer.schedule(new AcceleratorUpdater(new Handler(), this), 250, 32);
+		updateTimer.schedule(new AcceleratorUpdater(new Handler(), this), 5000, 64);
 	}
 
 	@Override
@@ -93,6 +99,14 @@ public class App extends Activity
 		cUtils.info(TAG, "passing data to the server..");
 	}	
 	
+	public boolean isConnected() {
+		return connected;
+	}
+
+	public void setConnected(boolean connected) {
+		this.connected = connected;
+	}
+
 	private class AcceleratorUpdater extends TimerTask implements SensorEventListener 
 	{
 		Handler accHandler;
@@ -138,8 +152,8 @@ public class App extends Activity
 			cUtils.debug(TAG, "In sensorchanged of of AcceleratorUpdater");
 			acceloData = "" + event.values[0] + "," + event.values[1]
 					+ "," + event.values[2];
-			
-			setAcceloData(acceloData);
+	
+				setAcceloData(acceloData);
 		}
 
 		@Override
@@ -155,14 +169,7 @@ public class App extends Activity
 				{
 					try 
 					{
-						if (accelData == null)
-						{
-							//do nothing
-						}
-						else
-						{
-							app.passStringDataToServer(accelData);
-						}
+						app.passStringDataToServer(accelData);
 					} 
 					catch (IOException e) 
 					{
