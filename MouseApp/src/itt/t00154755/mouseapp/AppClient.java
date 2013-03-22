@@ -18,7 +18,97 @@ import android.util.Log;
  */
 public class AppClient
 {
-	private final String TAG = "Android Phone";
+	private static final String TAG = "Android Phone";
+	BluetoothAdapter btAdapter;
+	private boolean available = false;
+	String acceloData;
+	BluetoothSocket socket;
+
+	public AppClient() {
+		btAdapter = BluetoothAdapter.getDefaultAdapter();
+	}
+
+
+	public void connectToServer() {
+		try {
+			Log.d(TAG, "getting local device");
+			// remote MAC here:
+			BluetoothDevice device = btAdapter
+					.getRemoteDevice("00:15:83:3D:0A:57");
+			Log.d(TAG, "connecting to service");
+			socket = device.createRfcommSocketToServiceRecord(UUID
+					.fromString("27012f0c-68af-4fbf-8dbe-6bbaf7aa432a"));
+			Log.d(TAG, "about to connect");
+
+			btAdapter.cancelDiscovery();
+			socket.connect();
+			Log.d(TAG, "Connected!");
+			available = true;
+
+		} catch (Exception e) {
+			Log.e(TAG, "Error connecting to device", e);
+		}
+	}
+
+	/**
+	 * @param socket
+	 * @throws IOException
+	 */
+	public void writeOutToTheServer(String acceloData) throws IOException {
+
+		ClientCommsThread cct = new ClientCommsThread(socket, acceloData);
+		cct.start();
+
+	}
+
+	public boolean isAvailable() {
+		return available;
+	}
+
+	private class ClientCommsThread extends Thread {
+		private static final String TAG = "Client Comms Thread";
+		private BluetoothSocket socket;
+		private String acceloData;
+
+		public ClientCommsThread(BluetoothSocket socket, String acceloData) {
+			System.out.println(TAG);
+			this.socket = socket;
+			this.acceloData = acceloData;
+		}
+
+		@Override
+		public void run() {
+			try {
+				while (true) {
+					try {
+						socket.getOutputStream().write(acceloData.getBytes());
+					} catch (IOException e) {
+						System.err.println(e.getMessage());
+					}
+				}
+			} catch (Exception e) {
+				// print the error stack
+				e.printStackTrace();
+				e.getCause();
+
+			} finally {
+				try {
+					if (socket != null) {
+						socket.close();
+					}
+
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+
+		}
+	}
+	
+	
+	
+	
+	/*private final String TAG = "Android Phone";
 	private final UUID SPP_UUID = UUID.fromString("27012f0c-68af-4fbf-8dbe-6bbaf7aa432a");
 	private final String ADDRESS = "00:15:83:3D:0A:57";
 	private BluetoothAdapter btAdapter;
@@ -65,7 +155,7 @@ public class AppClient
 					
 					
 				} catch (IOException ioe) {
-					// TODO Auto-generated catch block
+					// 
 					Log.e(TAG, ioe.getMessage());
 				}
 				
@@ -124,4 +214,4 @@ public class AppClient
 			}// end of finally
 		}// outer try
 	}// end of Client Comms Thread
-}// end of the class
+*/}// end of the class

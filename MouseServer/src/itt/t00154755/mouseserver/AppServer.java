@@ -5,11 +5,8 @@ package itt.t00154755.mouseserver;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import javax.bluetooth.BluetoothStateException;
-import javax.bluetooth.DiscoveryAgent;
+
 import javax.bluetooth.LocalDevice;
-import javax.bluetooth.RemoteDevice;
-import javax.bluetooth.UUID;
 import javax.microedition.io.Connector;
 import javax.microedition.io.StreamConnection;
 import javax.microedition.io.StreamConnectionNotifier;
@@ -32,7 +29,46 @@ public class AppServer extends Thread
 {
 	// string name of class
 	private final String TAG = "App Server";
-	private ServerUtils sUtils = new ServerUtils();
+	private final LocalDevice pcDevice;
+	private final String connString = "btspp://localhost:"
+			+ "27012f0c68af4fbf8dbe6bbaf7aa432a;name=Java Server;"
+			+ "authenticate=false;encrypt=false;master=false";
+
+	public AppServer() throws IOException {
+		pcDevice = LocalDevice.getLocalDevice();
+	}
+
+	public void run() {
+		StreamConnectionNotifier connectionNotifier = null;
+		try {
+			connectionNotifier = (StreamConnectionNotifier) Connector
+					.open(connString);
+		} catch (IOException e) {
+			// 
+			e.printStackTrace();
+		}
+		System.out.println(TAG + "...accepting on " + pcDevice.getBluetoothAddress());
+		StreamConnection streamConnection = null;
+		try {
+			streamConnection = connectionNotifier.acceptAndOpen();
+		} catch (IOException e) {
+			// 
+			e.printStackTrace();
+		}
+		InputStream dataIn = null;
+		try {
+			dataIn = new DataInputStream(streamConnection.openInputStream());
+		} catch (IOException e) {
+			// 
+			e.printStackTrace();
+		}
+
+		ServerCommsOut sct = new ServerCommsOut(dataIn);
+		sct.start();
+	}
+		
+		
+	/*private ServerUtils sUtils = new ServerUtils();
 	private final UUID SPP_UUID = new UUID("27012f0c68af4fbf8dbe6bbaf7aa432a", false);
 	// host device
 	private LocalDevice pcDevice;
@@ -42,10 +78,10 @@ public class AppServer extends Thread
 	// create a new InputStream
 	private InputStream dataIn;
 
-	/**
+	*//**
 	 * AppServer constructor initializes a new server once it is calls.
 	 * 
-	 */
+	 *//*
 	public AppServer() 
 	{
 		init();
@@ -145,10 +181,10 @@ public class AppServer extends Thread
 			e.printStackTrace();
 		}
 	}// end of the run method
-	/**
+	*//**
 	 * Override the run method from the Thread Class.
 	 * 
-	 */
+	 *//*
 
 	@Override
 	public void run()
@@ -164,6 +200,6 @@ public class AppServer extends Thread
 		ServerCommsOut serverOut = null;
 		serverOut = new ServerCommsOut(dataIn);
 		serverOut.start();	
-	}
+	}*/
 
 }// end of Class
