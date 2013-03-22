@@ -5,15 +5,16 @@ import java.io.IOException;
 /**
  * 
  * @author Christopher
- *
+ * 
  */
-public class RunApp {
+public class RunApp 
+{
 
 	/**
 	 * This is the main method use to satrt the server app.
 	 * 
 	 * @param args
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	public static void main(String[] args) throws IOException 
 	{
