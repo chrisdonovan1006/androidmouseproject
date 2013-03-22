@@ -7,7 +7,7 @@
     <string name="connect">Connect to Server</string>
     <string name="checkbt">Check Bluetooth</string>
     <string name="currentstatus">Current Status</string>
-    <string name="connectbt">Connect to BT</string>
+    <string name="connect">Connect to BT</string>
     <string name="disconnect">Disconnect From BT</string>
 
 </resources>
