@@ -20,7 +20,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".CheckBTAvailability"
+            android:name=".App"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -37,7 +37,7 @@
             android:label="@string/app_name" >
         </activity>
 		<activity
-            android:name=".App"
+            android:name=".CheckBTAvailability"
             android:label="@string/app_name" >
         </activity>
         

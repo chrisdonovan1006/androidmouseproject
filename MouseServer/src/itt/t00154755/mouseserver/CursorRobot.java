@@ -20,17 +20,17 @@ public class CursorRobot
 		this.acceloData = acceloData;
 	}
 
-	private float[] covertStringToFloatArray(String acceloData) 
+	private synchronized int[] covertStringToIntArray(String acceloData) 
 	{
 		String delims = "[,]";
 		String[] tokens = acceloData.split(delims);
-		float[] data = new float[tokens.length];
+		int[] data = new int[tokens.length];
 
 		for (int i = 0; i < tokens.length; i++) 
 		{
 			try
 			{
-				data[i] = Float.parseFloat(tokens[i]);
+				data[i] = Integer.parseInt(tokens[i]);
 			} 
 			catch (NumberFormatException nfe) 
 			{
@@ -43,7 +43,7 @@ public class CursorRobot
 		return data;
 	}
 
-	private int findNewY(int currentY, int y) 
+	/*private int findNewY(int currentY, int y) 
 	{
 		int newPos = currentY - (y - 1);
 		return newPos;
@@ -53,16 +53,7 @@ public class CursorRobot
 	{
 		int newPos = currentX + x;
 		return newPos;
-	}
-
-	private int[] covertFloatArrayToIntArray(float[] accData) 
-	{
-		int[] xy = new int[2];
-		xy[0] = (int) Math.ceil(accData[0]);
-		xy[1] = (int) Math.ceil(accData[1]);
-
-		return xy;
-	}
+	}*/
 
 	public CursorRobot() 
 	{
@@ -99,7 +90,11 @@ public class CursorRobot
 				} 
 				else
 				{
-					float[] accData = covertStringToFloatArray(acceloData);
+					int[] accData = covertStringToIntArray(acceloData);
+					int x = accData[0];
+					int y = accData[1];
+					int moveX = 640;
+					int moveY = 400;
 
 					if (accData.length == 0 || accData == null) 
 					{
@@ -107,25 +102,17 @@ public class CursorRobot
 					} 
 					else 
 					{
-						int[] xyAccData = covertFloatArrayToIntArray(accData);
-						int x = xyAccData[0];
-						int y = xyAccData[1];
-						int moveX = 640;
-						int moveY = 400;
-
 						try 
 						{
 							robot = new Robot();
-							while (true) {
-								moveX = findNewX(moveX, x);
-								moveY = findNewY(moveY, y);
+								moveX += x;
+								moveY += y;
 
 								Thread.sleep(32);
 								robot.mouseMove(moveX, moveY);
 
 								System.out.println("mouse started at: " + x
 										+ " : " + y);
-							}
 						} 
 						catch (AWTException eAWT) 
 						{

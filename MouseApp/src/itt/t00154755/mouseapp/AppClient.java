@@ -27,6 +27,7 @@ public class AppClient
 	private boolean available = false;
 	String acceloData;
 	BluetoothSocket socket;
+	int nullPacketsOut;
 
 	public AppClient() 
 	{
@@ -94,8 +95,16 @@ public class AppClient
 				while (true) 
 				{
 					try 
-					{
-						socket.getOutputStream().write(acceloData.getBytes());
+					{   
+						if( acceloData == null )
+						{
+							nullPacketsOut++;
+						}
+						else
+						{
+							socket.getOutputStream().write(acceloData.getBytes());
+						}
+						
 					}
 					catch (IOException e) 
 					{

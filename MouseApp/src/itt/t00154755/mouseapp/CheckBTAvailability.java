@@ -33,6 +33,7 @@ public class CheckBTAvailability extends Activity
 	public Button bDisconnect;
 	public String toastText = "";
 	public BluetoothDevice remoteDevice;
+	private boolean registered = false;
 
 	BroadcastReceiver bluetoothState = new BroadcastReceiver() 
 	{
@@ -74,6 +75,7 @@ public class CheckBTAvailability extends Activity
 			}
 		}
 	};
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
@@ -148,7 +150,6 @@ public class CheckBTAvailability extends Activity
 		//
 		if (requestCode == DISCOVERY_REQUEST) 
 		{
-			
 			makeShortToast("Dicovery in progress");
 			setupUI();
 			findDevices();
@@ -179,16 +180,7 @@ public class CheckBTAvailability extends Activity
 		}
 		if (remoteDevice == null) 
 		{
-			toastText = "Starting discovery for remote devices...";
-			makeShortToast(toastText);
-
-			if (btAdapt.startDiscovery()) 
-			{
-				toastText = "Discovery thread started... Scanning for devices...";
-				makeShortToast(toastText);
-				registerReceiver(discoveryResult, new IntentFilter(
-						BluetoothDevice.ACTION_FOUND));
-			}
+			regReceiver(discoveryResult);
 		}
 	}
 
@@ -218,5 +210,38 @@ public class CheckBTAvailability extends Activity
 	{
 		Toast.makeText(CheckBTAvailability.this, toastText,
 				Toast.LENGTH_SHORT).show();
+	}
+	
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		btAdapt.cancelDiscovery();
+		unregReceiver();
+	}
+	
+	private void regReceiver(BroadcastReceiver discoveryResult) 
+	{
+		registered = true;
+		toastText = "Starting discovery for remote devices...";
+		makeShortToast(toastText);
+
+		if (btAdapt.startDiscovery()) 
+		{
+			toastText = "Discovery thread started... Scanning for devices...";
+			makeShortToast(toastText);
+			registerReceiver(discoveryResult, new IntentFilter(
+					BluetoothDevice.ACTION_FOUND));
+		}
+		
+	}
+	
+	public void unregReceiver()
+	{
+		if (registered)
+		{
+			this.unregisterReceiver(discoveryResult);
+		}
+		
 	}
 }
