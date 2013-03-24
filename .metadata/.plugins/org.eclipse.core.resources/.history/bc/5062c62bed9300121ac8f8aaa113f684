@@ -42,32 +42,37 @@ public class CheckBTAvailability extends Activity
 			// String prevStateExtra = BluetoothAdapter.EXTRA_PREVIOUS_STATE;
 			String stateExtra = BluetoothAdapter.EXTRA_STATE;
 			int state = intent.getIntExtra(stateExtra, -1);
+			// int preState = intent.getIntExtra(prevStateExtra, -1);
 
 			switch (state) 
 			{
 				case (BluetoothAdapter.STATE_TURNING_ON): 
 				{
 					toastText = "Bluetooth is turning on";
-					makeShortToast(toastText);
+					Toast.makeText(CheckBTAvailability.this, toastText,
+							Toast.LENGTH_SHORT).show();
 					break;
 				}
 				case (BluetoothAdapter.STATE_ON): 
 				{
 					toastText = "Bluetooth is on";
-					makeShortToast(toastText);
+					Toast.makeText(CheckBTAvailability.this, toastText,
+							Toast.LENGTH_SHORT).show();
 					setupUI();
 					break;
 				}
 				case (BluetoothAdapter.STATE_TURNING_OFF): 
 				{
 					toastText = "Bluetooth is turning off";
-					makeShortToast(toastText);
+					Toast.makeText(CheckBTAvailability.this, toastText,
+							Toast.LENGTH_SHORT).show();
 					break;
 				}
 				case (BluetoothAdapter.STATE_OFF): 
 				{
 					toastText = "Bluetooth is off";
-					makeShortToast(toastText);
+					Toast.makeText(CheckBTAvailability.this, toastText,
+							Toast.LENGTH_SHORT).show();
 					setupUI();
 					break;
 				}
@@ -148,8 +153,8 @@ public class CheckBTAvailability extends Activity
 		//
 		if (requestCode == DISCOVERY_REQUEST) 
 		{
-			
-			makeShortToast("Dicovery in progress");
+			Toast.makeText(CheckBTAvailability.this, "Dicovery in progress",
+					Toast.LENGTH_SHORT).show();
 			setupUI();
 			findDevices();
 		}
@@ -163,7 +168,8 @@ public class CheckBTAvailability extends Activity
 		{
 			toastText = "Checking for known paired devices, namely: "
 					+ lastUsedRemoteDevice;
-			makeShortToast(toastText);
+			Toast.makeText(CheckBTAvailability.this, toastText,
+					Toast.LENGTH_SHORT).show();
 
 			Set<BluetoothDevice> pairedDevices = btAdapt.getBondedDevices();
 			for (BluetoothDevice pairedDevice : pairedDevices)
@@ -172,7 +178,8 @@ public class CheckBTAvailability extends Activity
 				{
 					toastText = "Found Device" + pairedDevice.getName() + "@"
 							+ lastUsedRemoteDevice;
-					makeShortToast(toastText);
+					Toast.makeText(CheckBTAvailability.this, toastText,
+							Toast.LENGTH_SHORT).show();
 					remoteDevice = pairedDevice;
 				}
 			}
@@ -180,12 +187,14 @@ public class CheckBTAvailability extends Activity
 		if (remoteDevice == null) 
 		{
 			toastText = "Starting discovery for remote devices...";
-			makeShortToast(toastText);
+			Toast.makeText(CheckBTAvailability.this, toastText,
+					Toast.LENGTH_SHORT).show();
 
 			if (btAdapt.startDiscovery()) 
 			{
 				toastText = "Discovery thread started... Scanning for devices...";
-				makeShortToast(toastText);
+				Toast.makeText(CheckBTAvailability.this, toastText,
+						Toast.LENGTH_SHORT).show();
 				registerReceiver(discoveryResult, new IntentFilter(
 						BluetoothDevice.ACTION_FOUND));
 			}
@@ -202,7 +211,8 @@ public class CheckBTAvailability extends Activity
 			remoteDevice = intent
 					.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 			toastText = "Discovered" + remoteDeviceName;
-			makeShortToast(toastText);
+			Toast.makeText(CheckBTAvailability.this, toastText,
+					Toast.LENGTH_SHORT).show();
 		}
 	};
 
@@ -214,7 +224,7 @@ public class CheckBTAvailability extends Activity
 	}
 	
 	
-	private void makeShortToast(String toastText)
+	private void makeToast(String toastText)
 	{
 		Toast.makeText(CheckBTAvailability.this, toastText,
 				Toast.LENGTH_SHORT).show();

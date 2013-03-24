@@ -20,8 +20,7 @@ import android.util.Log;
  *         ://developer.android.com/guide/topics/connectivity
  *         /bluetooth.html#EnablingDiscoverability}
  */
-public class AppClient 
-{
+public class AppClient {
 	private static final String TAG = "Android Phone";
 	BluetoothAdapter btAdapter;
 	private boolean available = false;
@@ -68,8 +67,7 @@ public class AppClient
 		cct.start();
 	}
 
-	public boolean isAvailable() 
-	{
+	public boolean isAvailable() {
 		return available;
 	}
 
