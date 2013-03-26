@@ -28,4 +28,33 @@
         android:layout_marginTop="24dp"
         android:text="@string/disconnect" />
 
+    <Button
+        android:id="@+id/calibrate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/connect"
+        android:layout_marginTop="24dp"
+        android:text="@string/calibrate" />
+
+    <TextView
+        android:id="@+id/calibrateDetails"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/saveandcontinue"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/calibrate"
+        android:text="@string/calibrateText" />
+
+    <Button
+        android:id="@+id/saveandcontinue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:text="@string/savecontinue" />
+
 </RelativeLayout>

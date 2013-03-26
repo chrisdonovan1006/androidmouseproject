@@ -23,11 +23,11 @@ import android.util.Log;
 public class AppClient 
 {
 	private static final String TAG = "Android Phone";
-	BluetoothAdapter btAdapter;
+	private BluetoothAdapter btAdapter;
 	private boolean available = false;
-	String acceloData;
-	BluetoothSocket socket;
-	int nullPacketsOut;
+	public String acceloData;
+	private BluetoothSocket socket;
+	public int nullPacketsOut;
 
 	public AppClient() 
 	{

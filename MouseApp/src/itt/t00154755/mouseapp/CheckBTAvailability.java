@@ -1,7 +1,6 @@
 package itt.t00154755.mouseapp;
 
 import java.util.Set;
-
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -10,7 +9,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -24,16 +31,21 @@ import android.widget.Toast;
  * if bluetooth is not enabled it will prompt the user allow the application 
  * turn on the bluetooth settings.
  */
-public class CheckBTAvailability extends Activity 
+public class CheckBTAvailability extends Activity implements OnClickListener
 {
 	protected static final int DISCOVERY_REQUEST = 1;
 	private BluetoothAdapter btAdapt;
 	public TextView tvStatus;
 	public Button bConnect;
 	public Button bDisconnect;
-	public String toastText = "";
-	public BluetoothDevice remoteDevice;
-	private boolean registered = false;
+	public TextView tvCaliDetails;
+	public Button bCalibrate;
+	public Button bSaveContinue;
+	private String toastText = "";
+	private BluetoothDevice remoteDevice;
+	public static String thresholdValue;
+	private CalibrateTheshold ct;
+	
 
 	BroadcastReceiver bluetoothState = new BroadcastReceiver() 
 	{
@@ -86,25 +98,78 @@ public class CheckBTAvailability extends Activity
 		setupUI();
 	}
 
+	
+	@Override
+	public boolean onCreateOptionsMenu(android.view.Menu menu) 
+	{
+		// 
+		super.onCreateOptionsMenu(menu);
+		MenuInflater blowup = getMenuInflater();
+		blowup.inflate(R.menu.checkbtmenu, menu);
+		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) 
+	{
+		// 
+		switch(item.getItemId())
+		{
+		case R.id.aboutus:
+			Intent aboutBT = new Intent("itt.t00154755.mouseapp.ABOUTCHECKBT");
+			startActivity(aboutBT);
+			break;
+		case R.id.prefs:
+			Intent prefs = new Intent("itt.t00154755.mouseapp.PREFS");
+			startActivity(prefs);
+			break;
+		case R.id.exit:
+			finish();
+			break;
+		}
+		// return if it not in the switch and case
+		return false;
+	}
+	
 	private void setupUI() 
 	{
-		// get the object on the user interface
+		// get the object on the user interface - used to check the bluetooth
 		final TextView tvStatus = (TextView) findViewById(R.id.currentstatus);
 		final Button bConnect = (Button) findViewById(R.id.connect);
 		final Button bDisconnect = (Button) findViewById(R.id.disconnect);
-
-		// set the disconnect button and the Logo off
+		
+		// get the object on the user interface - used to calibrate the threshold value
+		final TextView tvCaliDetails = (TextView) findViewById(R.id.calibrateDetails);
+		final Button bCalibrate = (Button) findViewById(R.id.calibrate);
+		final Button bSaveContinue = (Button) findViewById(R.id.saveandcontinue);
+		
+		// set the on click listener on all of the button
+		// use the onClick() to fire the actions
+		bConnect.setOnClickListener(this);
+		bDisconnect.setOnClickListener(this);
+		bCalibrate.setOnClickListener(this);
+		bSaveContinue.setOnClickListener(this);
+		
+		bConnect.setVisibility(View.GONE);
 		bDisconnect.setVisibility(View.GONE);
-
+		bCalibrate.setVisibility(View.GONE);
+		bCalibrate.setVisibility(View.GONE);
+		
+		
 		btAdapt = BluetoothAdapter.getDefaultAdapter();
 		if (btAdapt.isEnabled())
 		{
 			String address = btAdapt.getAddress();
 			String name = btAdapt.getName();
-			String statusText = name + " : " + address;
-			tvStatus.setText(statusText);
+			String statusText = "Device Name: " + name + "\nMAC Adress: " + address;
+			
+			// turn on the calibrate buttons
+			// turn on the the disconnect button
+			bCalibrate.setVisibility(View.VISIBLE);
+			bCalibrate.setVisibility(View.VISIBLE);
 			bDisconnect.setVisibility(View.VISIBLE);
-			bConnect.setVisibility(View.GONE);
+			tvStatus.setText(statusText);
+			tvCaliDetails.setText("Calibration Details");
 		}
 		else 
 		{
@@ -112,36 +177,54 @@ public class CheckBTAvailability extends Activity
 			bConnect.setVisibility(View.VISIBLE);
 			tvStatus.setText("Bluetooth is Currently Unavailable");
 		}
+	}
 
-		bConnect.setOnClickListener(new OnClickListener() 
+	@Override
+	public void onClick(View v) 
+	{
+		// 
+		switch(v.getId())
 		{
-			@Override
-			public void onClick(View v) 
-			{
+			case R.id.connect:
+				// in order the turn the blue-tooth on the user must grant certain permissions
+				// but, before the request is made the blue-tooth adapter must be set
+				// to scan for eternal devices and also must be dicovery so that 
+				// other devices can find it
 				String scanModeChange = BluetoothAdapter.ACTION_SCAN_MODE_CHANGED;
 				String beDiscoverable = BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE;
 				IntentFilter filter = new IntentFilter(scanModeChange);
 				registerReceiver(bluetoothState, filter);
+				// once the receiver is registered the user is
+				// asked to grant permission
 				startActivityForResult(new Intent(beDiscoverable),
 						DISCOVERY_REQUEST);
-			}
-
-		});
-
-		bDisconnect.setOnClickListener(new OnClickListener()
-		{
-			@Override
-			public void onClick(View v) 
-			{
+				break;
+			case R.id.disconnect:
 				// this method will turn off the disconnect button
 				// and displaying the connect button
-				btAdapt.disable();
-				bDisconnect.setVisibility(View.GONE);
-				bConnect.setVisibility(View.VISIBLE);
-				tvStatus.setText("Bluetooth Off");
-			}
-		});
-
+				btAdapt.disable();	
+				makeShortToast("Bluetooth Off");
+				break;
+			case R.id.calibrate:
+				ct = new CalibrateTheshold(new Handler(), this);
+				ct.start();
+				makeShortToast("Starting Calibration Process");
+				break;
+			case R.id.saveandcontinue:
+				// save the prefs and continue to the
+				// connection activity
+				//Create the intent
+		        Intent i = new Intent(this, App.class);
+		        float threshold = ct.getThreshold();
+		        //Create the bundle
+		        Bundle bundle = new Bundle();
+		        //Add your data to bundle
+		        bundle.putFloat("THRESHOLD", threshold);  
+		        //Add the bundle to the intent
+		        i.putExtras(bundle);
+		        startActivity(i);
+				break;
+		}	
 	}
 
 	@Override
@@ -180,7 +263,16 @@ public class CheckBTAvailability extends Activity
 		}
 		if (remoteDevice == null) 
 		{
-			regReceiver(discoveryResult);
+			toastText = "Starting discovery for remote devices...";
+			makeShortToast(toastText);
+
+			if (btAdapt.startDiscovery()) 
+			{
+				toastText = "Discovery thread started... Scanning for devices...";
+				makeShortToast(toastText);
+				registerReceiver(discoveryResult, new IntentFilter(
+						BluetoothDevice.ACTION_FOUND));
+			}
 		}
 	}
 
@@ -214,34 +306,175 @@ public class CheckBTAvailability extends Activity
 	
 	@Override
 	protected void onPause() {
-		// TODO Auto-generated method stub
+		// 
 		super.onPause();
 		btAdapt.cancelDiscovery();
-		unregReceiver();
+		unReg();
+	}@Override
+	protected void onResume() {
+		// 
+		super.onResume();
 	}
 	
-	private void regReceiver(BroadcastReceiver discoveryResult) 
+	public void unReg()
 	{
-		registered = true;
-		toastText = "Starting discovery for remote devices...";
-		makeShortToast(toastText);
+		unregisterReceiver(discoveryResult);
+		unregisterReceiver(bluetoothState);
+	}
+	
+	protected void displayTheshold(String thresholdString) 
+	{
+		//
+		if (thresholdString.length() == 0 || thresholdString == null)
+		{
+			
+		}
+		else
+		{
+			tvCaliDetails.setText(thresholdString);
+		}
+		
+		
+	}	
+	
+	/*
+	 * This Thread is used to calibrate the threshold value, this value is used
+	 * as the zero value.  The Threshold value is taken by sampling the accelerometer
+	 * values and finding the average value by dividing the total by the number of samples.
+	 * 
+	 * This value is then set as the zero value and anything value greater a use as
+	 * positive values or less than the threshold are negivite.  The phone must be
+	 * in a resting position on a flat surface. 
+	 *
+	 */
+	private class CalibrateTheshold extends Thread implements SensorEventListener
+	{
+		private static final String TAG = "CalibrateTheshold Sampling Process";
+		// sensor manager variables
+		private SensorManager sm;
+		private Sensor s;
+		private long startTimer = System.currentTimeMillis();
+		private long endTimer = startTimer + 100;
+		// the threshold value for the application
+		private float threshold;
+		private Handler ctHandler;
+		private CheckBTAvailability checkBTAvail;
+		
+		
+		public CalibrateTheshold(Handler ctHandler, CheckBTAvailability checkBTAvail) 
+		{
+			//
+			this.ctHandler = ctHandler;
+			this.checkBTAvail = checkBTAvail;
+			
+			registerListener();
+		}
+		private void registerListener() 
+		{
+			Log.d(TAG, "In AcceleratorUpdater reg listener");
+			sm = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
-		if (btAdapt.startDiscovery()) 
+			if (sm.getSensorList(Sensor.TYPE_ACCELEROMETER).size() != 0) 
+			{
+				s = sm.getSensorList(Sensor.TYPE_ACCELEROMETER).get(0);
+				sm.registerListener(this, s, SensorManager.SENSOR_DELAY_NORMAL);
+			}
+		}
+		@Override
+		public void onAccuracyChanged(Sensor sensor, int accuracy) 
 		{
-			toastText = "Discovery thread started... Scanning for devices...";
-			makeShortToast(toastText);
-			registerReceiver(discoveryResult, new IntentFilter(
-					BluetoothDevice.ACTION_FOUND));
+			//
+		}
+
+		@Override
+		public void onSensorChanged(SensorEvent event)
+		{
+			float x = calibrateX(event.values[0]);
+			float y = calibrateY(event.values[1]);
+			
+			float threshold = x/y;
+			
+			setThreshold(threshold);
 		}
 		
-	}
-	
-	public void unregReceiver()
-	{
-		if (registered)
+		private float calibrateX( float x )
 		{
-			this.unregisterReceiver(discoveryResult);
+			boolean calibrating = true;
+			float calX = 0;
+			int count = 0;
+			
+			while ( calibrating )
+			{
+				calX += x;
+				count++;
+				if ( count == 100 )
+				{
+					calibrating = false;
+				}
+			}
+			
+			calX = ( calX / count );
+
+			return calX;
 		}
 		
+		private float calibrateY( float y )
+		{
+			
+			boolean calibrating = true;
+			float calY = 0;
+			int count = 0;
+			
+			while ( calibrating )
+			{
+				calY += y;
+				count++;
+				if ( count == 100 )
+				{
+					calibrating = false;
+				}
+			}
+			
+			calY = ( calY / count );
+			
+			return calY;
+		}
+		
+		public void setThreshold(float threshold)
+		{
+			this.threshold = threshold;
+		}
+		public float getThreshold()
+		{
+			return threshold;
+		}
+		
+		@Override
+		public void run()
+		{
+			
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				// 
+				e.printStackTrace();
+			}
+			if (startTimer != endTimer)
+			{
+				ctHandler.post(new Runnable()
+				{
+					@Override
+					public void run() 
+					{
+						String thresholdString = String.valueOf(getThreshold());
+						checkBTAvail.displayTheshold(thresholdString);
+					}
+				});
+			}
+			else
+			{
+				sm.unregisterListener(this);
+			}
+		}
 	}
-}
+}// end of the class

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="itt.t00154755.mouseapp"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="17" />
+
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <Button android:onClick="clickHandler" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name=".CheckBTAvailability"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".AppClient"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name=".AccelerometerUtils"
+            android:label="@string/app_name" >
+        </activity>
+		<activity
+            android:name=".App"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name=".AboutCheckBT"
+            android:label="@string/app_name" 
+            android:theme="@android:style/Theme.Dialog"
+            >
+            <intent-filter>
+                <action android:name="android.intent.action.ABOUTCHECKBT" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        
+    </application>
+
+</manifest>

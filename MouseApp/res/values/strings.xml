@@ -9,5 +9,12 @@
     <string name="currentstatus">Current Status</string>
     <string name="connectbt">Connect to BT</string>
     <string name="disconnect">Disconnect From BT</string>
+    <string name="calibrate">Calibrate</string>
+    <string name="calibrateText">Details</string>
+    <string name="savecontinue">Save and Continue</string>
+    <string name="infoaboutbt">This is inf about bluetooth</string>
+    <string name="aboutbt">About Bluetooth</string>
+    <string name="prefs">Preferences</string>
+    <string name="exit">Exit</string>
 
 </resources>

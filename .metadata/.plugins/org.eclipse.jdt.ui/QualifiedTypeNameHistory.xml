@@ -3,7 +3,6 @@
 <fullyQualifiedTypeName name="android.view.View"/>
 <fullyQualifiedTypeName name="android.bluetooth.BluetoothDevice"/>
 <fullyQualifiedTypeName name="android.widget.Button"/>
-<fullyQualifiedTypeName name="itt.t00154755.mouseapp.R.id"/>
 <fullyQualifiedTypeName name="android.view.View.OnClickListener"/>
 <fullyQualifiedTypeName name="java.io.Serializable"/>
 <fullyQualifiedTypeName name="java.util.Timer"/>
@@ -35,4 +34,10 @@
 <fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="java.lang.System"/>
 <fullyQualifiedTypeName name="javax.bluetooth.RemoteDevice"/>
+<fullyQualifiedTypeName name="android.view.MenuInflater"/>
+<fullyQualifiedTypeName name="itt.t00154755.mouseapp.R.menu"/>
+<fullyQualifiedTypeName name="itt.t00154755.mouseapp.R.id"/>
+<fullyQualifiedTypeName name="itt.t00154755.mouseapp.R.layout"/>
+<fullyQualifiedTypeName name="android.preference.PreferenceActivity"/>
+<fullyQualifiedTypeName name="itt.t00154755.mouseapp.R.xml"/>
 </qualifiedTypeNameHistroy>

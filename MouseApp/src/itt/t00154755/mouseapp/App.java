@@ -31,6 +31,7 @@ public class App extends Activity
 	private Button send;
 	private Timer updateTimer;
 	private AppClient appClient;
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
@@ -97,7 +98,8 @@ public class App extends Activity
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
+	public boolean onCreateOptionsMenu(Menu menu) 
+	{
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.app, menu);
 		return true;
@@ -162,7 +164,7 @@ public class App extends Activity
 				linear_acceleration[0] = event.values[0] - gravity[0];
 				linear_acceleration[1] = event.values[1] - gravity[1];
 				linear_acceleration[2] = event.values[2] - gravity[2];
-	          
+				
 				covertFloatArrayToIntegerArray(linear_acceleration);
 	    }
 
@@ -176,7 +178,7 @@ public class App extends Activity
 	        setAcceloData(acceloData);
 	        Log.d(TAG, acceloData);
 		}
-
+		
 		/**
 		 * Used to create a new String of events each time that
 		 * onSensorChanged() is called.
