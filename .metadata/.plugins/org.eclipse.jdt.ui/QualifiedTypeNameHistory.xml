@@ -8,7 +8,6 @@
 <fullyQualifiedTypeName name="java.util.Timer"/>
 <fullyQualifiedTypeName name="java.io.ObjectOutputStream"/>
 <fullyQualifiedTypeName name="java.util.TimerTask"/>
-<fullyQualifiedTypeName name="android.hardware.SensorEventListener"/>
 <fullyQualifiedTypeName name="android.hardware.SensorManager"/>
 <fullyQualifiedTypeName name="android.util.Log"/>
 <fullyQualifiedTypeName name="javax.microedition.io.StreamConnection"/>
@@ -28,7 +27,6 @@
 <fullyQualifiedTypeName name="android.bluetooth.BluetoothAdapter"/>
 <fullyQualifiedTypeName name="android.content.Intent"/>
 <fullyQualifiedTypeName name="javax.bluetooth.DiscoveryAgent"/>
-<fullyQualifiedTypeName name="android.os.Handler"/>
 <fullyQualifiedTypeName name="android.content.Context"/>
 <fullyQualifiedTypeName name="java.util.Deque"/>
 <fullyQualifiedTypeName name="java.util.ArrayList"/>
@@ -40,4 +38,9 @@
 <fullyQualifiedTypeName name="itt.t00154755.mouseapp.R.layout"/>
 <fullyQualifiedTypeName name="android.preference.PreferenceActivity"/>
 <fullyQualifiedTypeName name="itt.t00154755.mouseapp.R.xml"/>
+<fullyQualifiedTypeName name="android.preference.PreferenceFragment"/>
+<fullyQualifiedTypeName name="android.os.Handler"/>
+<fullyQualifiedTypeName name="android.os.AsyncTask"/>
+<fullyQualifiedTypeName name="android.hardware.SensorEventListener"/>
+<fullyQualifiedTypeName name="android.text.method.ScrollingMovementMethod"/>
 </qualifiedTypeNameHistroy>

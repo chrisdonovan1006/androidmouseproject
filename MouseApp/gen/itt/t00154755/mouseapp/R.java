@@ -30,44 +30,40 @@ public final class R {
     public static final class id {
         public static final int aboutus=0x7f0a000a;
         public static final int action_settings=0x7f0a0009;
-        public static final int calibrate=0x7f0a0005;
-        public static final int calibrateDetails=0x7f0a0006;
-        public static final int checkbt=0x7f0a0001;
-        public static final int connect=0x7f0a0003;
-        public static final int currentstatus=0x7f0a0002;
-        public static final int disconnect=0x7f0a0004;
+        public static final int bCalibrate=0x7f0a0006;
+        public static final int bConnect=0x7f0a0007;
+        public static final int bDisconnect=0x7f0a0005;
+        public static final int bSaveContinue=0x7f0a0003;
         public static final int exit=0x7f0a000c;
+        public static final int pbCalibrate=0x7f0a0004;
         public static final int prefs=0x7f0a000b;
-        public static final int saveandcontinue=0x7f0a0007;
         public static final int send=0x7f0a0008;
         public static final int tvAbout=0x7f0a0000;
+        public static final int tvCalibrateDetails=0x7f0a0002;
+        public static final int tvCurrentStatus=0x7f0a0001;
     }
     public static final class layout {
         public static final int about=0x7f030000;
-        public static final int appbluetooth=0x7f030001;
-        public static final int checkbt=0x7f030002;
-        public static final int main=0x7f030003;
+        public static final int checkbt=0x7f030001;
+        public static final int main=0x7f030002;
     }
     public static final class menu {
         public static final int app=0x7f090000;
         public static final int checkbtmenu=0x7f090001;
     }
     public static final class string {
-        public static final int aboutbt=0x7f07000c;
+        public static final int aboutbt=0x7f070009;
         public static final int action_settings=0x7f070001;
         public static final int app_name=0x7f070000;
-        public static final int calibrate=0x7f070008;
-        public static final int calibrateText=0x7f070009;
-        public static final int checkbt=0x7f070004;
-        public static final int connect=0x7f070003;
-        public static final int connectbt=0x7f070006;
-        public static final int currentstatus=0x7f070005;
-        public static final int disconnect=0x7f070007;
-        public static final int exit=0x7f07000e;
-        public static final int hello_world=0x7f070002;
-        public static final int infoaboutbt=0x7f07000b;
-        public static final int prefs=0x7f07000d;
-        public static final int savecontinue=0x7f07000a;
+        public static final int calibrate=0x7f070005;
+        public static final int calibrateText=0x7f070006;
+        public static final int connect=0x7f070002;
+        public static final int currentstatus=0x7f070003;
+        public static final int disconnect=0x7f070004;
+        public static final int exit=0x7f07000b;
+        public static final int infoaboutbt=0x7f070008;
+        public static final int prefs=0x7f07000a;
+        public static final int savecontinue=0x7f070007;
     }
     public static final class style {
         /** 

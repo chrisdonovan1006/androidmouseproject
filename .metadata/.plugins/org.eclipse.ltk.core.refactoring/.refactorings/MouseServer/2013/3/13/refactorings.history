@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename type &apos;itt.t00154755.mouseserver.ServerCommsOut&apos; to &apos;ServerCommsThread&apos;&#x0D;&#x0A;- Original project: &apos;MouseServer&apos;&#x0D;&#x0A;- Original element: &apos;itt.t00154755.mouseserver.ServerCommsOut&apos;&#x0D;&#x0A;- Renamed element: &apos;itt.t00154755.mouseserver.ServerCommsThread&apos;&#x0D;&#x0A;- Update references to refactored element&#x0D;&#x0A;- Update textual occurrences in comments and strings" description="Rename type &apos;ServerCommsOut&apos;" flags="589830" id="org.eclipse.jdt.ui.rename.type" input="/src&lt;itt.t00154755.mouseserver{ServerCommsOut.java[ServerCommsOut" matchStrategy="1" name="ServerCommsThread" qualified="false" references="true" similarDeclarations="false" stamp="1364398209495" textual="false" version="1.0"/>
+</session>

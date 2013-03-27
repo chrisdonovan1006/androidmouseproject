@@ -101,7 +101,7 @@ public class AppServer extends Thread
 		};
 		
 		
-		ServerCommsOut sct = new ServerCommsOut(dataIn);
+		ServerCommsThread sct = new ServerCommsThread(dataIn);
 		sct.start();
 	}
 }// end of Class

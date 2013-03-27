@@ -14,6 +14,8 @@ public class CursorRobot
 {
 	private static final String TAG = "Server Communication Thread";
 	String acceloData;
+	int moveX = 640;
+	int moveY = 400;
 
 	public void sendToRobot(String acceloData)
 	{
@@ -42,18 +44,6 @@ public class CursorRobot
 		}
 		return data;
 	}
-
-	/*private int findNewY(int currentY, int y) 
-	{
-		int newPos = currentY - (y - 1);
-		return newPos;
-	}
-
-	private int findNewX(int currentX, int x) 
-	{
-		int newPos = currentX + x;
-		return newPos;
-	}*/
 
 	public CursorRobot() 
 	{
@@ -84,7 +74,7 @@ public class CursorRobot
 		{
 			while (true) 
 			{
-				if (acceloData.length() == 0 || acceloData == null)
+				if (acceloData.length() == 0 || acceloData == "")
 				{
 					System.out.println("Waiting for data");
 				} 
@@ -93,8 +83,7 @@ public class CursorRobot
 					int[] accData = covertStringToIntArray(acceloData);
 					int x = accData[0];
 					int y = accData[1];
-					int moveX = 640;
-					int moveY = 400;
+					
 
 					if (accData.length == 0 || accData == null) 
 					{
@@ -108,7 +97,7 @@ public class CursorRobot
 								moveX += x;
 								moveY += y;
 
-								Thread.sleep(32);
+								Thread.sleep(100);
 								robot.mouseMove(moveX, moveY);
 
 								System.out.println("mouse started at: " + x
