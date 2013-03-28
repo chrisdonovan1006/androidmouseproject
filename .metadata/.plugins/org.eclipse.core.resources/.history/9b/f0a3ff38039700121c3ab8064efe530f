@@ -82,7 +82,7 @@ public class App extends Activity
 	{
 		Log.d(TAG, "starting the update timer, updates every .001 of a second");
 		updateTimer = new Timer();
-		updateTimer.schedule(new AcceleratorUpdater(new Handler(), this), 250, 100);
+		updateTimer.schedule(new AcceleratorUpdater(new Handler(), this), 250, 1000);
 
 	}
 

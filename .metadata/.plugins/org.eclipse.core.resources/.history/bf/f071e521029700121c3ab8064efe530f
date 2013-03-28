@@ -52,8 +52,10 @@ public class App extends Activity
 				appClient.connectToServer();
 
 				whenConnected();
+
 			}
 		});
+
 	}
 
 	@Override
@@ -76,6 +78,7 @@ public class App extends Activity
 		{
 			updateTimer.cancel();
 		}
+
 	}
 
 	private void whenConnected() 

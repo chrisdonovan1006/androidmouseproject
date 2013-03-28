@@ -1,0 +1,9 @@
+package itt.t00154755.mouseserver;
+
+public class MouseMoveThread {
+
+	public MouseMoveThread() {
+		// TODO Auto-generated constructor stub
+	}
+
+}
