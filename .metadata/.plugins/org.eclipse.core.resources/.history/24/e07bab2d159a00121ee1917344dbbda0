@@ -1,0 +1,65 @@
+package itt.t00154755.mouseserver;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;                  
+
+import javax.bluetooth.BluetoothStateException;
+
+public class ServerCommsThread extends Thread 
+{
+	private final String TAG = "Server Communication Thread";
+	InputStream dataIn;
+	AppServer appServer;
+	public ServerCommsThread ( )
+	{
+		try
+		{
+			appServer = new AppServer();
+		} catch ( BluetoothStateException e )
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		dataIn = appServer.getDataIn();
+	}
+	public void run() 
+	{
+		BufferedReader buffIn = new BufferedReader(new InputStreamReader(dataIn));
+		try 
+		{
+			while (true)
+			{
+				String acceloData = buffIn.readLine();
+				
+				cr.sendToRobot(acceloData);
+			}
+		}
+		catch (Exception e) 
+		{
+			// print the error stack
+			e.printStackTrace();
+			e.getCause();
+			System.exit(-1);
+
+		} 
+		finally 
+		{
+			try 
+			{
+				if (dataIn != null)
+				{
+					dataIn.close();
+				}
+			} 
+			catch (IOException e) 
+			{
+				// print the error stack
+				e.printStackTrace();
+				e.getCause();
+				System.exit(-1);
+			}
+		}
+	}
+}// end of Class

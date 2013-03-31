@@ -25,26 +25,25 @@ import android.widget.Button;
  *         passed on to the client and from the client to the server.
  * 
  */
-public class App extends Activity 
+public class App extends Activity
 {
-	private static final String TAG = "Main App";
-	private Button send;
-	private Timer updateTimer;
-	private AppClient appClient;
-	
+	private static final String	TAG	= "Main App";
+	private Button				send;
+	private Timer				updateTimer;
+	private AppClient			appClient;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) 
+	protected void onCreate( Bundle savedInstanceState )
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 
-		send = (Button) findViewById(R.id.send);
+		send = (Button ) findViewById(R.id.send);
 
-		send.setOnClickListener(new Button.OnClickListener() 
+		send.setOnClickListener(new Button.OnClickListener()
 		{
 			@Override
-			public void onClick(View v) 
+			public void onClick( View v )
 			{
 				// starts the connection process - server must be running
 				Log.i(TAG, "client connecting to server");
@@ -57,36 +56,38 @@ public class App extends Activity
 	}
 
 	@Override
-	protected void onStart() 
+	protected void onStart( )
 	{
 		super.onStart();
 	}
 
 	@Override
-	protected void onPause() 
+	protected void onPause( )
 	{
 		super.onPause();
 	}
 
 	@Override
-	protected void onStop() 
+	protected void onStop( )
 	{
 		super.onStop();
-		if (updateTimer != null) 
+		if ( updateTimer != null )
 		{
 			updateTimer.cancel();
 		}
 	}
 
-	private void whenConnected() 
+	private void whenConnected( )
 	{
 		Log.d(TAG, "starting the update timer, updates every .001 of a second");
 		updateTimer = new Timer();
-		updateTimer.schedule(new AcceleratorUpdater(new Handler(), this), 250, 100);
+		updateTimer.schedule(new AcceleratorUpdater(new Handler(), this), 1000,
+				100);
 
 	}
 
-	protected void passStringDataToServer(String acceloData) throws IOException 
+	protected void passStringDataToServer( String acceloData )
+			throws IOException
 	{
 		// pass the string which contains the data array to the server
 
@@ -95,21 +96,22 @@ public class App extends Activity
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) 
+	public boolean onCreateOptionsMenu( Menu menu )
 	{
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.app, menu);
 		return true;
 	}
 
-	private class AcceleratorUpdater extends TimerTask implements SensorEventListener 
+	private class AcceleratorUpdater extends TimerTask implements
+			SensorEventListener
 	{
 
-		Handler accHandler;
-		App app;
-		String acceloData;
+		Handler	accHandler;
+		App		app;
+		String	acceloData;
 
-		public AcceleratorUpdater(Handler accHandler, App app)
+		public AcceleratorUpdater ( Handler accHandler, App app )
 		{
 			super();
 			this.accHandler = accHandler;
@@ -119,16 +121,16 @@ public class App extends Activity
 			registerListener();
 		}
 
-		private void registerListener() 
+		private void registerListener( )
 		{
 			// sensor manager variables
 			SensorManager sm;
 			Sensor s;
 
 			Log.d(TAG, "In AcceleratorUpdater reg listener");
-			sm = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+			sm = (SensorManager ) getSystemService(Context.SENSOR_SERVICE);
 
-			if (sm.getSensorList(Sensor.TYPE_ACCELEROMETER).size() != 0) 
+			if ( sm.getSensorList(Sensor.TYPE_ACCELEROMETER).size() != 0 )
 			{
 				s = sm.getSensorList(Sensor.TYPE_ACCELEROMETER).get(0);
 				sm.registerListener(this, s, SensorManager.SENSOR_DELAY_NORMAL);
@@ -136,46 +138,46 @@ public class App extends Activity
 		}
 
 		@Override
-		public void onAccuracyChanged(Sensor sensor, int accuracy) 
+		public void onAccuracyChanged( Sensor sensor, int accuracy )
 		{
-			
+
 		}
 
 		@Override
-		public void onSensorChanged(SensorEvent event) 
+		public void onSensorChanged( SensorEvent event )
 		{
 			//
 			Log.d(TAG, "In sensorchanged of of AcceleratorUpdater");
-				// alpha is calculated as t / (t + dT)
-	          	// with t, the low-pass filter's time-constant
-	          	// and dT, the event delivery rate
+			// alpha is calculated as t / (t + dT)
+			// with t, the low-pass filter's time-constant
+			// and dT, the event delivery rate
 
-				final float alpha = 0.8f;
+			final float alpha = 0.8f;
 
-				float[] gravity = new  float[3];
-				gravity[0] = alpha * gravity[0] + (1 - alpha) * event.values[0];
-				gravity[1] = alpha * gravity[1] + (1 - alpha) * event.values[1];
-				gravity[2] = alpha * gravity[2] + (1 - alpha) * event.values[2];
+			float[] gravity = new float[3];
+			gravity[0] = alpha * gravity[0] + ( 1 - alpha ) * event.values[0];
+			gravity[1] = alpha * gravity[1] + ( 1 - alpha ) * event.values[1];
+			gravity[2] = alpha * gravity[2] + ( 1 - alpha ) * event.values[2];
 
-				float[] linear_acceleration = new float[3];
-				linear_acceleration[0] = event.values[0] - gravity[0];
-				linear_acceleration[1] = event.values[1] - gravity[1];
-				linear_acceleration[2] = event.values[2] - gravity[2];
-				
-				covertFloatArrayToIntegerArray(linear_acceleration);
-	    }
+			float[] linear_acceleration = new float[3];
+			linear_acceleration[0] = event.values[0] - gravity[0];
+			linear_acceleration[1] = event.values[1] - gravity[1];
+			linear_acceleration[2] = event.values[2] - gravity[2];
 
-		private void covertFloatArrayToIntegerArray(float[] linear_acceleration)
-		{
-			int xIntAxis = (int) linear_acceleration[0];
-			int yIntAxis = (int) linear_acceleration[1];
-			
-			acceloData = "" + xIntAxis + "," + yIntAxis;
-
-	        setAcceloData(acceloData);
-	        Log.d(TAG, acceloData);
+			covertFloatArrayToIntegerArray(linear_acceleration);
 		}
-		
+
+		private void covertFloatArrayToIntegerArray( float[] linear_acceleration )
+		{
+			int xIntAxis = (int ) linear_acceleration[0];
+			int yIntAxis = (int ) linear_acceleration[1];
+
+			acceloData = "" + Math.abs(xIntAxis) + "," + Math.abs(yIntAxis);
+
+			setAcceloData(acceloData);
+			Log.d(TAG, acceloData);
+		}
+
 		/**
 		 * Used to create a new String of events each time that
 		 * onSensorChanged() is called.
@@ -186,21 +188,20 @@ public class App extends Activity
 		 */
 
 		@Override
-		public void run() 
+		public void run( )
 		{
 			Log.d(TAG, "In AcceleratorUpdater run");
 			accHandler.post(new Runnable()
 			{
 				@Override
-				public void run() 
+				public void run( )
 				{
 
 					try
 					{
 						app.passStringDataToServer(getAcceloData());
 						// updateTimer.cancel();
-					} 
-					catch (IOException e)
+					} catch ( IOException e )
 					{
 						// print the error stack
 						e.printStackTrace();
@@ -212,12 +213,12 @@ public class App extends Activity
 			});
 		}
 
-		public String getAcceloData()
+		public String getAcceloData( )
 		{
 			return acceloData;
 		}
 
-		public void setAcceloData(String acceloData) 
+		public void setAcceloData( String acceloData )
 		{
 			this.acceloData = acceloData;
 		}

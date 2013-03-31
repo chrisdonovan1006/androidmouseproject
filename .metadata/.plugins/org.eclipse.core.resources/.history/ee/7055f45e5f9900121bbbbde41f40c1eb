@@ -1,0 +1,127 @@
+// packages
+package itt.t00154755.mouseserver;
+
+// imports
+import java.awt.AWTException;
+import java.awt.MouseInfo;
+import java.awt.Point;
+import java.awt.Robot;
+
+/**
+ * 
+ * @author Christopher Donovan
+ * 
+ */
+public class CursorRobot
+{
+	private static final String	TAG		= "Server Communication Thread";
+	String						acceloData;
+	int							moveX	= 640;
+	int							moveY	= 400;
+	Robot						robot;
+
+	public void sendToRobot( String acceloData )
+	{
+		this.acceloData = acceloData;
+	}
+
+	private synchronized int[] covertStringToIntArray( String acceloData )
+	{
+		String delims = "[,]";
+		String[] tokens = acceloData.split(delims);
+		int[] data = new int[tokens.length];
+
+		for ( int i = 0; i < tokens.length; i++ )
+		{
+			try
+			{
+				data[i] = Integer.parseInt(tokens[i]);
+			} catch ( NumberFormatException nfe )
+			{
+				// print the error stack
+				System.out.print(TAG + "\n");
+				nfe.printStackTrace();
+				nfe.getCause();
+				System.exit(-1);
+			}
+		}
+		notify();
+		return data;
+	}
+
+	public CursorRobot ( )
+	{
+		execute();
+	}
+
+	/**
+	 * this method is call on the Class object in order to start the running.
+	 * 
+	 * e.g. robot.execute()
+	 */
+	public void execute( )
+	{
+		new Thread(new MouseMoveThread(moveX, moveX, acceloData)).start();
+	}
+
+	/*
+	 * this thread will allow the data passed from the accelerometer to control
+	 * the on screen cursor via the Robot object
+	 */
+	public class MouseMoveThread implements Runnable
+	{
+		//
+		private Robot	robot;
+		private int		startX, startY;
+		private String	acceloData;
+
+		public MouseMoveThread ( int startX, int startY, String acceloData )
+		{
+			this.startX = startX;
+			this.startY = startY;
+			this.acceloData = acceloData;
+			try
+			{
+				robot = new Robot();
+
+				Point startLocation = MouseInfo.getPointerInfo().getLocation();
+				startX = startLocation.x;
+				startY = startLocation.y;
+			} catch ( AWTException e1 )
+			{
+				e1.printStackTrace();
+			}
+		}
+
+		@Override
+		public void run( )
+		{
+			if ( acceloData.length() == 0 || acceloData == "" )
+			{
+				System.out.println("Waiting for data");
+			} else
+			{
+				int[] accData = covertStringToIntArray(acceloData);
+				int currentX = startX;
+				int currentY = startY;
+
+				while ( true )
+				{
+					int moveToX = currentX + accData[0];
+					int moveToY = currentY + accData[1];
+
+					robot.mouseMove(moveToX, moveToY);
+					try
+					{
+						Thread.sleep(100);
+					} catch ( InterruptedException exc )
+					{
+						exc.printStackTrace();
+					}
+				}// end of loop
+			}
+		}
+	}
+
+}// end of class
+

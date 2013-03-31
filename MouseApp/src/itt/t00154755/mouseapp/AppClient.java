@@ -20,23 +20,23 @@ import android.util.Log;
  *         ://developer.android.com/guide/topics/connectivity
  *         /bluetooth.html#EnablingDiscoverability}
  */
-public class AppClient 
+public class AppClient
 {
-	private static final String TAG = "Android Phone";
-	private BluetoothAdapter btAdapter;
-	private boolean available = false;
-	public String acceloData;
-	private BluetoothSocket socket;
-	public int nullPacketsOut;
+	private static final String	TAG			= "Android Phone";
+	private BluetoothAdapter	btAdapter;
+	private boolean				available	= false;
+	public String				acceloData;
+	private BluetoothSocket		socket;
+	public int					nullPacketsOut;
 
-	public AppClient() 
+	public AppClient ( )
 	{
 		btAdapter = BluetoothAdapter.getDefaultAdapter();
 	}
 
-	public void connectToServer() 
+	public void connectToServer( )
 	{
-		try 
+		try
 		{
 			Log.d(TAG, "getting local device");
 			// remote MAC here:
@@ -52,8 +52,7 @@ public class AppClient
 			Log.d(TAG, "Connected!");
 			available = true;
 
-		} 
-		catch (Exception e) 
+		} catch ( Exception e )
 		{
 			Log.e(TAG, "Error connecting to device", e);
 		}
@@ -63,16 +62,15 @@ public class AppClient
 	 * @param socket
 	 * @throws IOException
 	 */
-	public void writeOutToTheServer(String acceloData) throws IOException 
+	public void writeOutToTheServer( String acceloData ) throws IOException
 	{
 		ClientCommsThread cct = new ClientCommsThread(socket, acceloData);
 		cct.start();
 	}
 
-	public boolean isAvailable() 
+	public boolean isAvailable( )
 	{
 		return available;
 	}
 
-	
 }// end of the class

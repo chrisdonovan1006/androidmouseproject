@@ -1,0 +1,90 @@
+package itt.t00154755.mouseserver;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
+import javax.bluetooth.RemoteDevice;
+import javax.microedition.io.StreamConnection;
+
+public class ServerCommsThread extends Thread
+{
+	private final String		TAG			= "Server Communication Thread";
+	private StreamConnection	conn;											// client
+																				// connection
+	private InputStream			dataIn;
+	private volatile boolean	isRunning	= false;
+
+	public ServerCommsThread ( StreamConnection streamConnection )
+	{
+		this.conn = streamConnection;
+
+		RemoteDevice reDevice;
+		try
+		{
+			reDevice = RemoteDevice.getRemoteDevice(conn);
+
+			System.out.println(TAG + "...Server is Connected to: \n"
+					+ reDevice.getBluetoothAddress() + "\n"
+					+ reDevice.getFriendlyName(true));
+
+		} catch ( IOException e )
+		{
+			// print the error stack
+			e.printStackTrace();
+			e.getCause();
+			System.exit(-1);
+		}
+		;
+	}
+
+	public void run( )
+	{
+		try
+		{
+			dataIn = conn.openInputStream();
+
+			readInDataFromTheClient();
+		} catch ( IOException e1 )
+		{
+			//
+			e1.printStackTrace();
+		}
+
+	}
+
+	private void readInDataFromTheClient( )
+	{
+		BufferedReader buffIn = new BufferedReader(
+				new InputStreamReader(dataIn));
+		isRunning = true;
+		String acceloData;
+		while ( isRunning )
+		{
+			if ( buffIn == null )
+			{
+				isRunning = false;
+			} else
+			{
+				try
+				{
+					acceloData = buffIn.readLine();
+					
+					sendToRobot(acceloData);
+				} catch ( IOException e )
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+
+		}
+	}
+
+	private void sendToRobot( String acceloData )
+	{
+		CursorRobot cr = new CursorRobot();
+		cr.sendToRobot(acceloData);
+	}
+}// end of Class

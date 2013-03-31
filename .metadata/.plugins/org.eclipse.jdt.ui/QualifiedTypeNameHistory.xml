@@ -21,7 +21,6 @@
 <fullyQualifiedTypeName name="java.awt.AWTException"/>
 <fullyQualifiedTypeName name="java.util.ArrayDeque"/>
 <fullyQualifiedTypeName name="java.util.logging.Logger"/>
-<fullyQualifiedTypeName name="java.awt.Point"/>
 <fullyQualifiedTypeName name="java.util.UUID"/>
 <fullyQualifiedTypeName name="javax.bluetooth.UUID"/>
 <fullyQualifiedTypeName name="android.bluetooth.BluetoothAdapter"/>
@@ -43,4 +42,6 @@
 <fullyQualifiedTypeName name="android.os.AsyncTask"/>
 <fullyQualifiedTypeName name="android.hardware.SensorEventListener"/>
 <fullyQualifiedTypeName name="android.text.method.ScrollingMovementMethod"/>
+<fullyQualifiedTypeName name="java.awt.Point"/>
+<fullyQualifiedTypeName name="java.awt.MouseInfo"/>
 </qualifiedTypeNameHistroy>
