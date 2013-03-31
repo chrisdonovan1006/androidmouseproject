@@ -2,13 +2,8 @@ package itt.t00154755.mouseapp;
 
 import java.io.IOException;
 import java.util.Timer;
-import java.util.TimerTask;
+
 import android.app.Activity;
-import android.content.Context;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -49,8 +44,11 @@ public class App extends Activity
 				Log.i(TAG, "client connecting to server");
 				appClient = new AppClient();
 				appClient.connectToServer();
-
-				whenConnected();
+				
+				while(appClient.isAvailable())
+				{
+					startTheUpdateTimerTask();
+				}
 			}
 		});
 	}
@@ -77,11 +75,11 @@ public class App extends Activity
 		}
 	}
 
-	private void whenConnected( )
+	private void startTheUpdateTimerTask( )
 	{
 		Log.d(TAG, "starting the update timer, updates every .001 of a second");
 		updateTimer = new Timer();
-		updateTimer.schedule(new AcceleratorUpdater(new Handler(), this), 1000,
+		updateTimer.schedule(new AcceleratorUpdater(new Handler(), this), 100,
 				100);
 
 	}
@@ -103,124 +101,5 @@ public class App extends Activity
 		return true;
 	}
 
-	private class AcceleratorUpdater extends TimerTask implements
-			SensorEventListener
-	{
-
-		Handler	accHandler;
-		App		app;
-		String	acceloData;
-
-		public AcceleratorUpdater ( Handler accHandler, App app )
-		{
-			super();
-			this.accHandler = accHandler;
-			this.app = app;
-
-			Log.d(TAG, "In AcceleratorUpdater update const");
-			registerListener();
-		}
-
-		private void registerListener( )
-		{
-			// sensor manager variables
-			SensorManager sm;
-			Sensor s;
-
-			Log.d(TAG, "In AcceleratorUpdater reg listener");
-			sm = (SensorManager ) getSystemService(Context.SENSOR_SERVICE);
-
-			if ( sm.getSensorList(Sensor.TYPE_ACCELEROMETER).size() != 0 )
-			{
-				s = sm.getSensorList(Sensor.TYPE_ACCELEROMETER).get(0);
-				sm.registerListener(this, s, SensorManager.SENSOR_DELAY_NORMAL);
-			}
-		}
-
-		@Override
-		public void onAccuracyChanged( Sensor sensor, int accuracy )
-		{
-
-		}
-
-		@Override
-		public void onSensorChanged( SensorEvent event )
-		{
-			//
-			Log.d(TAG, "In sensorchanged of of AcceleratorUpdater");
-			// alpha is calculated as t / (t + dT)
-			// with t, the low-pass filter's time-constant
-			// and dT, the event delivery rate
-
-			final float alpha = 0.8f;
-
-			float[] gravity = new float[3];
-			gravity[0] = alpha * gravity[0] + ( 1 - alpha ) * event.values[0];
-			gravity[1] = alpha * gravity[1] + ( 1 - alpha ) * event.values[1];
-			gravity[2] = alpha * gravity[2] + ( 1 - alpha ) * event.values[2];
-
-			float[] linear_acceleration = new float[3];
-			linear_acceleration[0] = event.values[0] - gravity[0];
-			linear_acceleration[1] = event.values[1] - gravity[1];
-			linear_acceleration[2] = event.values[2] - gravity[2];
-
-			covertFloatArrayToIntegerArray(linear_acceleration);
-		}
-
-		private void covertFloatArrayToIntegerArray( float[] linear_acceleration )
-		{
-			int xIntAxis = (int ) linear_acceleration[0];
-			int yIntAxis = (int ) linear_acceleration[1];
-
-			acceloData = "" + Math.abs(xIntAxis) + "," + Math.abs(yIntAxis);
-
-			setAcceloData(acceloData);
-			Log.d(TAG, acceloData);
-		}
-
-		/**
-		 * Used to create a new String of events each time that
-		 * onSensorChanged() is called.
-		 * 
-		 * @param event
-		 *            the SensorEvent from the accelerometer sensor
-		 * @return acceloData the string representation of the array events
-		 */
-
-		@Override
-		public void run( )
-		{
-			Log.d(TAG, "In AcceleratorUpdater run");
-			accHandler.post(new Runnable()
-			{
-				@Override
-				public void run( )
-				{
-
-					try
-					{
-						app.passStringDataToServer(getAcceloData());
-						// updateTimer.cancel();
-					} catch ( IOException e )
-					{
-						// print the error stack
-						e.printStackTrace();
-						e.getCause();
-						System.exit(-1);
-					}
-
-				}
-			});
-		}
-
-		public String getAcceloData( )
-		{
-			return acceloData;
-		}
-
-		public void setAcceloData( String acceloData )
-		{
-			this.acceloData = acceloData;
-		}
-	}
+	
 }// end of the class

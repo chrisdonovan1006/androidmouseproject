@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 
 import javax.bluetooth.RemoteDevice;
 import javax.microedition.io.StreamConnection;
@@ -42,26 +44,58 @@ public class ServerCommsThread extends Thread
 	@Override
 	public void run( )
 	{
+		String acceloData = null;
 		try
 		{
-			System.out.println("sct run method");
 			dataIn = conn.openInputStream();
-
-			readInDataFromTheClient();
+			acceloData = readInDataFromTheClient();
 		} catch ( IOException e1 )
 		{
-			//
+			// TODO Auto-generated catch block
 			e1.printStackTrace();
+		}
+
+		isRunning = true;
+		while ( isRunning )
+		{
+			if ( acceloData == null )
+			{
+				System.out.println("no data");
+				try
+				{
+					sendDataToTheServer();
+				} catch ( IOException e )
+				{
+					e.printStackTrace();
+					closeTheStream();
+				}
+				isRunning = false;
+			} else
+			{
+				
+			}
 		}
 
 	}
 
-	private void readInDataFromTheClient( )
+	/**
+	 * @throws IOException
+	 */
+	private void sendDataToTheServer( ) throws IOException
+	{
+		final String WAITING = "waiting";
+		OutputStream dataOut = conn.openOutputStream();
+		PrintWriter writeOut = new PrintWriter(dataOut);
+		writeOut.print(WAITING);
+		writeOut.flush();
+	}
+
+	private String readInDataFromTheClient( ) throws IOException
 	{
 		BufferedReader buffIn = new BufferedReader(
 				new InputStreamReader(dataIn));
 		isRunning = true;
-		String acceloData;
+		String acceloData = null;
 		while ( isRunning )
 		{
 			if ( buffIn == null )
@@ -70,27 +104,31 @@ public class ServerCommsThread extends Thread
 				isRunning = false;
 			} else
 			{
-				try
-				{
-					System.out.println("read line");
-					acceloData = buffIn.readLine();
-					System.out.println("send to robot");
-					sendToRobot(acceloData);
-				} catch ( IOException e )
-				{
-					//
-					e.printStackTrace();
-				}
+				System.out.println("read line");
+				acceloData = buffIn.readLine();
+				sendToRobot(acceloData);
 			}
 
 		}
+		return acceloData;
 	}
 
 	private void sendToRobot( String acceloData )
 	{
-		System.out.println("sned to robot method");
+		System.out.println("send to robot method");
 		CursorRobot cr = new CursorRobot(acceloData);
 		System.out.println("start the robot");
-		cr.startCursorRobot();
+		cr.start();
+	}
+
+	private void closeTheStream( )
+	{
+		try
+		{
+			dataIn.close();
+		} catch ( IOException e )
+		{
+			e.printStackTrace();
+		}
 	}
 }// end of Class

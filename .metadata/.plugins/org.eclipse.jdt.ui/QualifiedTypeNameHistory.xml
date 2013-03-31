@@ -25,7 +25,6 @@
 <fullyQualifiedTypeName name="javax.bluetooth.UUID"/>
 <fullyQualifiedTypeName name="android.bluetooth.BluetoothAdapter"/>
 <fullyQualifiedTypeName name="android.content.Intent"/>
-<fullyQualifiedTypeName name="javax.bluetooth.DiscoveryAgent"/>
 <fullyQualifiedTypeName name="android.content.Context"/>
 <fullyQualifiedTypeName name="java.util.Deque"/>
 <fullyQualifiedTypeName name="java.util.ArrayList"/>
@@ -44,4 +43,5 @@
 <fullyQualifiedTypeName name="android.text.method.ScrollingMovementMethod"/>
 <fullyQualifiedTypeName name="java.awt.Point"/>
 <fullyQualifiedTypeName name="java.awt.MouseInfo"/>
+<fullyQualifiedTypeName name="javax.bluetooth.DiscoveryAgent"/>
 </qualifiedTypeNameHistroy>

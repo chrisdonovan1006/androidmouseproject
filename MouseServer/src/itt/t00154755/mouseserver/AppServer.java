@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.bluetooth.BluetoothStateException;
+import javax.bluetooth.DiscoveryAgent;
 import javax.bluetooth.LocalDevice;
 import javax.microedition.io.Connector;
 import javax.microedition.io.StreamConnection;
@@ -52,6 +53,8 @@ public class AppServer extends Thread
 		try
 		{
 			LocalDevice pcDevice = LocalDevice.getLocalDevice();
+			pcDevice.setDiscoverable(DiscoveryAgent.GIAC);
+			
 			System.out.println(TAG + "...Server Running on : \n ");
 			System.out.println("Local Device Name: "
 					+ pcDevice.getFriendlyName());

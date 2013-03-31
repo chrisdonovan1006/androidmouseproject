@@ -12,7 +12,7 @@ import java.awt.Robot;
  * @author Christopher Donovan
  * 
  */
-public class CursorRobot
+public class CursorRobot extends Thread
 {
 	private static final String	TAG			= "Server Communication Thread";
 	private Robot				robot;
@@ -26,6 +26,7 @@ public class CursorRobot
 	public CursorRobot ( String acceloData )
 	{
 		this.acceloData = acceloData;
+		startCursorRobot();
 	}
 
 	public void startCursorRobot( )
@@ -34,10 +35,8 @@ public class CursorRobot
 		int[] convertedString = covertStringToIntArray(acceloData);
 		this.moveX = convertedString[0];
 		this.moveY = convertedString[1];
-
-		moveTheMouseToNewPosition(moveX, moveY);
 	}
-
+	
 	private void moveTheMouseToNewPosition( int moveX, int moveY )
 	{
 		System.out.println("mouse move method");
@@ -97,6 +96,11 @@ public class CursorRobot
 		}
 		return data;
 	}
-
+	
+	
+	public void run()
+	{
+		moveTheMouseToNewPosition(moveX, moveY);
+	}
 }// end of class
 

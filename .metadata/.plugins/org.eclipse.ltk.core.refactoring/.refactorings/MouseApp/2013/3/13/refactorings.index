@@ -7,3 +7,5 @@
 1364385968852	Rename field 'disconnect'
 1364385983817	Rename field 'connect'
 1364386000838	Rename field 'currentstatus'
+1364757110588	Rename type 'CalibrateThesholdTask'
+1364761728194	Extract method 'sendDataToTheServer'

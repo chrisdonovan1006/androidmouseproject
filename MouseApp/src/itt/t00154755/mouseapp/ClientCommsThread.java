@@ -1,6 +1,9 @@
 package itt.t00154755.mouseapp;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 
@@ -11,7 +14,8 @@ public class ClientCommsThread extends Thread
 	private static final String	TAG	= "Client Comms Thread";
 	private BluetoothSocket		socket;
 	private String				acceloData;
-	private int					nullPacketsOut;
+	private boolean				isRunning;
+	private InputStream			dataIn;
 
 	public ClientCommsThread ( BluetoothSocket socket, String acceloData )
 	{
@@ -23,51 +27,84 @@ public class ClientCommsThread extends Thread
 	@Override
 	public void run( )
 	{
+		String serverData = null;
 		try
 		{
-			while ( true )
+			serverData = readInDataFromTheServer();
+		} catch ( IOException e1 )
+		{
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		isRunning = true;
+		while ( isRunning )
+		{
+			if ( serverData != null )
+			{
+				System.out.println("server is waiting");
+				isRunning = false;
+			} else
 			{
 				try
 				{
-					if ( acceloData == null )
-					{
-						nullPacketsOut++;
-						System.out.println("null packects recieved on the client side: " + nullPacketsOut);
-						if (nullPacketsOut > 20000)
-						{
-							System.out.println("too many null packets");
-							System.exit(-1);
-						}
-					} else
-					{
-						OutputStream dataOut = socket.getOutputStream();
-						PrintWriter writeOut = new PrintWriter(dataOut);
-						writeOut.print(acceloData);
-						writeOut.flush();
-					}
+					sendDataToTheServer();
 				} catch ( IOException e )
 				{
-					closeTheSocket();
-					// print the error stack
+					//
 					e.printStackTrace();
-					e.getCause();
-					System.exit(-1);
+				}finally
+				{
+					closeTheSocket();
+				}
+
+			}
+		}
+
+	}
+
+	/**
+	 * @throws IOException
+	 */
+	private void sendDataToTheServer( ) throws IOException
+	{
+		OutputStream dataOut = socket.getOutputStream();
+		PrintWriter writeOut = new PrintWriter(dataOut);
+		writeOut.print(acceloData);
+		writeOut.flush();
+	}
+
+	private String readInDataFromTheServer( ) throws IOException
+	{
+		dataIn = socket.getInputStream();
+		BufferedReader buffIn = new BufferedReader(
+				new InputStreamReader(dataIn));
+		isRunning = true;
+		String serverData = null;
+		while ( isRunning )
+		{
+			if ( buffIn == null )
+			{
+				System.out.println("buff in client is empty");
+				isRunning = false;
+			} else
+			{
+				try
+				{
+					System.out.println("read line");
+					serverData = buffIn.readLine();
+					System.out.println("send to robot");
+
+				} catch ( IOException e )
+				{
+					//
+					e.printStackTrace();
 				}
 			}
-		} catch ( Exception e )
-		{
-			// print the error stack
-			e.printStackTrace();
-			e.getCause();
-			System.exit(-1);
-
-		} finally
-		{
-			closeTheSocket();
 		}
+		return serverData;
 	}
-	
-	public void closeTheSocket()
+
+	public void closeTheSocket( )
 	{
 		if ( socket != null )
 		{

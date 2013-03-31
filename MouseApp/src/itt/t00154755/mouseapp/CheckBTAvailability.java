@@ -45,7 +45,7 @@ public class CheckBTAvailability extends Activity implements OnClickListener
 	private String					toastText			= "";
 	private BluetoothDevice			remoteDevice;
 	public String					thresholdValue;
-	private CalibrateThesholdTask	ct;
+	private CalibrateThresholdTask	ct;
 
 	BroadcastReceiver				bluetoothState		= new BroadcastReceiver()
 														{
@@ -219,7 +219,7 @@ public class CheckBTAvailability extends Activity implements OnClickListener
 			break;
 			case R.id.bCalibrate:
 				// create a new task, this refers to this class
-				ct = new CalibrateThesholdTask(this);
+				ct = new CalibrateThresholdTask(this);
 				// execute the task
 				ct.execute();
 			break;
