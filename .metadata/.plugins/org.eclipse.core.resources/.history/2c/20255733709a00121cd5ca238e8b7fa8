@@ -142,6 +142,8 @@ public class AcceleratorUpdater extends TimerTask implements SensorEventListener
 		Log.d(TAG, acceloData);
 	}
 
+	
+
 	@Override public void run()
 	{
 
@@ -156,7 +158,7 @@ public class AcceleratorUpdater extends TimerTask implements SensorEventListener
 
 				if ( acceloData == null )
 				{
-					Log.d(TAG, "AcceleratorUpdater data is null");
+					System.out.println("AcceleratorUpdater data is null");
 					return;
 				}
 				else

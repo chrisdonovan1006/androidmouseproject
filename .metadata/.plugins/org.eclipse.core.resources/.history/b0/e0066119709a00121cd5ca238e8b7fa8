@@ -90,15 +90,7 @@ public class AcceleratorUpdater extends TimerTask implements SensorEventListener
 		// i do not use this method
 		// but it must be implemented
 	}
-	
-	/**
-	 * Used to create a new String of events each time that onSensorChanged() is
-	 * called.
-	 * 
-	 * @param event
-	 *        the SensorEvent from the accelerometer sensor
-	 * @return acceloData the string representation of the array events
-	 */
+
 	@Override public void onSensorChanged( SensorEvent event )
 	{
 
@@ -142,6 +134,15 @@ public class AcceleratorUpdater extends TimerTask implements SensorEventListener
 		Log.d(TAG, acceloData);
 	}
 
+	/**
+	 * Used to create a new String of events each time that onSensorChanged() is
+	 * called.
+	 * 
+	 * @param event
+	 *        the SensorEvent from the accelerometer sensor
+	 * @return acceloData the string representation of the array events
+	 */
+
 	@Override public void run()
 	{
 
@@ -156,7 +157,7 @@ public class AcceleratorUpdater extends TimerTask implements SensorEventListener
 
 				if ( acceloData == null )
 				{
-					Log.d(TAG, "AcceleratorUpdater data is null");
+					System.out.println("AcceleratorUpdater data is null");
 					return;
 				}
 				else

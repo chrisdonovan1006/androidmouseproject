@@ -33,7 +33,7 @@ public class AppClient
 	public String acceloData;
 	// bluetooth socket
 	private BluetoothSocket socket;
-	// used to count the number of null packets being sent
+	// used to count thenuber of null packets being sent
 	public int nullPacketsOut;
 
 	/**

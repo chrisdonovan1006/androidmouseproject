@@ -27,18 +27,15 @@ public class AppClient
 	private static final String TAG = "App Client";
 	// bluetooth adapter Object
 	private BluetoothAdapter btAdapter;
-	// used to check if the device is available
+	// 
 	private boolean available;
-	// String value
+
 	public String acceloData;
-	// bluetooth socket
+
 	private BluetoothSocket socket;
-	// used to count the number of null packets being sent
+
 	public int nullPacketsOut;
 
-	/**
-	 * 
-	 */
 	public AppClient ( )
 	{
 
