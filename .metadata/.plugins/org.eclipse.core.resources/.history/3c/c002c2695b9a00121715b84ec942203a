@@ -48,12 +48,8 @@ public class ServerCommsThread extends Thread
 		try
 		{
 			dataIn = conn.openInputStream();
-			while (dataIn == null)
-			{
-				acceloData = readInDataFromTheClient();
-				sendToRobot(acceloData);
-			}
-			
+			acceloData = readInDataFromTheClient();
+			sendToRobot(acceloData);
 		} catch ( IOException e1 )
 		{
 			// 
@@ -90,8 +86,8 @@ public class ServerCommsThread extends Thread
 				
 			} else
 			{
-				acceloData = buffIn.readLine();
 				System.out.println("read line");
+				acceloData = buffIn.readLine();
 			}
 
 		}

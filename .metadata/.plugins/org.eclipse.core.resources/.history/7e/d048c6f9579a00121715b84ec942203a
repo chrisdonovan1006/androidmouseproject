@@ -31,15 +31,9 @@ public class ClientCommsThread extends Thread
 		try
 		{
 			serverData = readInDataFromTheServer();
-			while (serverData == null && isRunning)
+			while (serverData != null)
 			{
-				if (acceloData.length() < 1 || acceloData == "" || acceloData == null)
-				{
-					isRunning = false;
-				}else
-				{
-					sendDataToTheServer(acceloData);
-				}
+				sendDataToTheServer();
 			}
 		} catch ( IOException e1 )
 		{
@@ -51,12 +45,10 @@ public class ClientCommsThread extends Thread
 	}
 
 	/**
-	 * @param acceloData 
 	 * @throws IOException
 	 */
-	private void sendDataToTheServer(String acceloData ) throws IOException
+	private void sendDataToTheServer( ) throws IOException
 	{
-		
 		OutputStream dataOut = socket.getOutputStream();
 		PrintWriter writeOut = new PrintWriter(dataOut);
 		writeOut.print(acceloData);

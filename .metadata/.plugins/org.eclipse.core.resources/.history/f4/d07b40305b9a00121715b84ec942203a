@@ -115,7 +115,10 @@ public class AcceleratorUpdater extends TimerTask implements
 					{
 						try
 						{
-							app.passStringDataToServer(acceloData);
+							synchronized (acceloData)
+							{
+								app.passStringDataToServer(acceloData);
+							}
 						} catch ( IOException e )
 						{
 							e.printStackTrace();

@@ -106,7 +106,8 @@ public class AcceleratorUpdater extends TimerTask implements
 			public void run( )
 			{
 				String acceloData = getAcceloData();
-				
+				synchronized (acceloData)
+				{
 					if (acceloData == null)
 					{
 						System.out.println("AcceleratorUpdater data is null");
@@ -122,6 +123,7 @@ public class AcceleratorUpdater extends TimerTask implements
 						}
 					}
 				}
+			}
 		});
 	}
 

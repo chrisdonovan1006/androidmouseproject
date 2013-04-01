@@ -31,32 +31,42 @@ public class ClientCommsThread extends Thread
 		try
 		{
 			serverData = readInDataFromTheServer();
-			while (serverData == null && isRunning)
-			{
-				if (acceloData.length() < 1 || acceloData == "" || acceloData == null)
-				{
-					isRunning = false;
-				}else
-				{
-					sendDataToTheServer(acceloData);
-				}
-			}
 		} catch ( IOException e1 )
 		{
+			// TODO Auto-generated catch block
 			e1.printStackTrace();
-		}finally
-		{
-			closeTheSocket();
 		}
+		isRunning = true;
+		while ( isRunning )
+		{
+			if ( serverData != null )
+			{
+				System.out.println("server is waiting");
+				isRunning = false;
+			} else
+			{
+				try
+				{
+					sendDataToTheServer();
+				} catch ( IOException e )
+				{
+					//
+					e.printStackTrace();
+				}finally
+				{
+					closeTheSocket();
+				}
+
+			}
+		}
+
 	}
 
 	/**
-	 * @param acceloData 
 	 * @throws IOException
 	 */
-	private void sendDataToTheServer(String acceloData ) throws IOException
+	private void sendDataToTheServer( ) throws IOException
 	{
-		
 		OutputStream dataOut = socket.getOutputStream();
 		PrintWriter writeOut = new PrintWriter(dataOut);
 		writeOut.print(acceloData);
@@ -72,7 +82,7 @@ public class ClientCommsThread extends Thread
 		String serverData = null;
 		while ( (serverData = buffIn.readLine()) != null  )
 		{
-			System.out.println("server is: " + serverData);
+			
 		}
 		return serverData;
 	}

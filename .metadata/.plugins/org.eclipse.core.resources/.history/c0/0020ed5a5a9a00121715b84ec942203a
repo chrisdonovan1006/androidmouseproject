@@ -89,14 +89,6 @@ public class AppServer extends Thread
 		try
 		{
 			streamConnection = connectionNotifier.acceptAndOpen();
-			
-			ServerCommsThread client = new ServerCommsThread(streamConnection);
-			if (clients.isEmpty())
-			{
-				// create client handler
-				clients.add(client);
-			}
-			client.start();
 		} catch ( IOException e )
 		{
 			// print the error stack
@@ -104,5 +96,13 @@ public class AppServer extends Thread
 			e.getCause();
 			System.exit(-1);
 		}
+
+		ServerCommsThread client = new ServerCommsThread(streamConnection);
+		if (clients.isEmpty())
+		{
+			// create client handler
+			clients.add(client);
+		}
+		client.start();
 	}
 }// end of Class

@@ -47,8 +47,10 @@ public class App extends Activity
 			}
 		});
 		
-		startTheUpdateTimerTask();
-
+		if(appClient.isAvailable())
+		{
+			startTheUpdateTimerTask();
+		}
 	}
 
 	@Override

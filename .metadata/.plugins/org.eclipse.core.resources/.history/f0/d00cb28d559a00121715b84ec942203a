@@ -105,23 +105,20 @@ public class AcceleratorUpdater extends TimerTask implements
 			@Override
 			public void run( )
 			{
-				String acceloData = getAcceloData();
-				
-					if (acceloData == null)
-					{
-						System.out.println("AcceleratorUpdater data is null");
-						return;
-					}else
-					{
-						try
-						{
-							app.passStringDataToServer(acceloData);
-						} catch ( IOException e )
-						{
-							e.printStackTrace();
-						}
-					}
+
+				try
+				{
+					app.passStringDataToServer(getAcceloData());
+					// updateTimer.cancel();
+				} catch ( IOException e )
+				{
+					// print the error stack
+					e.printStackTrace();
+					e.getCause();
+					System.exit(-1);
 				}
+
+			}
 		});
 	}
 

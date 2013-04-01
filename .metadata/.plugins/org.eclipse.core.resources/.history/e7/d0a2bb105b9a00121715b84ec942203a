@@ -48,18 +48,32 @@ public class ServerCommsThread extends Thread
 		try
 		{
 			dataIn = conn.openInputStream();
-			while (dataIn == null)
-			{
-				acceloData = readInDataFromTheClient();
-				sendToRobot(acceloData);
-			}
-			
+			acceloData = readInDataFromTheClient();
+			sendToRobot(acceloData);
 		} catch ( IOException e1 )
 		{
-			// 
+			// TODO Auto-generated catch block
 			e1.printStackTrace();
-			closeTheStream();
 		}
+
+		isRunning = true;
+		while ( isRunning )
+		{
+			if ( acceloData == null )
+			{
+				System.out.println("no data");
+				try
+				{
+					sendDataToTheServer();
+				} catch ( IOException e )
+				{
+					e.printStackTrace();
+					closeTheStream();
+				}
+				isRunning = false;
+			}
+		}
+
 	}
 
 	/**
@@ -85,13 +99,11 @@ public class ServerCommsThread extends Thread
 			if ( buffIn == null )
 			{
 				System.out.println("buff in is empty");
-				sendDataToTheServer();
 				isRunning = false;
-				
 			} else
 			{
-				acceloData = buffIn.readLine();
 				System.out.println("read line");
+				acceloData = buffIn.readLine();
 			}
 
 		}

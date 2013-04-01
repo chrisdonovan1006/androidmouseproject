@@ -2,7 +2,6 @@ INDEX VERSION 1.126+C:\Users\Christopher\Documents\GitHub\androidmouseproject\.m
 739078005.index
 3539130431.index
 3256372620.index
-77984884.index
 2708239607.index
 4018706093.index
 1075156909.index
@@ -19,4 +18,3 @@ INDEX VERSION 1.126+C:\Users\Christopher\Documents\GitHub\androidmouseproject\.m
 1820024274.index
 384216248.index
 728132027.index
-1510908829.index

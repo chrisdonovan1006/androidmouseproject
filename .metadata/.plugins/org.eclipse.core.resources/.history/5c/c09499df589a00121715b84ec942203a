@@ -44,11 +44,13 @@ public class App extends Activity
 				Log.i(TAG, "client connecting to server");
 				appClient = new AppClient();
 				appClient.connectToServer();
+				
+				while(appClient.isAvailable())
+				{
+					startTheUpdateTimerTask();
+				}
 			}
 		});
-		
-		startTheUpdateTimerTask();
-
 	}
 
 	@Override
