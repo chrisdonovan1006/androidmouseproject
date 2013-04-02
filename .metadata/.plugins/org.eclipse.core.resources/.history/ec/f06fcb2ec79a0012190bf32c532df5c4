@@ -1,0 +1,15 @@
+
+package itt.t00154755.mouseapp;
+
+import java.io.IOException;
+import java.util.TimerTask;
+
+import android.content.Context;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+import android.os.Handler;
+import android.util.Log;
+
+

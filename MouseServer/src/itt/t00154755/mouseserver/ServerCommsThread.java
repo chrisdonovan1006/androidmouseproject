@@ -1,119 +1,70 @@
+
 package itt.t00154755.mouseserver;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.PrintWriter;
-
-import javax.bluetooth.RemoteDevice;
 import javax.microedition.io.StreamConnection;
 
-public class ServerCommsThread extends Thread
+public class ServerCommsThread implements Runnable
 {
-	private final String		TAG			= "Server Communication Thread";
-	private StreamConnection	conn;											// client
-																				// connection
-	private InputStream			dataIn;
-	private volatile boolean	isRunning	= false;
 
-	public ServerCommsThread ( StreamConnection streamConnection )
+	private final String TAG = "Server Communication Thread";
+
+	private StreamConnection streamConn; // client
+
+	public ServerCommsThread ( StreamConnection streamConn )
 	{
-		this.conn = streamConnection;
 
-		RemoteDevice reDevice;
+		System.out.println(TAG + " -constructor");
+		this.streamConn = streamConn;
+	}
+
+	@Override 
+	public void run()
+	{
+
+		InputStream streamIn = null;
 		try
 		{
-			reDevice = RemoteDevice.getRemoteDevice(conn);
-
-			System.out.println(TAG + "...Server is Connected to: \n"
-					+ reDevice.getBluetoothAddress() + "\n"
-					+ reDevice.getFriendlyName(false));
-
-		} catch ( IOException e )
+			streamIn = streamConn.openInputStream();
+		}
+		catch ( IOException e )
 		{
 			// print the error stack
 			e.printStackTrace();
 			e.getCause();
 			System.exit(-1);
 		}
-		;
-	}
+		BufferedReader buffIn = new BufferedReader(new InputStreamReader(streamIn));
 
-	@Override
-	public void run( )
-	{
-		String acceloData = null;
-		try
+		// keep reading
+		while ( true )
 		{
-			dataIn = conn.openInputStream();
-			while (dataIn == null)
+			try
 			{
-				acceloData = readInDataFromTheClient();
-				sendToRobot(acceloData);
+				String dataIn = buffIn.readLine();
+
+				sendDataToCursorRobot(dataIn);
 			}
-			
-		} catch ( IOException e1 )
-		{
-			// 
-			e1.printStackTrace();
-			closeTheStream();
-		}
-	}
-
-	/**
-	 * @throws IOException
-	 */
-	private void sendDataToTheServer( ) throws IOException
-	{
-		final String WAITING = "waiting";
-		OutputStream dataOut = conn.openOutputStream();
-		PrintWriter writeOut = new PrintWriter(dataOut);
-		writeOut.print(WAITING);
-		writeOut.flush();
-	}
-
-	private String readInDataFromTheClient( ) throws IOException
-	{
-		BufferedReader buffIn = new BufferedReader(
-				new InputStreamReader(dataIn));
-		isRunning = true;
-		String acceloData = null;
-		while ( isRunning )
-		{
-			if ( buffIn == null )
+			catch ( IOException e )
 			{
-				System.out.println("buff in is empty");
-				sendDataToTheServer();
-				isRunning = false;
-				
-			} else
-			{
-				acceloData = buffIn.readLine();
-				System.out.println("read line");
+				// print the error stack
+				e.printStackTrace();
+				e.getCause();
+				System.exit(-1);
 			}
-
-		}
-		return acceloData;
-	}
-
-	private void sendToRobot( String acceloData )
-	{
-		System.out.println("send to robot method");
-		CursorRobot cr = new CursorRobot(acceloData);
-		System.out.println("start the robot");
-		cr.start();
-	}
-
-	private void closeTheStream( )
-	{
-		try
-		{
-			dataIn.close();
-		} catch ( IOException e )
-		{
-			e.printStackTrace();
 		}
 	}
+
+	private void sendDataToCursorRobot( String dataIn )
+	{
+
+		System.out.println(TAG + " -sending the data");
+		System.out.println(TAG + " " + dataIn);
+		CursorRobot cr = new CursorRobot();
+		cr.dataFromServer(dataIn);
+	}
+
 }// end of Class

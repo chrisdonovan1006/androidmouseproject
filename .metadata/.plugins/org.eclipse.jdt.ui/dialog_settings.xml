@@ -2,15 +2,15 @@
 <section name="Workbench">
 	<item value="0" key="org.eclipse.jdt.uiformatter_page.white_space_tab_page.node"/>
 	<item value="C:\Users\Christopher\Documents\GitHub\androidmouseproject\jars" key="org.eclipse.jdt.ui.lastextjar"/>
-	<item value="4" key="org.eclipse.jdt.uiformatter_page.white_space.java_view.option"/>
-	<item value="115" key="org.eclipse.jdt.uiformatter_page.white_space.java_view.inner"/>
-	<item value="0" key="org.eclipse.jdt.uiformatter_page.modify_dialog_tab_page.last_focus_index"/>
+	<item value="3" key="org.eclipse.jdt.uiformatter_page.white_space.java_view.option"/>
+	<item value="12" key="org.eclipse.jdt.uiformatter_page.white_space.java_view.inner"/>
+	<item value="10" key="org.eclipse.jdt.uiformatter_page.modify_dialog_tab_page.last_focus_index"/>
 	<item value="1040" key="org.eclipse.jdt.uiformatter_pagemodify_dialog.preferred_height"/>
 	<item value="0" key="org.eclipse.jdt.uiformatter_pagemodify_dialog.preferred_x"/>
 	<item value="0" key="org.eclipse.jdt.uiformatter_pagemodify_dialog.preferred_y"/>
 	<item value="1920" key="org.eclipse.jdt.uiformatter_pagemodify_dialog.preferred_width"/>
-	<item value="2" key="org.eclipse.jdt.uiformatter_pagemodify_dialog.last_focus"/>
-	<item value="27" key="org.eclipse.jdt.uiformatter_page.line_wrapping_tab_page.last_category_index"/>
+	<item value="4" key="org.eclipse.jdt.uiformatter_pagemodify_dialog.last_focus"/>
+	<item value="1" key="org.eclipse.jdt.uiformatter_page.line_wrapping_tab_page.last_category_index"/>
 	<section name="DialogBounds_OverrideMethodDialog">
 		<item value="908" key="DIALOG_WIDTH"/>
 		<item value="217" key="DIALOG_Y_ORIGIN"/>
@@ -31,8 +31,8 @@
 		<item value="2" key="pageIndex"/>
 	</section>
 	<section name="RefactoringWizard.preview">
-		<item value="400" key="height"/>
-		<item value="600" key="width"/>
+		<item value="390" key="height"/>
+		<item value="590" key="width"/>
 	</section>
 	<section name="quick_assist_proposal_size">
 	</section>
@@ -79,6 +79,8 @@
 		<item value="696" key="DIALOG_HEIGHT"/>
 		<item value="704" key="DIALOG_X_ORIGIN"/>
 		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
+	</section>
+	<section name="RenameInformationPopup">
 	</section>
 	<section name="NewClassWizardPage">
 		<item value="true" key="create_constructor"/>

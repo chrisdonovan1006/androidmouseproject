@@ -1,4 +1,5 @@
 // packages
+
 package itt.t00154755.mouseserver;
 
 // imports
@@ -12,70 +13,78 @@ import java.awt.Robot;
  * @author Christopher Donovan
  * 
  */
-public class CursorRobot extends Thread
+public class CursorRobot implements Runnable
 {
-	private static final String	TAG			= "Server Communication Thread";
-	private Robot				robot;
-	private String				acceloData;
-	private int					moveX;
-	private int					moveY;
-	private int					startX;
-	private int					startY;
-	private boolean				isMoving	= false;
 
-	public CursorRobot ( String acceloData )
+	private static final String TAG = "Cursor Robot Thread";
+
+	private int[] convertedString;
+
+	private String acceloData;
+
+	private Robot robot;
+
+	private Point startLocation;
+
+	public CursorRobot ( )
 	{
-		this.acceloData = acceloData;
-		startCursorRobot();
+
+		initRobot();
 	}
 
-	public void startCursorRobot( )
+	public void dataFromServer( String dataIn )
 	{
-		System.out.println("robot constructor");
-		int[] convertedString = covertStringToIntArray(acceloData);
-		this.moveX = convertedString[0];
-		this.moveY = convertedString[1];
+
+		this.acceloData = dataIn;
+		this.convertedString = covertStringToIntArray(acceloData);
+
 	}
-	
-	private void moveTheMouseToNewPosition( int moveX, int moveY )
+
+	private void initRobot()
 	{
-		System.out.println("mouse move method");
+
 		try
 		{
+			startLocation = MouseInfo.getPointerInfo().getLocation();
 			robot = new Robot();
-
-			Point startLocation = getCurrentMousePosition();
-
-			this.startX = startLocation.x;
-			this.startY = startLocation.y;
-
-			int moveToX = moveX + startX;
-			int moveToY = moveY + startY;
-			
-			isMoving = true;
-			while ( isMoving )
-			{
-				robot.mouseMove(moveToX, moveToY);
-			}
-
-			System.out.println(TAG + "\nx: " + moveToX + " y: " + moveToY);
-
-		} catch ( AWTException e1 )
+		}
+		catch ( AWTException eAWT )
 		{
-			e1.printStackTrace();
-			isMoving = false;
+			// print the error stack
+			System.out.print(TAG + "\n");
+			eAWT.printStackTrace();
+			eAWT.getCause();
+			System.exit(-1);
 		}
 	}
 
-	private Point getCurrentMousePosition( )
+	@Override 
+	public void run()
 	{
-		Point startLocation = MouseInfo.getPointerInfo().getLocation();
 
-		return startLocation;
+		System.out.println(TAG + "mouse move");
+		// the force of the movement
+		int moveX = convertedString[0];
+		int moveY = convertedString[1];
+
+		// the current location of the cursor
+		int startX = startLocation.x;
+		int startY = startLocation.y;
+
+		// amount to move = force + current
+		int moveToX = moveX + startX;
+		int moveToY = moveY + startY;
+
+		while ( true )
+		{
+			robot.mouseMove(moveToX, moveToY);
+		}
+
 	}
 
 	private synchronized int[] covertStringToIntArray( String acceloData )
 	{
+
 		String delims = "[,]";
 		String[] tokens = acceloData.split(delims);
 		int[] data = new int[tokens.length];
@@ -85,7 +94,8 @@ public class CursorRobot extends Thread
 			try
 			{
 				data[i] = Integer.parseInt(tokens[i]);
-			} catch ( NumberFormatException nfe )
+			}
+			catch ( NumberFormatException nfe )
 			{
 				// print the error stack
 				System.out.print(TAG + "\n");
@@ -94,13 +104,9 @@ public class CursorRobot extends Thread
 				System.exit(-1);
 			}
 		}
+
 		return data;
 	}
-	
-	
-	public void run()
-	{
-		moveTheMouseToNewPosition(moveX, moveY);
-	}
+
 }// end of class
 

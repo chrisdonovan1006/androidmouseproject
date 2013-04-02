@@ -1,0 +1,75 @@
+
+package itt.t00154755.mouseserver;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
+import javax.bluetooth.RemoteDevice;
+import javax.microedition.io.StreamConnection;
+
+public class ServerCommsThread implements Runnable
+{
+
+	private final String TAG = "Server Communication Thread";
+
+	private StreamConnection streamConn; // client
+
+
+	public ServerCommsThread ( StreamConnection streamConn ) 
+	{
+
+		this.streamConn = streamConn;
+	}
+
+	@Override public void run()
+	{
+
+    	InputStream streamIn = null;
+		try
+		{
+			streamIn = streamConn.openInputStream();
+		}
+		catch ( IOException e )
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	BufferedReader buffIn = new BufferedReader(new InputStreamReader(streamIn));
+		
+		//keep reading
+		while(true)
+		{
+			try
+			{
+				String dataIn = buffIn.readLine();
+				
+				sendDataToCursorRobot(dataIn);
+			}
+			catch ( IOException e )
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+
+	private void sendDataToCursorRobot( String dataIn )
+	{
+
+		CursorRobot cr = new CursorRobot();
+		cr.dataFromServer(dataIn);
+		
+	}
+
+	private void sendToRobot( String acceloData )
+	{
+
+		System.out.println("send to robot method");
+		CursorRobot cr = new CursorRobot(acceloData);
+		System.out.println("start the robot");
+		cr.start();
+	}
+
+}// end of Class

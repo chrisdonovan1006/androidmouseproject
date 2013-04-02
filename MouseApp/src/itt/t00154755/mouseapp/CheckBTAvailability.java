@@ -31,73 +31,70 @@ import android.widget.Toast;
  */
 public class CheckBTAvailability extends Activity implements OnClickListener
 {
-	protected static final int		DISCOVERY_REQUEST	= 1;
-	private BluetoothAdapter		btAdapt;
-	public TextView					tvStatus;
-	public TextView					tvCaliDetails;
 
-	public ProgressBar				pbCalibrate;
-	public Button					bConnect;
-	public Button					bDisconnect;
-	public Button					bCalibrate;
-	public Button					bSaveContinue;
+	protected static final int DISCOVERY_REQUEST = 1;
+	public static final String EXTRA_DEVICE_ADDRESS = null;
+	private BluetoothAdapter btAdapt;
+	public TextView tvStatus;
+	public TextView tvCaliDetails;
 
-	private String					toastText			= "";
-	private BluetoothDevice			remoteDevice;
-	public String					thresholdValue;
-	private CalibrateThresholdTask	ct;
+	public ProgressBar pbCalibrate;
+	public Button bConnect;
+	public Button bDisconnect;
+	public Button bCalibrate;
+	public Button bSaveContinue;
 
-	BroadcastReceiver				bluetoothState		= new BroadcastReceiver()
-														{
-															@Override
-															public void onReceive(
-																	Context context,
-																	Intent intent )
-															{
-																// String
-																// prevStateExtra
-																// =
-																// BluetoothAdapter.EXTRA_PREVIOUS_STATE;
-																String stateExtra = BluetoothAdapter.EXTRA_STATE;
-																int state = intent
-																		.getIntExtra(
-																				stateExtra,
-																				-1);
+	private String toastText = "";
+	private BluetoothDevice remoteDevice;
+	public String thresholdValue;
+	private CalibrateThresholdTask ct;
 
-																switch ( state )
-																{
-																	case ( BluetoothAdapter.STATE_TURNING_ON ):
-																	{
-																		toastText = "Bluetooth is turning on";
-																		makeShortToast(toastText);
-																		break;
-																	}
-																	case ( BluetoothAdapter.STATE_ON ):
-																	{
-																		toastText = "Bluetooth is on";
-																		makeShortToast(toastText);
-																		setupUI();
-																		break;
-																	}
-																	case ( BluetoothAdapter.STATE_TURNING_OFF ):
-																	{
-																		toastText = "Bluetooth is turning off";
-																		makeShortToast(toastText);
-																		break;
-																	}
-																	case ( BluetoothAdapter.STATE_OFF ):
-																	{
-																		toastText = "Bluetooth is off";
-																		makeShortToast(toastText);
-																		setupUI();
-																		break;
-																	}
-																}
-															}
-														};
+	BroadcastReceiver bluetoothState = new BroadcastReceiver()
+	{
 
-	@Override
-	protected void onCreate( Bundle savedInstanceState )
+		@Override public void onReceive( Context context, Intent intent )
+		{
+			// String
+			// prevStateExtra
+			// =
+			// BluetoothAdapter.EXTRA_PREVIOUS_STATE;
+			String stateExtra = BluetoothAdapter.EXTRA_STATE;
+			int state = intent.getIntExtra(stateExtra, -1);
+
+			switch ( state )
+			{
+				case ( BluetoothAdapter.STATE_TURNING_ON ):
+				{
+					toastText = "Bluetooth is turning on";
+					makeShortToast(toastText);
+					break;
+				}
+				case ( BluetoothAdapter.STATE_ON ):
+				{
+					toastText = "Bluetooth is on";
+					makeShortToast(toastText);
+					setupUI();
+					break;
+				}
+				case ( BluetoothAdapter.STATE_TURNING_OFF ):
+				{
+					toastText = "Bluetooth is turning off";
+					makeShortToast(toastText);
+					break;
+				}
+				case ( BluetoothAdapter.STATE_OFF ):
+				{
+					toastText = "Bluetooth is off";
+					makeShortToast(toastText);
+					setupUI();
+					break;
+				}
+			}
+		}
+	};
+
+
+	@Override protected void onCreate( Bundle savedInstanceState )
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.checkbt);
@@ -119,8 +116,8 @@ public class CheckBTAvailability extends Activity implements OnClickListener
 		setupUI();
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu( android.view.Menu menu )
+
+	@Override public boolean onCreateOptionsMenu( android.view.Menu menu )
 	{
 		//
 		super.onCreateOptionsMenu(menu);
@@ -129,15 +126,14 @@ public class CheckBTAvailability extends Activity implements OnClickListener
 		return true;
 	}
 
-	@Override
-	public boolean onOptionsItemSelected( MenuItem item )
+
+	@Override public boolean onOptionsItemSelected( MenuItem item )
 	{
 		//
 		switch ( item.getItemId() )
 		{
 			case R.id.aboutus:
-				Intent aboutBT = new Intent(
-						"itt.t00154755.mouseapp.ABOUTCHECKBT");
+				Intent aboutBT = new Intent("itt.t00154755.mouseapp.ABOUTCHECKBT");
 				startActivity(aboutBT);
 			break;
 			case R.id.prefs:
@@ -152,7 +148,8 @@ public class CheckBTAvailability extends Activity implements OnClickListener
 		return false;
 	}
 
-	private void setupUI( )
+
+	private void setupUI()
 	{
 		// set the on click listener on all of the button
 		// use the onClick() to fire the actions
@@ -171,8 +168,7 @@ public class CheckBTAvailability extends Activity implements OnClickListener
 		{
 			String address = btAdapt.getAddress();
 			String name = btAdapt.getName();
-			String statusText = "Device Name: " + name + "\nMAC Adress: "
-					+ address;
+			String statusText = "Device Name: " + name + "\nMAC Adress: " + address;
 
 			// turn on the calibrate buttons
 			// turn on the the disconnect button
@@ -181,7 +177,8 @@ public class CheckBTAvailability extends Activity implements OnClickListener
 			bDisconnect.setVisibility(View.VISIBLE);
 			tvStatus.setText(statusText);
 			tvCaliDetails.setText("Calibration Details");
-		} else
+		}
+		else
 		{
 			// turn the connect button on
 			bConnect.setVisibility(View.VISIBLE);
@@ -189,8 +186,8 @@ public class CheckBTAvailability extends Activity implements OnClickListener
 		}
 	}
 
-	@Override
-	public void onClick( View v )
+
+	@Override public void onClick( View v )
 	{
 		//
 		switch ( v.getId() )
@@ -208,8 +205,7 @@ public class CheckBTAvailability extends Activity implements OnClickListener
 				registerReceiver(bluetoothState, filter);
 				// once the receiver is registered the user is
 				// asked to grant permission
-				startActivityForResult(new Intent(beDiscoverable),
-						DISCOVERY_REQUEST);
+				startActivityForResult(new Intent(beDiscoverable), DISCOVERY_REQUEST);
 			break;
 			case R.id.bDisconnect:
 				// this method will turn off the disconnect button
@@ -240,9 +236,8 @@ public class CheckBTAvailability extends Activity implements OnClickListener
 		}
 	}
 
-	@Override
-	protected void onActivityResult( int requestCode, int resultCode,
-			Intent data )
+
+	@Override protected void onActivityResult( int requestCode, int resultCode, Intent data )
 	{
 		//
 		if ( requestCode == DISCOVERY_REQUEST )
@@ -253,14 +248,14 @@ public class CheckBTAvailability extends Activity implements OnClickListener
 		}
 	}
 
-	private void findDevices( )
+
+	private void findDevices()
 	{
 		//
 		String lastUsedRemoteDevice = getLastUsedRemoteDevice();
 		if ( lastUsedRemoteDevice != null )
 		{
-			toastText = "Checking for known paired devices, namely: "
-					+ lastUsedRemoteDevice;
+			toastText = "Checking for known paired devices, namely: " + lastUsedRemoteDevice;
 			makeShortToast(toastText);
 
 			Set<BluetoothDevice> pairedDevices = btAdapt.getBondedDevices();
@@ -268,8 +263,7 @@ public class CheckBTAvailability extends Activity implements OnClickListener
 			{
 				if ( pairedDevice.getAddress().equals(lastUsedRemoteDevice) )
 				{
-					toastText = "Found Device" + pairedDevice.getName() + "@"
-							+ lastUsedRemoteDevice;
+					toastText = "Found Device" + pairedDevice.getName() + "@" + lastUsedRemoteDevice;
 					makeShortToast(toastText);
 					remoteDevice = pairedDevice;
 				}
@@ -284,44 +278,40 @@ public class CheckBTAvailability extends Activity implements OnClickListener
 			{
 				toastText = "Discovery thread started... Scanning for devices...";
 				makeShortToast(toastText);
-				registerReceiver(discoveryResult, new IntentFilter(
-						BluetoothDevice.ACTION_FOUND));
+				registerReceiver(discoveryResult, new IntentFilter(BluetoothDevice.ACTION_FOUND));
 			}
 		}
 	}
 
-	BroadcastReceiver	discoveryResult	= new BroadcastReceiver()
-										{
-											public void onReceive(
-													Context context,
-													Intent intent )
-											{
-												String remoteDeviceName = intent
-														.getStringExtra(BluetoothDevice.EXTRA_NAME);
-												// BluetoothDevice remoteDevice;
-												remoteDevice = intent
-														.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-												toastText = "Discovered"
-														+ remoteDeviceName;
-												makeShortToast(toastText);
-											}
-										};
+	BroadcastReceiver discoveryResult = new BroadcastReceiver()
+	{
 
-	private String getLastUsedRemoteDevice( )
+		public void onReceive( Context context, Intent intent )
+		{
+			String remoteDeviceName = intent.getStringExtra(BluetoothDevice.EXTRA_NAME);
+			// BluetoothDevice remoteDevice;
+			remoteDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+			toastText = "Discovered" + remoteDeviceName;
+			makeShortToast(toastText);
+		}
+	};
+
+
+	private String getLastUsedRemoteDevice()
 	{
 		SharedPreferences prefs = getPreferences(MODE_PRIVATE);
 		String result = prefs.getString("LAST_REMOTE_DEVICE_ADDRESS", null);
 		return result;
 	}
 
+
 	private void makeShortToast( String toastText )
 	{
-		Toast.makeText(CheckBTAvailability.this, toastText, Toast.LENGTH_SHORT)
-				.show();
+		Toast.makeText(CheckBTAvailability.this, toastText, Toast.LENGTH_SHORT).show();
 	}
 
-	@Override
-	protected void onPause( )
+
+	@Override protected void onPause()
 	{
 		//
 		super.onPause();
@@ -329,8 +319,8 @@ public class CheckBTAvailability extends Activity implements OnClickListener
 
 	}
 
-	@Override
-	protected void onResume( )
+
+	@Override protected void onResume()
 	{
 		//
 		super.onResume();
