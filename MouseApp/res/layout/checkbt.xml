@@ -1,69 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
 
     <TextView
-        android:id="@+id/tvCurrentStatus"
+        android:id="@+id/bt_available"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:text="@string/currentstatus" />
+        android:background="#666"
+        android:paddingLeft="5dp"
+        android:text="@string/bt_available"
+        android:textColor="#fff"
+        android:visibility="gone" />
+
+    <ListView
+        android:id="@+id/lvAvailable"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:stackFromBottom="true" >
+    </ListView>
 
     <TextView
-        android:id="@+id/tvCalibrateDetails"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/bSaveContinue"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/pbCalibrate"
-        android:maxLines="500"
-        android:scrollbars="vertical"
-        android:text="@string/calibrateText" />
-
-    <Button
-        android:id="@+id/bSaveContinue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:text="@string/savecontinue" />
-
-    <Button
-        android:id="@+id/bDisconnect"
+        android:id="@+id/bt_connectedDevices"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/bCalibrate"
-        android:layout_alignParentLeft="true"
-        android:text="@string/disconnect" />
+        android:background="#666"
+        android:paddingLeft="5dp"
+        android:text="@string/bt_connectedDevices"
+        android:textColor="#fff"
+        android:visibility="gone" />
 
-    <Button
-        android:id="@+id/bConnect"
+    <ListView
+        android:id="@+id/lvConnected"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/bDisconnect"
-        android:layout_alignParentLeft="true"
-        android:text="@string/connect" />
+        android:layout_weight="2"
+        android:stackFromBottom="true" >
+    </ListView>
 
     <Button
-        android:id="@+id/bCalibrate"
-        android:layout_width="wrap_content"
+        android:id="@+id/bSearch"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:text="@string/calibrate" />
+        android:text="@string/bt_bSearch" />
 
-    <ProgressBar
-        android:id="@+id/pbCalibrate"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/bCalibrate" />
-
-</RelativeLayout>
+</LinearLayout>

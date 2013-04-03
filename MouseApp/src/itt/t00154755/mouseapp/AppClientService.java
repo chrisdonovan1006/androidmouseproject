@@ -19,17 +19,28 @@ import android.util.Log;
 
 /**
  * 
- * @author Christopher Donovan {@link http
- *         ://mobisocial.stanford.edu/news/2011/03/bluetooth-across-android
- *         -and-a-desktop/} {@link http
- *         ://developer.android.com/guide/topics/connectivity
- *         /bluetooth.html#EnablingDiscoverability}
+ * @author Christopher Donovan 
+ * 
+ * This is the bluetooth service class it first checks to ensure that bluetooth 
+ * 
+ * 
+ * 
+ * {@link http
+ *         ://mobisocial.stanford.edu/news/2011/03/bluetooth-across-android-and-a-desktop/}
+ * {@link http
+ *         ://developer.android.com/guide/topics/connectivity/bluetooth.html#EnablingDiscoverability}
  */
 public class AppClientService
 {
 
 	private static final String TAG = "App Client";
-	private final UUID uuid = UUID.fromString("04c603b0-0001-0008-0000-0805f9b34fb");
+	private static final boolean D = true;
+	
+	
+	private final UUID SPP_UUID = UUID.fromString("427e7ad0-9c78-11e2-9e96-0800200c9a66");
+	//00000003-0000-1000-8000-00805F9B34FB - RFCOMM
+	//00001101-0000-1000-8000-00805F9B34FB - SPP
+	
 	// bluetooth adapter Object
 	private final BluetoothAdapter btAdapter;
 	private final Handler appHandler;
@@ -43,8 +54,10 @@ public class AppClientService
 	public static final int LISTEN = 1;
 	public static final int CONNECTING = 2;
 	public static final int CONNECTED = 3;
-	public static final byte[] VOL_UP = null;
-	public static final byte[] VOL_DOWN = null;
+	
+	public static final int EXIT_CMD = -1;
+	public static final int KEY_ENTER = 0;
+	
 
 	// String value
 	public String acceloData;
@@ -58,46 +71,56 @@ public class AppClientService
 	 */
 	public AppClientService( Context context, Handler handler )
 	{
+		if(D) Log.i(TAG, "+++ APP CLIENT SERVICE +++");
 		btAdapter = BluetoothAdapter.getDefaultAdapter();
-		state = NONE;
+		setState(NONE);
 
 		appHandler = handler;
 	}
 
 
-	private synchronized void setState( int state )
+	private synchronized void setState( int stateIn )
 	{
-		this.state = state;
+		if(D) Log.i(TAG, "+++ SET STATE +++ --> \n" + state + " : " + stateIn);
+		state = stateIn;
 	}
 
 
 	public synchronized int getState()
 	{
+		if(D) Log.i(TAG, "+++ GET STATE +++");
 		return state;
 	}
 
 
 	public synchronized void start()
 	{
+		if(D) Log.i(TAG, "+++ START METHOD +++");
+		
+		// cancel any threads trying to connect
 		if ( connectThread != null )
 		{
 			connectThread.cancel();
 			connectThread = null;
 		}
-
+		// cancel any thread currently running
 		if ( connectedThread != null )
 		{
 			connectedThread.cancel();
 			connectThread = null;
 		}
-
 		setState(LISTEN);
 	}
 
 
 	public synchronized void connect( BluetoothDevice device )
 	{
-		if ( state == CONNECTING )
+		if(D) Log.i(TAG, "+++ CONNECT METHOD +++");
+		if(D) Log.i(TAG, "connecting to: " + device);
+		
+		
+		// cancel any threads trying to connect
+		if ( getState() == CONNECTING )
 		{
 			if ( connectThread != null )
 			{
@@ -105,21 +128,30 @@ public class AppClientService
 				connectThread = null;
 			}
 		}
-
+		// cancel any thread currently running
 		if ( connectedThread != null )
 		{
 			connectedThread.cancel();
 			connectThread = null;
 		}
-
-		connectThread = new ConnectThread(device);
-		connectThread.start();
+		
+		if (getState() == LISTEN)
+		{
+			// start the thread that will connect to PC
+			connectThread = new ConnectThread(device);
+			connectThread.start();
+			setState(CONNECTING);
+		}
+		
+		
 		setState(CONNECTING);
 	}
 
 
 	public synchronized void connected( BluetoothSocket socket, BluetoothDevice device )
 	{
+		if(D) Log.i(TAG, "+++ CONNECTED METHOD +++");
+		
 		if ( connectThread != null )
 		{
 			connectThread.cancel();
@@ -131,22 +163,28 @@ public class AppClientService
 			connectedThread.cancel();
 			connectThread = null;
 		}
-
-		connectedThread = new ConnectedThread(socket);
-		connectedThread.start();
-
-		Message message = appHandler.obtainMessage(App.MESSAGE_DEVICE_NAME);
-		Bundle bundle = new Bundle();
-		bundle.putString(App.DEVICE_NAME, device.getName());
-		message.setData(bundle);
-		appHandler.sendMessage(message);
-
+		if (getState() == CONNECTING)
+		{
+    		
+			connectedThread = new ConnectedThread(socket);
+    		connectedThread.start();
+    		
+    		// message back to UI
+    		Message message = appHandler.obtainMessage(App.MESSAGE_DEVICE_NAME);
+    		Bundle bundle = new Bundle();
+    		bundle.putString(App.DEVICE_NAME, device.getName());
+    		message.setData(bundle);
+    		appHandler.sendMessage(message);
+    
+    		setState(CONNECTED);	
+		}
 		setState(CONNECTED);
 	}
 
 
 	public synchronized void stop()
 	{
+		if(D) Log.i(TAG, "+++ STOP ALL THREADS +++");
 		if ( connectThread != null )
 		{
 			connectThread.cancel();
@@ -165,6 +203,7 @@ public class AppClientService
 
 	public void write( byte[] out )
 	{
+		if(D) Log.i(TAG, "+++ WRITE BYTES +++");
 		ConnectedThread ct;
 
 		synchronized ( this )
@@ -181,6 +220,23 @@ public class AppClientService
 
 	public void write( int out )
 	{
+		if(D) Log.i(TAG, "+++ WRITE INTS +++");
+		ConnectedThread ct;
+
+		synchronized ( this )
+		{
+			if ( state != CONNECTED )
+				return;
+
+			ct = connectedThread;
+		}
+
+		ct.write(out);
+	}
+	
+	public void writeString( String out )
+	{
+		if(D) Log.i(TAG, "+++ WRITE STRINGS +++");
 		ConnectedThread ct;
 
 		synchronized ( this )
@@ -197,18 +253,25 @@ public class AppClientService
 
 	private void connectionLost()
 	{
+		if(D) Log.i(TAG, "+++ CONNECTION LOST +++");
+		
 		setState(LISTEN);
-
+		
 		Message message = appHandler.obtainMessage(App.MESSAGE_TOAST);
 		Bundle bundle = new Bundle();
 		bundle.putString(App.TOAST, "unable to connect to the server");
 		message.setData(bundle);
 		appHandler.sendMessage(message);
+		
+		//restart the connecting process
+		AppClientService.this.start();
 	}
 
 
 	private void connectionFailed()
 	{
+		if(D) Log.i(TAG, "+++ CONNECTION FAILED +++");
+		
 		setState(LISTEN);
 
 		Message message = appHandler.obtainMessage(App.MESSAGE_TOAST);
@@ -216,32 +279,33 @@ public class AppClientService
 		bundle.putString(App.TOAST, "the connection was lost");
 		message.setData(bundle);
 		appHandler.sendMessage(message);
+		
+		//restart the connecting process
+		AppClientService.this.start();
 	}
 
 	private class ConnectThread extends Thread
 	{
-
-		private final BluetoothDevice device;
-
+		private BluetoothDevice device;
 		private final BluetoothSocket socket;
 
-
-		public ConnectThread( BluetoothDevice device )
+		public ConnectThread( BluetoothDevice deviceIn )
 		{
-
-			this.device = device;
+			if(D) Log.e(TAG, "+++ CONNECT THREAD +++");
+			
+			device = deviceIn;
 			BluetoothSocket temp = null;
 			try
 			{
 				// Log.d(TAG, "getting local device");
 				// remote MAC here:
-				// device = btAdapter.getRemoteDevice("00:15:83:3D:0A:57");
-				Log.d(TAG, "connecting to service");
-				temp = device.createRfcommSocketToServiceRecord(uuid);
+				//device = btAdapter.getRemoteDevice("00:15:83:3D:0A:57");
+				if(D) Log.e(TAG, "+++ CONNECTING TO SERVER +++");
+				temp = device.createRfcommSocketToServiceRecord(SPP_UUID);
 			}
 			catch ( Exception e )
 			{
-				Log.e(TAG, "Error connecting to device", e);
+				Log.i(TAG, "Error connecting to device", e);
 			}
 			socket = temp;
 		}
@@ -249,16 +313,18 @@ public class AppClientService
 
 		public void run()
 		{
-			Log.d(TAG, "about to connect");
-
+			if(D) Log.e(TAG, "+++ ABOUT TO CONNECT +++");
+			 // Always cancel discovery because it will slow down a connection
 			btAdapter.cancelDiscovery();
 			try
 			{
+				// This is a blocking call and will only return on a
+                // successful connection or an exception
 				socket.connect();
 			}
 			catch ( IOException e )
 			{
-				connectionFailed();
+				
 				try
 				{
 					socket.close();
@@ -267,16 +333,18 @@ public class AppClientService
 				{
 					Log.e(TAG, "Error closing the socket connect thread", e1);
 				}
-				AppClientService.this.start();
+				connectionFailed();
 				return;
 			}
-			Log.d(TAG, "Connected!");
-
+			
+			if(D) Log.e(TAG, "+++ CONNECTED +++");
+			
+			// reset the connect thread
 			synchronized ( AppClientService.this )
 			{
 				connectThread = null;
 			}
-
+			// start the connected thread
 			connected(socket, device);
 		}
 
@@ -304,9 +372,11 @@ public class AppClientService
 		private final OutputStream outputStream;
 
 
-		public ConnectedThread( BluetoothSocket socket )
+		public ConnectedThread( BluetoothSocket socketIn )
 		{
-			this.socket = socket;
+			if(D) Log.i(TAG, "+++ CONNECTED THREAD+++");
+			
+			socket = socketIn;
 			InputStream tempIn = null;
 			OutputStream tempOut = null;
 
@@ -319,14 +389,14 @@ public class AppClientService
 			{
 				Log.e(TAG, "temp socket not created", e);
 			}
-
+			
 			inputStream = tempIn;
 			outputStream = tempOut;
 		}
 
-
 		public void run()
 		{
+			if(D) Log.i(TAG, "+++ READ DATA IN +++");
 			byte[] buffer = new byte[1024];
 
 			while ( true )
@@ -341,6 +411,9 @@ public class AppClientService
 				{
 					Log.e(TAG, "connection lost trying to read message", e);
 					connectionLost();
+					// Start the service over to restart listening mode
+                    AppClientService.this.start();
+                    break;
 				}
 			}
 		}
@@ -348,6 +421,7 @@ public class AppClientService
 
 		public void write( int out )
 		{
+			if(D) Log.i(TAG, "+++ WRITE INT OUT +++");
 			try
 			{
 				outputStream.write(out);
@@ -361,16 +435,37 @@ public class AppClientService
 
 		public void write( byte[] out )
 		{
+			if(D) Log.i(TAG, "+++ WRITE BYTE OUT +++");
 			try
 			{
 				outputStream.write(out);
+				
+				 // Share the sent message back to the UI Activity
+                appHandler.obtainMessage(App.WRITE, -1, -1, out)
+                        .sendToTarget();
 			}
 			catch ( IOException e )
 			{
 				Log.e(TAG, "error during write(byte)", e);
 			}
 		}
-
+		
+		public void write( String out )
+		{
+			if(D) Log.i(TAG, "+++ WRITE STRING OUT +++");
+			try
+			{
+				outputStream.write(out.getBytes());
+			}
+			catch ( IOException e )
+			{
+				Log.e(TAG, "Error writing the string data to the server", e);
+			}
+			
+			/*PrintStream printStream = new PrintStream(outputStream);
+			printStream.print(out);
+			printStream.close();*/
+		}
 
 		public void cancel()
 		{
@@ -384,5 +479,7 @@ public class AppClientService
 			}
 		}
 	}
+
+	
 
 }// end of the class

@@ -8,17 +8,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".App" >
 
-    <EditText
-        android:id="@+id/edText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/bRight"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="72dp"
-        android:ems="10"
-        android:inputType="textMultiLine"
-        android:visibility="gone" />
-
     <Button
         android:id="@+id/bLeft"
         style="@style/AppBaseTheme"
@@ -27,7 +16,6 @@
         android:layout_alignBaseline="@+id/bRight"
         android:layout_alignBottom="@+id/bRight"
         android:layout_alignParentRight="true"
-        android:onClick="@string/left"
         android:text="@string/left" />
 
     <Button
@@ -36,8 +24,29 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="68dp"
-        android:onClick="@string/right"
+        android:layout_marginLeft="17dp"
+        android:layout_marginTop="20dp"
         android:text="@string/right" />
+
+    <EditText
+        android:id="@+id/edText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:ems="10"
+        android:inputType="textMultiLine"
+        android:visibility="visible" >
+
+        <requestFocus />
+    </EditText>
+
+    <Button
+        android:id="@+id/sendTextToServer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edText"
+        android:layout_centerHorizontal="true"
+        android:text="@string/sendtexttoserver" />
 
 </RelativeLayout>

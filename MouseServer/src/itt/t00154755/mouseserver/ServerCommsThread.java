@@ -1,62 +1,68 @@
-
 package itt.t00154755.mouseserver;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+
 import javax.microedition.io.StreamConnection;
 
 public class ServerCommsThread implements Runnable
 {
 
 	private final String TAG = "Server Communication Thread";
+	private final StreamConnection connection; // client
 
-	private StreamConnection streamConn; // client
 
-	public ServerCommsThread ( StreamConnection streamConn )
+	public ServerCommsThread( StreamConnection streamConn )
 	{
-
 		System.out.println(TAG + " -constructor");
-		this.streamConn = streamConn;
+		connection = streamConn;
 	}
 
-	@Override 
+
+	@Override
 	public void run()
 	{
 
-		InputStream streamIn = null;
+		BufferedReader bReader = null;
 		try
 		{
-			streamIn = streamConn.openInputStream();
+			InputStream inStream = connection.openInputStream();
+			bReader = new BufferedReader(new InputStreamReader(inStream));
+
 		}
 		catch ( IOException e )
 		{
 			// print the error stack
 			e.printStackTrace();
 			e.getCause();
+			System.out.println(TAG + "shutting down the server 1");
 			System.exit(-1);
 		}
-		BufferedReader buffIn = new BufferedReader(new InputStreamReader(streamIn));
 
 		// keep reading
 		while ( true )
 		{
 			try
 			{
-				String dataIn = buffIn.readLine();
 
-				sendDataToCursorRobot(dataIn);
+				String lineRead = bReader.readLine();
+				System.out.println(lineRead);
+
+				sendDataToCursorRobot(lineRead);
 			}
 			catch ( IOException e )
 			{
 				// print the error stack
 				e.printStackTrace();
 				e.getCause();
+				System.out.println(TAG + "shutting down the server 2");
 				System.exit(-1);
 			}
 		}
 	}
+
 
 	private void sendDataToCursorRobot( String dataIn )
 	{

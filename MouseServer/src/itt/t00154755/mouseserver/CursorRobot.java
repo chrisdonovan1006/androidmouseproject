@@ -26,11 +26,13 @@ public class CursorRobot implements Runnable
 
 	private Point startLocation;
 
-	public CursorRobot ( )
+
+	public CursorRobot()
 	{
 
 		initRobot();
 	}
+
 
 	public void dataFromServer( String dataIn )
 	{
@@ -39,6 +41,7 @@ public class CursorRobot implements Runnable
 		this.convertedString = covertStringToIntArray(acceloData);
 
 	}
+
 
 	private void initRobot()
 	{
@@ -58,7 +61,8 @@ public class CursorRobot implements Runnable
 		}
 	}
 
-	@Override 
+
+	@Override
 	public void run()
 	{
 
@@ -81,6 +85,7 @@ public class CursorRobot implements Runnable
 		}
 
 	}
+
 
 	private synchronized int[] covertStringToIntArray( String acceloData )
 	{

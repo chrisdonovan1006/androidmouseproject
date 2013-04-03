@@ -1,2 +1,14 @@
 1364819104889	Delete element
 1364866125339	Rename type 'AppClient'
+1364925984184	Rename field 'mBtAdapter'
+1364926006764	Rename field 'mPairedDevicesArrayAdapter'
+1364926035249	Rename field 'mNewDevicesArrayAdapter'
+1364930123733	Delete element
+1364930130942	Delete element
+1364930167819	Delete element
+1364930193736	Delete element
+1364932321025	Delete element
+1364932334675	Delete element
+1364934491504	Rename field 'aboutus'
+1364949021512	Rename field 'serach'
+1364998548307	Rename type 'CheckBTAvailability'

@@ -18,8 +18,8 @@ public class RunApp
 	 */
 	public static void main(String[] args) throws IOException 
 	{
-		AppServer as = new AppServer();
-		as.start();
+		Thread runningServer = new Thread(new AppServer());
+		runningServer.start();
 	}// end of main method
 
 }// end of main method

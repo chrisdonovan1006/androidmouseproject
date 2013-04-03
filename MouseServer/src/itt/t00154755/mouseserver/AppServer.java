@@ -4,11 +4,13 @@ package itt.t00154755.mouseserver;
 
 // imports
 import java.io.IOException;
+
 import javax.bluetooth.BluetoothStateException;
 import javax.bluetooth.DiscoveryAgent;
 import javax.bluetooth.LocalDevice;
 import javax.bluetooth.RemoteDevice;
 import javax.bluetooth.UUID;
+
 import javax.microedition.io.Connector;
 import javax.microedition.io.StreamConnection;
 import javax.microedition.io.StreamConnectionNotifier;
@@ -26,96 +28,123 @@ import javax.microedition.io.StreamConnectionNotifier;
  *         ://docs.oracle.com/javase/tutorial/essential/exceptions/index.html}
  * 
  */
-public class AppServer extends Thread
+public class AppServer implements Runnable
 {
 
 	// string name of class
-	private final String TAG = "App Server";
+	private final static String TAG = "App Server";
+	private final UUID PRIVATE_UUID = new UUID("427e7ad09c7811e29e960800200c9a66", false);
+	//private final UUID SPP_UUID = new UUID("1101", false);
+	// 00000003-0000-1000-8000-00805F9B34FB - RFCOMM
+	// 00001101-0000-1000-8000-00805F9B34FB - SPP
+	private final String connString = "btspp://localhost:" + PRIVATE_UUID.toString() + ";name=Java_Server";
 
-	public AppServer ( )
+
+	public AppServer()
 	{
-
 		System.out.println("app server constructor");
 	}
 
-	@Override public void run()
-	{
 
-		createConnection();
+	@Override
+	public void run()
+	{
+		createRFCOMMConnectionUsingPrivateUUID();
 	}
 
-	private void createConnection()
+
+	private void createRFCOMMConnectionUsingPrivateUUID()
 	{
-
 		LocalDevice pcDevice = null;
-
 		StreamConnectionNotifier connNotifier = null;
-		StreamConnection streamConn;
-		try
-		{
-			pcDevice = LocalDevice.getLocalDevice();
-			pcDevice.setDiscoverable(DiscoveryAgent.GIAC);
-
-			UUID uuid = new UUID("04c603b00001000800000805f9b34fb", false);
-			String connString = "btspp://localhost:" + uuid + ";name=Java_Server";
-
-			System.out.println(TAG + "...Server Running on : \n ");
-			System.out.println("Local Device Name: " + pcDevice.getFriendlyName());
-			System.out.println("Local Device MAC: " + pcDevice.getBluetoothAddress());
-
-			connNotifier = (StreamConnectionNotifier ) Connector.open(connString);
-
-		}
-		catch ( BluetoothStateException e )
-		{
-			// print the error stack
-			e.printStackTrace();
-			e.getCause();
-			System.exit(-1);
-		}
-		catch ( IOException e )
-		{
-			// print the error stack
-			e.printStackTrace();
-			e.getCause();
-			System.exit(-1);
-		}
-
-		while ( true )
-		{
+		StreamConnection connection = null;
+		
 			try
 			{
-				System.out.println("...waiting for the client...");
-				streamConn = connNotifier.acceptAndOpen();
-				
-				RemoteDevice reDevice;
-				try
-				{
-					reDevice = RemoteDevice.getRemoteDevice(streamConn);
+				pcDevice = LocalDevice.getLocalDevice();
+				pcDevice.setDiscoverable(DiscoveryAgent.GIAC);
 
-					System.out.println(TAG + "...Server is Connected to: \n" +
-					reDevice.getBluetoothAddress() +
-					"\n" + reDevice.getFriendlyName(false));
-				}
-				catch ( IOException e )
-				{
-					// print the error stack
-					e.printStackTrace();
-					e.getCause();
-					System.exit(-1);
-				}
-				
-				Thread clientThread = new Thread(new ServerCommsThread(streamConn));
-				clientThread.start();
+				connNotifier = (StreamConnectionNotifier ) Connector.open(connString);
+
+				System.out.println(TAG + "...Server Running on : \n ");
+				System.out.println("Local Device Name: " + pcDevice.getFriendlyName());
+				System.out.println("Local Device MAC: " + pcDevice.getBluetoothAddress());				
+			}
+			catch ( BluetoothStateException e )
+			{
+				// print the error stack
+				e.printStackTrace();
+				e.getCause();
+				System.out.println(TAG + "shutting down the server 1");
+				System.exit(-1);
 			}
 			catch ( IOException e )
 			{
 				// print the error stack
 				e.printStackTrace();
 				e.getCause();
+				System.out.println(TAG + "shutting down the server 2");
 				System.exit(-1);
 			}
-		}
-	}
+			
+			while ( true )
+			{
+				try
+				{
+					System.out.println("...waiting for the client...");
+					connection = connNotifier.acceptAndOpen();
+				}
+				catch ( IOException e )
+				{
+					// print the error stack
+					e.printStackTrace();
+					e.getCause();
+					System.out.println(TAG + "shutting down the server 3");
+					System.exit(-1);
+				}
+				// if a client is accepted
+				if (connection != null)
+				{
+					
+					// start a new Thread that will handle incoming traffic
+    				Thread clientThread = new Thread(new ServerCommsThread(connection));
+    				clientThread.start();
+    				
+					// display the details
+					RemoteDevice reDevice = null;
+					try
+					{
+						reDevice = RemoteDevice.getRemoteDevice(connection);
+						
+						System.out.println(TAG + "...Server is Connected to: \n" +
+								reDevice.getBluetoothAddress() + "\n" + reDevice.getFriendlyName(false));
+					}
+					catch ( IOException e )
+					{
+						// print the error stack
+						e.printStackTrace();
+						e.getCause();
+						System.out.println(TAG + "shutting down the server 4");
+						System.exit(-1);
+					}
+					
+    				// close the connection
+    				try
+					{
+						connection.close();
+					}
+					catch ( IOException e )
+					{
+						// print the error stack
+						e.printStackTrace();
+						e.getCause();
+						System.out.println(TAG + "shutting down the server 5");
+						System.exit(-1);
+					}
+				}
 
+				
+			}
+		
+	}
 }// end of Class
