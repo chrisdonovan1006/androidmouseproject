@@ -1,8 +1,0 @@
-package itt.t00154755.mouseserver;
-
-
-/*
- * this thread will allow the data passed from the accelerometer to control
- * the on screen cursor via the Robot object
- */
-

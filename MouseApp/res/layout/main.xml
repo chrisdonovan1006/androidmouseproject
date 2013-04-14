@@ -18,24 +18,15 @@
         android:layout_alignParentRight="true"
         android:text="@string/left" />
 
-    <Button
-        android:id="@+id/bRight"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="17dp"
-        android:layout_marginTop="20dp"
-        android:text="@string/right" />
-
     <EditText
         android:id="@+id/edText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignRight="@+id/bLeft"
         android:layout_centerVertical="true"
         android:ems="10"
-        android:inputType="textMultiLine"
+        android:inputType="text"
         android:visibility="visible" >
 
         <requestFocus />
@@ -48,5 +39,23 @@
         android:layout_below="@+id/edText"
         android:layout_centerHorizontal="true"
         android:text="@string/sendtexttoserver" />
+
+    <Button
+        android:id="@+id/bRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/edText"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="37dp"
+        android:text="@string/right" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:text="@string/title" />
 
 </RelativeLayout>

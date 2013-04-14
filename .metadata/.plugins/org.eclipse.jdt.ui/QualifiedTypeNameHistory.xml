@@ -5,8 +5,6 @@
 <fullyQualifiedTypeName name="java.io.Serializable"/>
 <fullyQualifiedTypeName name="java.util.Timer"/>
 <fullyQualifiedTypeName name="java.io.ObjectOutputStream"/>
-<fullyQualifiedTypeName name="java.util.TimerTask"/>
-<fullyQualifiedTypeName name="android.hardware.SensorManager"/>
 <fullyQualifiedTypeName name="android.util.Log"/>
 <fullyQualifiedTypeName name="javax.microedition.io.StreamConnection"/>
 <fullyQualifiedTypeName name="java.io.DataInputStream"/>
@@ -27,14 +25,12 @@
 <fullyQualifiedTypeName name="itt.t00154755.mouseapp.R.xml"/>
 <fullyQualifiedTypeName name="android.preference.PreferenceFragment"/>
 <fullyQualifiedTypeName name="android.os.AsyncTask"/>
-<fullyQualifiedTypeName name="android.hardware.SensorEventListener"/>
 <fullyQualifiedTypeName name="android.text.method.ScrollingMovementMethod"/>
 <fullyQualifiedTypeName name="java.awt.Point"/>
 <fullyQualifiedTypeName name="java.awt.MouseInfo"/>
 <fullyQualifiedTypeName name="javax.bluetooth.LocalDevice"/>
 <fullyQualifiedTypeName name="javax.bluetooth.DiscoveryAgent"/>
 <fullyQualifiedTypeName name="android.os.Handler"/>
-<fullyQualifiedTypeName name="android.content.Context"/>
 <fullyQualifiedTypeName name="android.os.Bundle"/>
 <fullyQualifiedTypeName name="java.io.InputStream"/>
 <fullyQualifiedTypeName name="java.io.OutputStream"/>
@@ -44,7 +40,6 @@
 <fullyQualifiedTypeName name="android.widget.EditText"/>
 <fullyQualifiedTypeName name="android.bluetooth.BluetoothDevice"/>
 <fullyQualifiedTypeName name="android.view.KeyEvent"/>
-<fullyQualifiedTypeName name="java.io.PrintStream"/>
 <fullyQualifiedTypeName name="android.view.Window"/>
 <fullyQualifiedTypeName name="itt.t00154755.mouseapp.R.layout"/>
 <fullyQualifiedTypeName name="itt.t00154755.mouseapp.R.id"/>
@@ -54,4 +49,11 @@
 <fullyQualifiedTypeName name="java.util.UUID"/>
 <fullyQualifiedTypeName name="javax.bluetooth.UUID"/>
 <fullyQualifiedTypeName name="android.content.Intent"/>
+<fullyQualifiedTypeName name="java.io.PrintStream"/>
+<fullyQualifiedTypeName name="java.util.TimerTask"/>
+<fullyQualifiedTypeName name="android.hardware.SensorEventListener"/>
+<fullyQualifiedTypeName name="android.hardware.SensorManager"/>
+<fullyQualifiedTypeName name="android.hardware.Sensor"/>
+<fullyQualifiedTypeName name="android.content.Context"/>
+<fullyQualifiedTypeName name="android.hardware.SensorEvent"/>
 </qualifiedTypeNameHistroy>

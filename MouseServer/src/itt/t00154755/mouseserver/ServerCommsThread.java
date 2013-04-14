@@ -46,7 +46,6 @@ public class ServerCommsThread implements Runnable
 		{
 			try
 			{
-
 				String lineRead = bReader.readLine();
 				System.out.println(lineRead);
 

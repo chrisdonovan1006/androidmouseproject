@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<item value="0" key="org.eclipse.jdt.uiformatter_page.white_space_tab_page.node"/>
+	<item value="filter_imports;" key="filters_last_used"/>
 	<item value="C:\Users\Christopher\Documents\GitHub\androidmouseproject\jars" key="org.eclipse.jdt.ui.lastextjar"/>
 	<item value="12" key="org.eclipse.jdt.uiformatter_page.white_space.java_view.inner"/>
 	<item value="3" key="org.eclipse.jdt.uiformatter_page.white_space.java_view.option"/>

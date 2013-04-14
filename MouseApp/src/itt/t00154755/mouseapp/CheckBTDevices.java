@@ -41,6 +41,7 @@ public class CheckBTDevices extends Activity
 	private BluetoothAdapter btAdapter;
 	private ArrayAdapter<String> connectedDevicesArrayAdapter;
 	private ArrayAdapter<String> availableDevicesArrayAdapter;
+	public Button searchButton;
 
 
 	@Override
@@ -56,7 +57,7 @@ public class CheckBTDevices extends Activity
 		setResult(Activity.RESULT_CANCELED);
 
 		// Initialize the button to perform device discovery
-		Button searchButton = (Button ) findViewById(R.id.bSearch);
+		final Button searchButton = (Button ) findViewById(R.id.bSearch);
 		searchButton.setOnClickListener(new OnClickListener()
 		{
 
@@ -84,11 +85,11 @@ public class CheckBTDevices extends Activity
 
 		// Register for broadcasts when a device is discovered
 		IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
-		this.registerReceiver(mReceiver, filter);
+		this.registerReceiver(btReceiver, filter);
 
 		// Register for broadcasts when discovery has finished
 		filter = new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
-		this.registerReceiver(mReceiver, filter);
+		this.registerReceiver(btReceiver, filter);
 
 		// Get the local Bluetooth adapter
 		btAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -125,7 +126,7 @@ public class CheckBTDevices extends Activity
 		}
 
 		// Unregister broadcast listeners
-		this.unregisterReceiver(mReceiver);
+		this.unregisterReceiver(btReceiver);
 	}
 
 
@@ -179,7 +180,7 @@ public class CheckBTDevices extends Activity
 
 	// The BroadcastReceiver that listens for discovered devices and
 	// changes the title when discovery is finished
-	private final BroadcastReceiver mReceiver = new BroadcastReceiver()
+	private final BroadcastReceiver btReceiver = new BroadcastReceiver()
 	{
 
 		@Override

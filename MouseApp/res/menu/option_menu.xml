@@ -7,6 +7,10 @@
         android:title="@string/connect"/>
     <item
         android:id="@+id/discoverable"
-        android:icon="@android:drawable/ic_menu_mylocation"
+        android:icon="@android:drawable/ic_menu_compass"
         android:title="@string/discoverable"/>
+    <item
+        android:id="@+id/prefs"
+        android:icon="@android:drawable/ic_menu_preferences"
+        android:title="@string/prefs"/>
 </menu>
