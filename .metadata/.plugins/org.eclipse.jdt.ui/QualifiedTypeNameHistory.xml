@@ -42,9 +42,7 @@
 <fullyQualifiedTypeName name="android.view.KeyEvent"/>
 <fullyQualifiedTypeName name="android.view.Window"/>
 <fullyQualifiedTypeName name="itt.t00154755.mouseapp.R.layout"/>
-<fullyQualifiedTypeName name="itt.t00154755.mouseapp.R.id"/>
 <fullyQualifiedTypeName name="android.widget.TextView"/>
-<fullyQualifiedTypeName name="itt.t00154755.mouseapp.R.string"/>
 <fullyQualifiedTypeName name="android.view.View.OnClickListener"/>
 <fullyQualifiedTypeName name="java.util.UUID"/>
 <fullyQualifiedTypeName name="javax.bluetooth.UUID"/>
@@ -56,4 +54,6 @@
 <fullyQualifiedTypeName name="android.hardware.Sensor"/>
 <fullyQualifiedTypeName name="android.content.Context"/>
 <fullyQualifiedTypeName name="android.hardware.SensorEvent"/>
+<fullyQualifiedTypeName name="itt.t00154755.mouseapp.R.id"/>
+<fullyQualifiedTypeName name="itt.t00154755.mouseapp.R.string"/>
 </qualifiedTypeNameHistroy>

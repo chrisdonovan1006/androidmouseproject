@@ -7,7 +7,7 @@ import java.io.IOException;
  * @author Christopher
  * 
  */
-public class RunApp 
+public class RunApp
 {
 
 	/**
@@ -16,10 +16,12 @@ public class RunApp
 	 * @param args
 	 * @throws IOException
 	 */
-	public static void main(String[] args) throws IOException 
+	public static void main( String[] args ) throws IOException
 	{
 		Thread runningServer = new Thread(new AppServer());
+
 		runningServer.start();
+
 	}// end of main method
 
 }// end of main method

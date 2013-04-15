@@ -40,8 +40,6 @@ public class App extends Activity
 	public static final int MESSAGE_STATE_CHANGED = 1;
 	public static final int MESSAGE_DEVICE_NAME = 2;
 	public static final int MESSAGE_TOAST = 3;
-	public static final int READ = 4;
-	public static final int WRITE = 5;
 
 	// used to signal which mouse option is selected
 	public static final int RIGHT_BUTTON_CLICK = 1;
@@ -50,8 +48,8 @@ public class App extends Activity
 	public static final int MOUSE_MOVE = 4;
 
 	// message types
-	public static final String DEVICE_NAME = "device_name";
-	public static final String TOAST = "toast";
+	public static final String DEVICE_NAME = "name";
+	public static final String TOAST = "make_toast";
 
 	// request types
 	private static final int REQUEST_CONNECT_DEVICE = 1;
@@ -62,12 +60,9 @@ public class App extends Activity
 	private BluetoothAdapter btAdapter = null;
 	private AppClientService appClientService = null;
 	private Timer updateTimer = null;
+
 	// UI objects
-	public Button rightbtn;
-	public Button leftbtn;
-	public Button sendbtn;
-	public EditText editText;
-	public TextView title;
+	private TextView title;
 
 
 	/*
@@ -84,6 +79,9 @@ public class App extends Activity
 
 		// ensure that bluetooth isEnabled before continuing
 		ensureBluetoothIsEnabled();
+		
+		final TextView title = (TextView ) findViewById(R.id.title);
+		title.setText(R.string.title);
 
 	}// end of onCreate() method
 
@@ -126,6 +124,8 @@ public class App extends Activity
 			// and the service is not already running
 			if ( appClientService == null )
 			{
+				if ( D )
+					Log.i(TAG, "+++ ON START - SET UP THE APP +++");
 				setUpApp();
 			}
 		}
@@ -139,8 +139,7 @@ public class App extends Activity
 			Log.i(TAG, "+++ SET UP SERVICE +++");
 
 		final EditText editText = (EditText ) findViewById(R.id.edText);
-		final TextView title = (TextView ) findViewById(R.id.title);
-		title.setText("Waiting to connect....");
+		
 
 		final Button rightbtn = (Button ) findViewById(R.id.bRight);
 		rightbtn.setOnClickListener(new View.OnClickListener()
@@ -201,7 +200,7 @@ public class App extends Activity
 
 		makeShortToast("update timer started");
 		// now start the update timer
-		startTheUpdateTimerTask();
+		// startTheUpdateTimerTask();
 	}
 
 
@@ -221,6 +220,7 @@ public class App extends Activity
 			// if it has but it current state is none, start it up
 			if ( appClientService.getState() == AppClientService.NONE )
 			{
+				Log.i(TAG, "+++ ON RESUME - START THE SERVICE+++");
 				appClientService.start();
 			}
 		}
@@ -234,6 +234,7 @@ public class App extends Activity
 		if ( D )
 			Log.i(TAG, "+++ ON PAUSE +++");
 		super.onPause();
+		finish();
 
 	}// end of onPause() method
 
@@ -248,7 +249,11 @@ public class App extends Activity
 			Log.i(TAG, "+++ ON STOP +++");
 		// cancel the update timer
 		// when the app is stopped
-		updateTimer.cancel();
+		if ( updateTimer != null )
+		{
+			updateTimer.cancel();
+		}
+
 	}// end of onStop() method
 
 
@@ -260,7 +265,6 @@ public class App extends Activity
 		super.onDestroy();
 		if ( D )
 			Log.i(TAG, "+++ ON DESTROY +++");
-		
 
 		if ( appClientService != null )
 		{
@@ -336,13 +340,14 @@ public class App extends Activity
 	 * @param resultCode
 	 * @param data
 	 */
-	public void onActivityRequest( int requestCode, int resultCode, Intent data )
+	public void onActivityResult( int requestCode, int resultCode, Intent data )
 	{
 		switch ( requestCode )
 		{
 			case REQUEST_CONNECT_DEVICE:
 				if ( resultCode == Activity.RESULT_OK )
 				{
+					Log.i(TAG, "+++ ON ACTIVITY REQUEST - CONNECT +++");
 					makeShortToast("connect to device");
 					connectToServer(data);
 					makeShortToast("update timer started");
@@ -352,6 +357,7 @@ public class App extends Activity
 			case REQUEST_ENABLE_BT:
 				if ( resultCode == Activity.RESULT_OK )
 				{
+					Log.i(TAG, "+++ ON ACTIVITY REQUEST - SETUP +++");
 					setUpApp();
 				}
 				else
@@ -371,7 +377,7 @@ public class App extends Activity
 		// String remoteDeviceMacAddress = "00:15:83:3D:0A:57";
 
 		BluetoothDevice device = btAdapter.getRemoteDevice(remoteDeviceMacAddress);
-		// device = btAdapter.getRemoteDevice("00:15:83:3D:0A:57");
+		// BluetoothDevice device = btAdapter.getRemoteDevice("00:15:83:3D:0A:57");
 
 		appClientService.connect(device);
 	}
@@ -430,18 +436,19 @@ public class App extends Activity
 					Log.e(TAG, "+++ CONNECT +++");
 				Intent btSearchIntent = new Intent(this, CheckBTDevices.class);
 				startActivityForResult(btSearchIntent, REQUEST_CONNECT_DEVICE);
-			break;
+				return true;
+
 			case R.id.discoverable:
 				if ( D )
 					Log.e(TAG, "+++ DISCOVERABLE +++");
 				ensureDiscoverable();
-			break;
+				return true;
 			case R.id.prefs:
 				if ( D )
 					Log.e(TAG, "+++ PREFS +++");
 				Intent btPrefsIntent = new Intent(this, Prefs.class);
 				startActivity(btPrefsIntent);
-			break;
+				return true;
 		}
 		return false;
 	}

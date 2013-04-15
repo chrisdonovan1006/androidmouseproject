@@ -1,3 +1,4 @@
 1365939970995	Extract method 'setUpButtons'
 1365940245599	Extract method 'setUpCutomTitle'
 1365940303724	Extract method 'ensureBluetoothIsEnabled'
+1365983747948	Extract method 'cancelAnyRunningThreads'

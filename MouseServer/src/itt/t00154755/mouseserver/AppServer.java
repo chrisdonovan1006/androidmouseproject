@@ -49,11 +49,11 @@ public class AppServer implements Runnable
 	@Override
 	public void run()
 	{
-		createRFCOMMConnectionUsingPrivateUUID();
+		createRFCOMMConnectionUsingUUID();
 	}
 
 
-	private void createRFCOMMConnectionUsingPrivateUUID()
+	private void createRFCOMMConnectionUsingUUID()
 	{
 		LocalDevice pcDevice = null;
 		StreamConnectionNotifier connNotifier = null;
@@ -93,6 +93,9 @@ public class AppServer implements Runnable
 			{
 				System.out.println("...waiting for the client...");
 				connection = connNotifier.acceptAndOpen();
+				
+				
+				
 			}
 			catch ( IOException e )
 			{
@@ -127,7 +130,7 @@ public class AppServer implements Runnable
 					System.exit(-1);
 				}
 
-				// close the connection
+				/*// close the connection
 				try
 				{
 					connection.close();
@@ -139,7 +142,7 @@ public class AppServer implements Runnable
 					e.getCause();
 					System.out.println(TAG + "shutting down the server 5");
 					System.exit(-1);
-				}
+				}*/
 			}
 
 		}

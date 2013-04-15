@@ -31,7 +31,7 @@ public class CheckBTDevices extends Activity
 {
 
 	// Debugging
-	private static final String TAG = "DeviceListActivity";
+	private static final String TAG = "CheckBTDevices";
 	private static final boolean D = true;
 
 	// Return Intent extra
@@ -41,7 +41,6 @@ public class CheckBTDevices extends Activity
 	private BluetoothAdapter btAdapter;
 	private ArrayAdapter<String> connectedDevicesArrayAdapter;
 	private ArrayAdapter<String> availableDevicesArrayAdapter;
-	public Button searchButton;
 
 
 	@Override
@@ -76,12 +75,50 @@ public class CheckBTDevices extends Activity
 		// Find and set up the ListView for paired devices
 		ListView connectedListView = (ListView ) findViewById(R.id.lvConnected);
 		connectedListView.setAdapter(connectedDevicesArrayAdapter);
-		connectedListView.setOnItemClickListener(deviceClickListener);
+		connectedListView.setOnItemClickListener(new OnItemClickListener()
+		{
+			@Override
+			public void onItemClick( AdapterView<?> arg0, View v, int arg2, long arg3 )
+			{
+				// Cancel discovery because it's costly and we're about to connect
+				btAdapter.cancelDiscovery();
+
+				// Get the device MAC address, which is the last 17 chars in the View
+				String info = ( (TextView ) v ).getText().toString();
+				String address = info.substring(info.length() - 13);
+
+				// Create the result Intent and include the MAC address
+				Intent intent = new Intent();
+				intent.putExtra(EXTRA_DEVICE_ADDRESS, address);
+
+				// Set result and finish this Activity
+				setResult(Activity.RESULT_OK, intent);
+			}
+		});
 
 		// Find and set up the ListView for newly discovered devices
 		ListView availableListView = (ListView ) findViewById(R.id.lvAvailable);
 		availableListView.setAdapter(availableDevicesArrayAdapter);
-		availableListView.setOnItemClickListener(deviceClickListener);
+		availableListView.setOnItemClickListener(new OnItemClickListener()
+		{
+			@Override
+			public void onItemClick( AdapterView<?> arg0, View v, int arg2, long arg3 )
+			{
+				// Cancel discovery because it's costly and we're about to connect
+				btAdapter.cancelDiscovery();
+
+				// Get the device MAC address, which is the last 17 chars in the View
+				String info = ( (TextView ) v ).getText().toString();
+				String address = info.substring(info.length() - 13);
+
+				// Create the result Intent and include the MAC address
+				Intent intent = new Intent();
+				intent.putExtra(EXTRA_DEVICE_ADDRESS, address);
+
+				// Set result and finish this Activity
+				setResult(Activity.RESULT_OK, intent);	
+			}
+		});
 
 		// Register for broadcasts when a device is discovered
 		IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
@@ -154,29 +191,6 @@ public class CheckBTDevices extends Activity
 		// Request discover from BluetoothAdapter
 		btAdapter.startDiscovery();
 	}
-
-	// The on-click listener for all devices in the ListViews
-	private OnItemClickListener deviceClickListener = new OnItemClickListener()
-	{
-
-		public void onItemClick( AdapterView<?> av, View v, int arg2, long arg3 )
-		{
-			// Cancel discovery because it's costly and we're about to connect
-			btAdapter.cancelDiscovery();
-
-			// Get the device MAC address, which is the last 17 chars in the View
-			String info = ( (TextView ) v ).getText().toString();
-			String address = info.substring(info.length() - 17);
-
-			// Create the result Intent and include the MAC address
-			Intent intent = new Intent();
-			intent.putExtra(EXTRA_DEVICE_ADDRESS, address);
-
-			// Set result and finish this Activity
-			setResult(Activity.RESULT_OK, intent);
-			finish();
-		}
-	};
 
 	// The BroadcastReceiver that listens for discovered devices and
 	// changes the title when discovery is finished

@@ -33,27 +33,18 @@ public class AppClientService
 
 	private static final String TAG = "App Client Service";
 	private static final boolean D = true;
-
 	private final UUID SPP_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
-	// 00000003-0000-1000-8000-00805F9B34FB - RFCOMM
-	// 00001101-0000-1000-8000-00805F9B34FB - SPP
-	// 427e7ad0-9c78-11e2-9e96-0800200c9a66 - generated UUID
-
 	// bluetooth adapter Object
 	private final BluetoothAdapter btAdapter;
 	private final Handler appHandler;
 	private ConnectThread connectThread;
 	private ConnectedThread connectedThread;
 	private int state;
-
 	// used to check if the device is available
 	public static final int NONE = 0;
 	public static final int LISTEN = 1;
 	public static final int CONNECTING = 2;
 	public static final int CONNECTED = 3;
-
-	// String value
-	public String acceloData;
 
 
 	/**
@@ -70,37 +61,19 @@ public class AppClientService
 	}
 
 
-	/**
-	 * @return the acceloData
-	 */
-	public String getAcceloData()
-	{
-		return acceloData;
-	}
-
-
-	/**
-	 * @param acceloData
-	 *        the acceloData to set
-	 */
-	public void setAcceloData( String acceloData )
-	{
-		this.acceloData = acceloData;
-	}
-
-
 	private synchronized void setState( int stateIn )
 	{
 		if ( D )
 			Log.i(TAG, "+++ SET STATE +++ --> \n" + state + " : " + stateIn);
 		state = stateIn;
+		//appHandler.obtainMessage(App.MESSAGE_STATE_CHANGED, state, -1).sendToTarget();
 	}
 
 
 	public synchronized int getState()
 	{
 		if ( D )
-			Log.i(TAG, "+++ GET STATE +++");
+			Log.i(TAG, "+++ GET STATE +++--> \n" + state);
 		return state;
 	}
 
@@ -109,20 +82,7 @@ public class AppClientService
 	{
 		if ( D )
 			Log.i(TAG, "+++ START METHOD +++");
-
-		// cancel any threads trying to connect
-		if ( connectThread != null )
-		{
-			connectThread.cancel();
-			connectThread = null;
-		}
-		// cancel any thread currently running
-		if ( connectedThread != null )
-		{
-			connectedThread.cancel();
-			connectThread = null;
-		}
-		Log.i(TAG, "+++ START METHOD +++");
+		cancelAnyRunningThreads();
 		setState(LISTEN);
 	}
 
@@ -130,32 +90,15 @@ public class AppClientService
 	public synchronized void connect( BluetoothDevice device )
 	{
 		if ( D )
-			Log.i(TAG, "+++ CONNECT METHOD +++");
-		if ( D )
-			Log.i(TAG, "connecting to: " + device);
+			Log.i(TAG, " +++ CONNECT METHOD +++ connecting to: " + device);
 
 		if ( getState() == CONNECTING )
 		{
-			// cancel any thread currently running
-			if ( connectThread != null )
-			{
-				connectThread.cancel();
-				connectThread = null;
-			}
-
+			cancelAnyRunningThreads();
 		}
-
-		// cancel any thread currently running
-		if ( connectedThread != null )
-		{
-			connectedThread.cancel();
-			connectThread = null;
-		}
-
 		// start the thread that will connect to PC
 		connectThread = new ConnectThread(device);
 		connectThread.start();
-
 		setState(CONNECTING);
 	}
 
@@ -165,22 +108,8 @@ public class AppClientService
 		if ( D )
 			Log.i(TAG, "+++ CONNECTED METHOD +++");
 
-		String out = getAcceloData();
-
-		// cancel any thread currently running
-		if ( connectThread != null )
-		{
-			connectThread.cancel();
-			connectThread = null;
-		}
-
-		// cancel any thread currently running
-		if ( connectedThread != null )
-		{
-			connectedThread.cancel();
-			connectThread = null;
-		}
-		connectedThread = new ConnectedThread(socket, out);
+		cancelAnyRunningThreads();
+		connectedThread = new ConnectedThread(socket);
 		connectedThread.start();
 
 		// message back to UI
@@ -194,21 +123,32 @@ public class AppClientService
 	}
 
 
-	public synchronized void stop()
+	/**
+	 * 
+	 */
+	private void cancelAnyRunningThreads()
 	{
-		if ( D )
-			Log.i(TAG, "+++ STOP ALL THREADS +++");
+		// cancel any thread currently running
 		if ( connectThread != null )
 		{
 			connectThread.cancel();
 			connectThread = null;
 		}
 
+		// cancel any thread currently running
 		if ( connectedThread != null )
 		{
 			connectedThread.cancel();
-			connectThread = null;
+			connectedThread = null;
 		}
+	}
+
+
+	public synchronized void stop()
+	{
+		if ( D )
+			Log.i(TAG, "+++ STOP ALL THREADS +++");
+		cancelAnyRunningThreads();
 
 		setState(NONE);
 	}
@@ -219,7 +159,7 @@ public class AppClientService
 		if ( D )
 			Log.i(TAG, "+++ WRITE STRINGS +++");
 
-		setAcceloData(out);
+		connectedThread.write(out);
 	}
 
 
@@ -227,18 +167,20 @@ public class AppClientService
 	{
 		if ( D )
 			Log.i(TAG, "+++ WRITE STRINGS +++");
-		if (out == 1)
+		if ( out == 1 )
 		{
-			setAcceloData("right");
-		}else
-			if (out == 2)
+			connectedThread.write("right");
+		}
+		else
+			if ( out == 2 )
 			{
-				setAcceloData("left");
+				connectedThread.write("left");
 			}
-			else if (out == 3)
-			{
-				setAcceloData("wheel");
-			}
+			else
+				if ( out == 3 )
+				{
+					connectedThread.write("wheel");
+				}
 	}
 
 
@@ -258,7 +200,6 @@ public class AppClientService
 		// restart the connecting process
 		AppClientService.this.start();
 	}
-
 	private class ConnectThread extends Thread
 	{
 
@@ -270,18 +211,13 @@ public class AppClientService
 		{
 			if ( D )
 				Log.e(TAG, "+++ CONNECT THREAD +++");
-
 			device = deviceIn;
 			BluetoothSocket temp = null;
 			try
 			{
 				if ( D )
 					Log.d(TAG, "+++ CONNECTING TO SERVER +++");
-				Log.d(TAG, "getting remote device");
-				
-
 				temp = device.createRfcommSocketToServiceRecord(SPP_UUID);
-
 			}
 			catch ( Exception e )
 			{
@@ -318,10 +254,6 @@ public class AppClientService
 				connectionFailed();
 				return;
 			}
-
-			if ( D )
-				Log.e(TAG, "+++ CONNECTED +++");
-
 			// start the connected thread
 			connected(socket, device);
 		}
@@ -337,9 +269,7 @@ public class AppClientService
 			{
 				Log.e(TAG, "Error closing the socket close() connect thread", e);
 			}
-
 		}
-
 	}
 
 	private class ConnectedThread extends Thread
@@ -347,17 +277,14 @@ public class AppClientService
 
 		private final BluetoothSocket socket;
 		private final OutputStream outputStream;
-		private String out;
 
 
-		public ConnectedThread( BluetoothSocket socketIn, final String out )
+		public ConnectedThread( BluetoothSocket socketIn )
 		{
 			if ( D )
 				Log.i(TAG, "+++ CONNECTED THREAD+++");
-
 			socket = socketIn;
 			OutputStream tempOut = null;
-
 			try
 			{
 				tempOut = socket.getOutputStream();
@@ -366,10 +293,7 @@ public class AppClientService
 			{
 				Log.e(TAG, "temp socket not created", e);
 			}
-
 			outputStream = tempOut;
-			this.out = out;
-
 		}
 
 
@@ -379,16 +303,22 @@ public class AppClientService
 				Log.i(TAG, "+++ WRITE STRING OUT +++");
 			while ( true )
 			{
-				try
-				{
-					outputStream.write(out.getBytes());
-				}
-				catch ( IOException e )
-				{
-					Log.e(TAG, "Error trying to write to the server", e);
-				}
+				// keep the thread running
+				continue;
 			}
+		}
 
+
+		public void write( String out )
+		{
+			try
+			{
+				outputStream.write(out.getBytes());
+			}
+			catch ( IOException e )
+			{
+				Log.e(TAG, "Error trying to write to the server", e);
+			}
 		}
 
 
@@ -404,5 +334,4 @@ public class AppClientService
 			}
 		}
 	}
-
 }// end of the class
