@@ -19,37 +19,26 @@ public class CursorRobot implements Runnable
 	private static final String TAG = "Cursor Robot Thread";
 
 	private int[] convertedString;
-
 	private String acceloData;
-
 	private Robot robot;
-
 	private Point startLocation;
 
 
 	public CursorRobot()
 	{
-
+		System.out.print(TAG + "\ncreating the robot");
 		initRobot();
 	}
-
-
-	public void dataFromServer( String dataIn )
-	{
-
-		this.acceloData = dataIn;
-		this.convertedString = covertStringToIntArray(acceloData);
-
-	}
-
 
 	private void initRobot()
 	{
 
 		try
 		{
-			startLocation = MouseInfo.getPointerInfo().getLocation();
 			robot = new Robot();
+			
+			startLocation = MouseInfo.getPointerInfo().getLocation();
+			
 		}
 		catch ( AWTException eAWT )
 		{
@@ -62,15 +51,25 @@ public class CursorRobot implements Runnable
 	}
 
 
+	public void dataFromServer( String dataIn )
+	{
+		System.out.print(TAG + "\npassing the data");
+		acceloData = dataIn;
+		convertedString = covertStringToIntArray(acceloData);
+	}
+	
 	@Override
 	public void run()
 	{
 
-		System.out.println(TAG + "mouse move");
+		System.out.println(TAG + "\nmoving the mouse");
 		// the force of the movement
-		int moveX = convertedString[0];
-		int moveY = convertedString[1];
+		int direction = convertedString[0];
+		int moveX = convertedString[1];
+		int moveY = convertedString[2];
 
+		
+		
 		// the current location of the cursor
 		int startX = startLocation.x;
 		int startY = startLocation.y;
@@ -78,12 +77,28 @@ public class CursorRobot implements Runnable
 		// amount to move = force + current
 		int moveToX = moveX + startX;
 		int moveToY = moveY + startY;
-
+		
 		while ( true )
 		{
-			robot.mouseMove(moveToX, moveToY);
+			
+			if (direction == 1)
+			{
+				robot.mouseMove(-moveToX, -moveToY);
+			}
+			else if (direction == 2)
+			{
+				robot.mouseMove(moveToX, moveToY);
+			}
+			else if (direction == 3)
+			{
+				robot.mouseMove(-moveToX, moveToY);
+			}
+			else if (direction == 4)
+			{
+				robot.mouseMove(moveToX, -moveToY);
+			}
+			
 		}
-
 	}
 
 

@@ -1,0 +1,70 @@
+package itt.t00154755.mouseserver;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
+
+public class ServerCommsThread implements Runnable
+{
+
+	private final String TAG = "Server Communication Thread";
+	private final InputStream in; // client
+	private CursorRobot cr = new CursorRobot();
+
+
+	public ServerCommsThread( InputStream in )
+	{
+		System.out.println(TAG + " -constructor");
+		this.in = in;
+	}
+
+
+	@Override
+	public void run()
+	{
+
+		BufferedReader bReader = null;
+		bReader = new BufferedReader(new InputStreamReader(in));
+
+		// keep reading
+		while ( true )
+		{
+			try
+			{
+				String lineRead = bReader.readLine();
+				
+				if (lineRead != null)
+				{
+					System.out.print(TAG + "passing to the robot");
+					sendDataToCursorRobot(lineRead);
+				}else
+				{
+					System.out.print(TAG + "read in was null passing a zero packet");
+					lineRead = "0,0";
+					sendDataToCursorRobot(lineRead);
+				}
+				
+			}
+			catch ( IOException e )
+			{
+				// print the error stack
+				e.printStackTrace();
+				e.getCause();
+				System.out.println(TAG + "shutting down the server 2");
+				System.exit(-1);
+			}
+		}
+	}
+
+
+	private void sendDataToCursorRobot( String dataIn )
+	{
+
+		System.out.println(TAG + " -sending the data");
+		System.out.println(TAG + " " + dataIn);	
+		cr.dataFromServer(dataIn);
+	}
+
+}// end of Class

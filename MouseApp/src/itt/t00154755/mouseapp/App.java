@@ -4,11 +4,9 @@ import java.util.Timer;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -55,15 +53,10 @@ public class App extends Activity
 	private static final int REQUEST_CONNECT_DEVICE = 1;
 	private static final int REQUEST_ENABLE_BT = 2;
 
-	// name of connected device
-	private String connectDeviceName = null;
 	private BluetoothAdapter btAdapter = null;
 	private AppClientService appClientService = null;
+	private AppClient appClient = null;
 	private Timer updateTimer = null;
-
-	// UI objects
-	private TextView title;
-
 
 	/*
 	 * use the onCreate() to instantiate the Objects that will be needed
@@ -79,7 +72,7 @@ public class App extends Activity
 
 		// ensure that bluetooth isEnabled before continuing
 		ensureBluetoothIsEnabled();
-		
+
 		final TextView title = (TextView ) findViewById(R.id.title);
 		title.setText(R.string.title);
 
@@ -120,9 +113,10 @@ public class App extends Activity
 		}
 		else
 		{
+			//startTheUpdateTimerTask();
 			// set the service if buletooth isEabled
 			// and the service is not already running
-			if ( appClientService == null )
+			if ( appClient == null )
 			{
 				if ( D )
 					Log.i(TAG, "+++ ON START - SET UP THE APP +++");
@@ -139,7 +133,6 @@ public class App extends Activity
 			Log.i(TAG, "+++ SET UP SERVICE +++");
 
 		final EditText editText = (EditText ) findViewById(R.id.edText);
-		
 
 		final Button rightbtn = (Button ) findViewById(R.id.bRight);
 		rightbtn.setOnClickListener(new View.OnClickListener()
@@ -196,11 +189,11 @@ public class App extends Activity
 		// create a new sevice
 		// this : refers to this class as a context
 		// appHandler : is used to handler communication from the service
-		appClientService = new AppClientService(this, appHandler);
-
-		makeShortToast("update timer started");
-		// now start the update timer
-		// startTheUpdateTimerTask();
+		// appClientService = new AppClientService(this, appHandler);
+		
+		appClient = new AppClient();
+		appClient.start();
+		
 	}
 
 
@@ -214,6 +207,10 @@ public class App extends Activity
 		if ( D )
 			Log.i(TAG, "+++ ON RESUME +++");
 
+		makeShortToast("update timer started");
+		// now start the update timer
+		startTheUpdateTimerTask();
+		
 		// check to see if a service has been started
 		if ( appClientService != null )
 		{
@@ -221,55 +218,11 @@ public class App extends Activity
 			if ( appClientService.getState() == AppClientService.NONE )
 			{
 				Log.i(TAG, "+++ ON RESUME - START THE SERVICE+++");
-				appClientService.start();
+				//appClientService.start();
+				//appClient.connectToSever();
 			}
 		}
 
-	}
-
-
-	@Override
-	public void onPause()
-	{
-		if ( D )
-			Log.i(TAG, "+++ ON PAUSE +++");
-		super.onPause();
-		finish();
-
-	}// end of onPause() method
-
-
-	// if the user stops the app cancel the timer
-	// to free up resources and battery life
-	@Override
-	public void onStop()
-	{
-		super.onStop();
-		if ( D )
-			Log.i(TAG, "+++ ON STOP +++");
-		// cancel the update timer
-		// when the app is stopped
-		if ( updateTimer != null )
-		{
-			updateTimer.cancel();
-		}
-
-	}// end of onStop() method
-
-
-	// destroy the service
-	// called after onStop()
-	@Override
-	public void onDestroy()
-	{
-		super.onDestroy();
-		if ( D )
-			Log.i(TAG, "+++ ON DESTROY +++");
-
-		if ( appClientService != null )
-		{
-			appClientService.stop();
-		}
 	}
 
 
@@ -279,57 +232,6 @@ public class App extends Activity
 		Toast.makeText(this, toast, Toast.LENGTH_SHORT).show();
 	}
 
-	// ================================================AppHandler Method================================================
-	/*
-	 * this method handles incoming messages from the service
-	 * these message include the current state of the service,
-	 * or any error messages.
-	 */
-	private final Handler appHandler = new Handler()
-	{
-
-		@Override
-		public void handleMessage( Message message )
-		{
-			switch ( message.what )
-			{
-				case MESSAGE_STATE_CHANGED:
-					switch ( message.arg1 )
-					{
-						case AppClientService.CONNECTED:
-							title.setText(R.string.connected_to);
-							title.append(connectDeviceName);
-							if ( D )
-								Log.i(TAG, "+++ CONNECTED +++");
-						break;
-						case AppClientService.CONNECTING:
-							title.setText(R.string.connecting);
-							if ( D )
-								Log.i(TAG, "+++ CONNECTING +++");
-						break;
-						case AppClientService.LISTEN:
-						case AppClientService.NONE:
-							title.setText(R.string.not_connected);
-							if ( D )
-								Log.i(TAG, "+++ NOT CONNECTED +++");
-						break;
-					}
-				break;
-				case MESSAGE_DEVICE_NAME:
-					connectDeviceName = message.getData().getString(DEVICE_NAME);
-					Toast.makeText(getApplicationContext(), "Connected to: " + connectDeviceName, Toast.LENGTH_SHORT).show();
-					if ( D )
-						Log.i(TAG, "+++ TOAST DEVICE NAME +++");
-				break;
-				case MESSAGE_TOAST:
-					Toast.makeText(getApplicationContext(), message.getData().getString(TOAST), Toast.LENGTH_SHORT).show();
-					if ( D )
-						Log.i(TAG, "+++ TOAST ERROR +++");
-				break;
-			}
-
-		}
-	};
 
 
 	/**
@@ -349,8 +251,9 @@ public class App extends Activity
 				{
 					Log.i(TAG, "+++ ON ACTIVITY REQUEST - CONNECT +++");
 					makeShortToast("connect to device");
-					connectToServer(data);
+					//connectToServer(data);
 					makeShortToast("update timer started");
+					// now start the update timer
 					startTheUpdateTimerTask();
 				}
 			break;
@@ -370,9 +273,10 @@ public class App extends Activity
 	}
 
 
-	private void connectToServer( Intent data )
+/*	private void connectToServer( Intent data )
 	{
-		// remote MAC here:
+		// remote MAC:
+		Log.i(TAG, "+++ CONNECT TO SERVER - USING THE REMOTE ADDRESS +++");
 		String remoteDeviceMacAddress = data.getExtras().getString(CheckBTDevices.EXTRA_DEVICE_ADDRESS);
 		// String remoteDeviceMacAddress = "00:15:83:3D:0A:57";
 
@@ -380,7 +284,7 @@ public class App extends Activity
 		// BluetoothDevice device = btAdapter.getRemoteDevice("00:15:83:3D:0A:57");
 
 		appClientService.connect(device);
-	}
+	}*/
 
 
 	/**
@@ -389,20 +293,12 @@ public class App extends Activity
 	 * @param message
 	 *        A string of text to send.
 	 */
-	public void sendMessage( String message )
+	public synchronized void sendMessage( String message )
 	{
-		// Check that we're actually connected before trying anything
-		if ( appClientService.getState() != AppClientService.CONNECTED )
-		{
-			makeShortToast("Not connected to a device");
-			return;
-		}
-
 		// Check that there's actually something to send
-		if ( message.length() > 0 )
+		if ( message != null )
 		{
-			// Get the message bytes and tell the AppClientService to write
-			appClientService.write(message);
+			appClient.sendDataFromTheAccToTheAppClient(message);
 		}
 	}
 
@@ -431,7 +327,7 @@ public class App extends Activity
 	{
 		switch ( item.getItemId() )
 		{
-			case R.id.search:
+			case R.id.connect:
 				if ( D )
 					Log.e(TAG, "+++ CONNECT +++");
 				Intent btSearchIntent = new Intent(this, CheckBTDevices.class);
@@ -452,7 +348,6 @@ public class App extends Activity
 		}
 		return false;
 	}
-
 
 	/**
 	 * 
@@ -492,10 +387,65 @@ public class App extends Activity
 	{
 		if ( D )
 			Log.e(TAG, "+++ START THE TIMER METHOD +++");
-		updateTimer = new Timer();
-		Log.d(TAG, "starting the update timer, updates every .001 of a second");
-		updateTimer.schedule(new AccelerometerUpdaterService(new Handler(), this), 1500, 100);
+		if ( updateTimer == null )
+		{
+			updateTimer = new Timer();
+			Log.d(TAG, "starting the update timer, updates every second");
+			updateTimer.schedule(new AccelerometerUpdaterService(new Handler(), this), 500, 100);
+		}
 
+	}// end of startTheUpdateTimerTask() method
+
+
+	// ++++++++++++++++++++++++++++when the program ends clean up here+++++++++++++++++++++++++++++++++++++++
+
+	@Override
+	public void onPause()
+	{
+		if ( D )
+			Log.i(TAG, "+++ ON PAUSE +++");
+		super.onPause();
+	}// end of onPause() method
+
+
+	// if the user stops the app cancel the timer
+	// to free up resources and battery life
+	@Override
+	public void onStop()
+	{
+		super.onStop();
+		if ( D )
+			Log.i(TAG, "+++ ON STOP +++");
+			finish();
+	}// end of onStop() method
+
+
+	// destroy the service
+	// called after onStop()
+	@Override
+	public void onDestroy()
+	{
+		super.onDestroy();
+		if ( D )
+			Log.i(TAG, "+++ ON DESTROY +++");
+		// cancel the update timer
+		// when the app is stopped
+		stopTheUpdateTimerTask();
+		
+		if ( appClient != null )
+		{
+			appClient.cancel();
+		}
+	}
+
+	public void stopTheUpdateTimerTask()
+	{
+		if ( D )
+			Log.i(TAG, "+++ STOP THE TIMER METHOD +++");
+		if ( updateTimer != null )
+		{
+			updateTimer.cancel();
+		}
 	}// end of startTheUpdateTimerTask() method
 
 }// end of the class

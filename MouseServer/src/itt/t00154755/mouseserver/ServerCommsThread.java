@@ -1,23 +1,21 @@
 package itt.t00154755.mouseserver;
 
-import java.io.BufferedReader;
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-
-import javax.microedition.io.StreamConnection;
 
 public class ServerCommsThread implements Runnable
 {
 
 	private final String TAG = "Server Communication Thread";
-	private final StreamConnection connection; // client
+	private InputStream inputStream = null; // client
+	private CursorRobot cr = null;
 
 
-	public ServerCommsThread( StreamConnection streamConn )
+	public ServerCommsThread( InputStream in )
 	{
-		System.out.println(TAG + " -constructor");
-		connection = streamConn;
+		System.out.println(TAG + "...constructor");
+		inputStream = in;
 	}
 
 
@@ -25,31 +23,26 @@ public class ServerCommsThread implements Runnable
 	public void run()
 	{
 
-		BufferedReader bReader = null;
-		try
-		{
-			InputStream inStream = connection.openInputStream();
-			bReader = new BufferedReader(new InputStreamReader(inStream));
-
-		}
-		catch ( IOException e )
-		{
-			// print the error stack
-			e.printStackTrace();
-			e.getCause();
-			System.out.println(TAG + "shutting down the server 1");
-			System.exit(-1);
-		}
-
 		// keep reading
 		while ( true )
 		{
 			try
 			{
-				String lineRead = bReader.readLine();
-				System.out.println(lineRead);
+				DataInputStream is = new DataInputStream(inputStream);
 
-				sendDataToCursorRobot(lineRead);
+				byte[] bytes = new byte[1024];
+				int r;
+				while ( ( r = is.read(bytes) ) > 0 )
+				{
+					String lineIn = new String(bytes, 0, r);
+
+					if ( lineIn != null )
+					{
+						System.out.println(TAG + "\npassing data to the robot");
+						sendDataToCursorRobot(lineIn);
+					}
+				}
+
 			}
 			catch ( IOException e )
 			{
@@ -65,10 +58,8 @@ public class ServerCommsThread implements Runnable
 
 	private void sendDataToCursorRobot( String dataIn )
 	{
-
-		System.out.println(TAG + " -sending the data");
 		System.out.println(TAG + " " + dataIn);
-		CursorRobot cr = new CursorRobot();
+		cr = new CursorRobot();
 		cr.dataFromServer(dataIn);
 	}
 

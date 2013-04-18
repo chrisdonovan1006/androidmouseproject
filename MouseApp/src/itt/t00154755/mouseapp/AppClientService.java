@@ -33,7 +33,7 @@ public class AppClientService
 
 	private static final String TAG = "App Client Service";
 	private static final boolean D = true;
-	private final UUID SPP_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+	private final UUID SPP_UUID = UUID.fromString("27012f0c-68af-4fbf-8dbe-6bbaf7aa432a");
 	// bluetooth adapter Object
 	private final BluetoothAdapter btAdapter;
 	private final Handler appHandler;
@@ -66,7 +66,7 @@ public class AppClientService
 		if ( D )
 			Log.i(TAG, "+++ SET STATE +++ --> \n" + state + " : " + stateIn);
 		state = stateIn;
-		//appHandler.obtainMessage(App.MESSAGE_STATE_CHANGED, state, -1).sendToTarget();
+		// appHandler.obtainMessage(App.MESSAGE_STATE_CHANGED, state, -1).sendToTarget();
 	}
 
 
@@ -89,17 +89,13 @@ public class AppClientService
 
 	public synchronized void connect( BluetoothDevice device )
 	{
-		if ( D )
-			Log.i(TAG, " +++ CONNECT METHOD +++ connecting to: " + device);
+		cancelAnyRunningThreads();
 
-		if ( getState() == CONNECTING )
-		{
-			cancelAnyRunningThreads();
-		}
-		// start the thread that will connect to PC
 		connectThread = new ConnectThread(device);
 		connectThread.start();
+
 		setState(CONNECTING);
+
 	}
 
 
@@ -109,6 +105,7 @@ public class AppClientService
 			Log.i(TAG, "+++ CONNECTED METHOD +++");
 
 		cancelAnyRunningThreads();
+
 		connectedThread = new ConnectedThread(socket);
 		connectedThread.start();
 
@@ -128,19 +125,20 @@ public class AppClientService
 	 */
 	private void cancelAnyRunningThreads()
 	{
+
 		// cancel any thread currently running
 		if ( connectThread != null )
 		{
 			connectThread.cancel();
 			connectThread = null;
 		}
-
 		// cancel any thread currently running
 		if ( connectedThread != null )
 		{
 			connectedThread.cancel();
 			connectedThread = null;
 		}
+		setState(NONE);
 	}
 
 
@@ -150,7 +148,6 @@ public class AppClientService
 			Log.i(TAG, "+++ STOP ALL THREADS +++");
 		cancelAnyRunningThreads();
 
-		setState(NONE);
 	}
 
 
@@ -200,11 +197,12 @@ public class AppClientService
 		// restart the connecting process
 		AppClientService.this.start();
 	}
+	
 	private class ConnectThread extends Thread
 	{
 
-		private BluetoothDevice device;
-		private final BluetoothSocket socket;
+		BluetoothDevice device;
+		final BluetoothSocket socket;
 
 
 		public ConnectThread( BluetoothDevice deviceIn )
@@ -224,13 +222,14 @@ public class AppClientService
 				Log.i(TAG, "Error connecting to device", e);
 			}
 			socket = temp;
-		}
 
+		}
 
 		public void run()
 		{
 			if ( D )
 				Log.e(TAG, "+++ ABOUT TO CONNECT +++");
+
 			// Always cancel discovery because it will slow down a connection
 			btAdapter.cancelDiscovery();
 			try
@@ -239,7 +238,7 @@ public class AppClientService
 				// successful connection or an exception
 				socket.connect();
 			}
-			catch ( IOException e )
+			catch ( IOException ioe )
 			{
 
 				try
@@ -254,10 +253,11 @@ public class AppClientService
 				connectionFailed();
 				return;
 			}
+
 			// start the connected thread
 			connected(socket, device);
 		}
-
+		
 
 		public void cancel()
 		{
@@ -269,6 +269,7 @@ public class AppClientService
 			{
 				Log.e(TAG, "Error closing the socket close() connect thread", e);
 			}
+
 		}
 	}
 
@@ -334,4 +335,5 @@ public class AppClientService
 			}
 		}
 	}
+
 }// end of the class

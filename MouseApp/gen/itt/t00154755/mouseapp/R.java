@@ -34,6 +34,7 @@ public final class R {
         public static final int bSearch=0x7f0a0005;
         public static final int bt_available=0x7f0a0001;
         public static final int bt_connectedDevices=0x7f0a0003;
+        public static final int connect=0x7f0a0011;
         public static final int device_name=0x7f0a0008;
         public static final int discoverable=0x7f0a0012;
         public static final int edText=0x7f0a000b;
@@ -41,7 +42,6 @@ public final class R {
         public static final int lvAvailable=0x7f0a0002;
         public static final int lvConnected=0x7f0a0004;
         public static final int prefs=0x7f0a000f;
-        public static final int search=0x7f0a0011;
         public static final int sendTextToServer=0x7f0a000c;
         public static final int title=0x7f0a000d;
         public static final int title_left_text=0x7f0a0006;

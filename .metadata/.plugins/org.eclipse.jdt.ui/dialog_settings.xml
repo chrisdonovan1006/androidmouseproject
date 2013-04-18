@@ -32,8 +32,8 @@
 		<item value="2" key="pageIndex"/>
 	</section>
 	<section name="RefactoringWizard.preview">
-		<item value="390" key="height"/>
-		<item value="590" key="width"/>
+		<item value="350" key="height"/>
+		<item value="550" key="width"/>
 	</section>
 	<section name="quick_assist_proposal_size">
 	</section>

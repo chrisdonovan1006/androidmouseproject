@@ -7,7 +7,6 @@
 <fullyQualifiedTypeName name="java.io.ObjectOutputStream"/>
 <fullyQualifiedTypeName name="android.util.Log"/>
 <fullyQualifiedTypeName name="javax.microedition.io.StreamConnection"/>
-<fullyQualifiedTypeName name="java.io.DataInputStream"/>
 <fullyQualifiedTypeName name="java.io.IOException"/>
 <fullyQualifiedTypeName name="android.bluetooth.BluetoothSocket"/>
 <fullyQualifiedTypeName name="java.io.DataOutputStream"/>
@@ -30,9 +29,7 @@
 <fullyQualifiedTypeName name="java.awt.MouseInfo"/>
 <fullyQualifiedTypeName name="javax.bluetooth.LocalDevice"/>
 <fullyQualifiedTypeName name="javax.bluetooth.DiscoveryAgent"/>
-<fullyQualifiedTypeName name="android.os.Handler"/>
 <fullyQualifiedTypeName name="android.os.Bundle"/>
-<fullyQualifiedTypeName name="java.io.InputStream"/>
 <fullyQualifiedTypeName name="java.io.OutputStream"/>
 <fullyQualifiedTypeName name="android.bluetooth.BluetoothAdapter"/>
 <fullyQualifiedTypeName name="android.widget.Toast"/>
@@ -54,6 +51,11 @@
 <fullyQualifiedTypeName name="android.hardware.Sensor"/>
 <fullyQualifiedTypeName name="android.content.Context"/>
 <fullyQualifiedTypeName name="android.hardware.SensorEvent"/>
-<fullyQualifiedTypeName name="itt.t00154755.mouseapp.R.id"/>
 <fullyQualifiedTypeName name="itt.t00154755.mouseapp.R.string"/>
+<fullyQualifiedTypeName name="java.io.InputStream"/>
+<fullyQualifiedTypeName name="android.app.ListActivity"/>
+<fullyQualifiedTypeName name="itt.t00154755.mouseapp.R.id"/>
+<fullyQualifiedTypeName name="itt.t00154755.mouseapp.CheckBTDevices"/>
+<fullyQualifiedTypeName name="android.os.Handler"/>
+<fullyQualifiedTypeName name="java.io.DataInputStream"/>
 </qualifiedTypeNameHistroy>

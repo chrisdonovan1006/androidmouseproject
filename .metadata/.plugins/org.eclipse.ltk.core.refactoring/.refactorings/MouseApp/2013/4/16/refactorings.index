@@ -1,0 +1,5 @@
+1366236770444	Rename field 'socket'
+1366236807624	Rename field 'cct'
+1366236899372	Rename local variable 'device'
+1366237500224	Rename method 'writeMessageToAppClient'
+1366237856707	Rename field 'socket'
