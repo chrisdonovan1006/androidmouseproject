@@ -4,9 +4,9 @@ package itt.t00154755.mouseserver;
 
 // imports
 import java.io.IOException;
-import java.io.InputStream;
 
 import javax.bluetooth.BluetoothStateException;
+import javax.bluetooth.DiscoveryAgent;
 import javax.bluetooth.LocalDevice;
 import javax.bluetooth.RemoteDevice;
 import javax.microedition.io.Connector;
@@ -43,7 +43,7 @@ public class AppServer implements Runnable
 		try
 		{
 			pcDevice = LocalDevice.getLocalDevice();
-			// pcDevice.setDiscoverable(DiscoveryAgent.GIAC);
+			pcDevice.setDiscoverable(DiscoveryAgent.GIAC);
 		}
 		catch ( BluetoothStateException e )
 		{
@@ -103,17 +103,7 @@ public class AppServer implements Runnable
 			}
 			// if a client is accepted
 
-			InputStream in = null;
-			try
-			{
-				in = connection.openInputStream();
-			}
-			catch ( IOException e )
-			{
-				errorNum = 5;
-				printOutExceptionDetails(e, errorNum);
-			}
-
+			
 			// display the details
 			RemoteDevice reDevice = null;
 			try
@@ -128,18 +118,9 @@ public class AppServer implements Runnable
 				printOutExceptionDetails(e, errorNum);
 			}
 
-			startTheServerCommsThread(in);
-			
-			
-			try
-			{
-				connection.close();
-			}
-			catch ( IOException e )
-			{
-				errorNum = 7;
-				printOutExceptionDetails(e, errorNum);
-			}
+			// start a new Thread that will handle incoming traffic
+			Thread serverThread = new Thread(new ServerCommsThread(connection));
+			serverThread.start();
 		}
 	}
 
@@ -155,16 +136,5 @@ public class AppServer implements Runnable
 		e.getCause();
 		System.out.println(TAG + "\nshutting down the server " + errorNum);
 		System.exit(-1);
-	}
-
-
-	/**
-	 * @param in
-	 */
-	private synchronized void startTheServerCommsThread( InputStream in )
-	{
-		// start a new Thread that will handle incoming traffic
-		Thread serverThread = new Thread(new ServerCommsThread(in));
-		serverThread.start();
 	}
 }// end of Class

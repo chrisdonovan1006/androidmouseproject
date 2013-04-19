@@ -51,7 +51,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-         <!--
+        <!--
          This is the dialog box that appears whenever the connect
          option is selected from the menu.
         -->
@@ -67,6 +67,17 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
+        <service android:name=".AccelometerService" />
+
+        <receiver
+            android:name=".AcceloDataReceiver"
+            android:enabled="false" >
+            <intent-filter>
+                <action android:name="itt.t00154755.AccelometerService.ACCELEROMETER_DATA" >
+                </action>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

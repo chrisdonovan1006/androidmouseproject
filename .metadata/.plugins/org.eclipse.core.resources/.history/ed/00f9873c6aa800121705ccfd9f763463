@@ -1,0 +1,32 @@
+package itt.t00154755.mouseapp;
+
+
+public class AppServiceUpdateUIListener
+{
+
+	AccelometerService.setUpdateListener(new AppServiceUpdateUIListener() 
+	{
+	    public void updateUI( String acceloData) 
+	    {
+	      // make sure this runs in the UI thread... since it's messing with views...
+	      App.runOnUiThread(
+	          new Runnable() {
+	            public void run() {
+	              if (acceloData.length() == 0 || acceloData == null) 
+	              {
+	                if () 
+	                	return;
+	              }
+
+
+
+	              // update the saved weather data
+
+
+	              // tell the view to refresh since the model changed.
+
+	            }
+	          });
+	    }
+	  });
+}

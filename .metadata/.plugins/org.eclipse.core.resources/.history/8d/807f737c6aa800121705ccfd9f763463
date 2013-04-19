@@ -1,0 +1,40 @@
+package itt.t00154755.mouseapp;
+
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+
+
+public class AppServiceUpdateUIListener
+{
+	
+	    public void updateUI( final String acceloData) 
+	    {
+	      // make sure this runs in the UI thread... since it's messing with views...
+	      new Thread(
+	          new Runnable() {
+	            private Handler appHandler;
+
+				public void run() {
+	              if (acceloData.length() == 0 || acceloData == null) 
+	              {
+	            	// message back to UI
+	      			Message message = appHandler.obtainMessage(App.UPDATE_DATA);
+	      			Bundle bundle = new Bundle();
+	      			bundle.putString(App.DATA, acceloData);
+	      			message.setData(bundle);
+	      			appHandler.handleMessage(message);
+	              }
+
+
+
+	              // update the saved weather data
+
+
+	              // tell the view to refresh since the model changed.
+
+	            }
+	          });
+	    }
+
+}

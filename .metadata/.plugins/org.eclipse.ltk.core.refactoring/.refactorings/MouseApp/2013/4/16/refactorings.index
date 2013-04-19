@@ -3,3 +3,11 @@
 1366236899372	Rename local variable 'device'
 1366237500224	Rename method 'writeMessageToAppClient'
 1366237856707	Rename field 'socket'
+1366293192216	Rename method 'connectToSever'
+1366295619287	Delete element
+1366316371984	Rename method '_startService'
+1366317056656	Rename method '_shutdownService'
+1366321225535	Delete element
+1366321835859	Delete element
+1366324420525	Delete element
+1366327771687	Extract method 'sendBckToActivity'

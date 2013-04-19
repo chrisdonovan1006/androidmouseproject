@@ -24,9 +24,10 @@ public class CursorRobot implements Runnable
 	private Point startLocation;
 
 
-	public CursorRobot()
+	public CursorRobot(String dataIn)
 	{
 		System.out.print(TAG + "\ncreating the robot");
+		acceloData = dataIn;
 		initRobot();
 	}
 
@@ -49,19 +50,13 @@ public class CursorRobot implements Runnable
 			System.exit(-1);
 		}
 	}
-
-
-	public void dataFromServer( String dataIn )
-	{
-		System.out.print(TAG + "\npassing the data");
-		acceloData = dataIn;
-		convertedString = covertStringToIntArray(acceloData);
-	}
 	
 	@Override
 	public void run()
 	{
-
+		convertedString = covertStringToIntArray(acceloData);
+		
+		
 		System.out.println(TAG + "\nmoving the mouse");
 		// the force of the movement
 		int direction = convertedString[0];

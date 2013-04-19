@@ -1,12 +1,14 @@
 package itt.t00154755.mouseapp;
 
-import java.util.Timer;
-
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -38,6 +40,8 @@ public class App extends Activity
 	public static final int MESSAGE_STATE_CHANGED = 1;
 	public static final int MESSAGE_DEVICE_NAME = 2;
 	public static final int MESSAGE_TOAST = 3;
+	public static final int UPDATE_DATA = 4;
+	public static final int NULL_PACKETS = 5;
 
 	// used to signal which mouse option is selected
 	public static final int RIGHT_BUTTON_CLICK = 1;
@@ -46,17 +50,22 @@ public class App extends Activity
 	public static final int MOUSE_MOVE = 4;
 
 	// message types
-	public static final String DEVICE_NAME = "name";
-	public static final String TOAST = "make_toast";
-
+	public static final String DEVICE_NAME = "";
+	public static final String TOAST = "";
+	public static final String DATA = "";
+	public static final String NULL = "";
 	// request types
 	private static final int REQUEST_CONNECT_DEVICE = 1;
 	private static final int REQUEST_ENABLE_BT = 2;
 
 	private BluetoothAdapter btAdapter = null;
-	private AppClientService appClientService = null;
-	private AppClient appClient = null;
-	private Timer updateTimer = null;
+	private AppClient2 appClient = null;
+	// service varibles
+	private Intent accService;
+	private AcceloDataReceiver acceloDataReceiver;
+
+	private String acceloData;
+
 
 	/*
 	 * use the onCreate() to instantiate the Objects that will be needed
@@ -72,6 +81,9 @@ public class App extends Activity
 
 		// ensure that bluetooth isEnabled before continuing
 		ensureBluetoothIsEnabled();
+
+		accService = new Intent(this, AccelometerService.class);
+		startService(accService);
 
 		final TextView title = (TextView ) findViewById(R.id.title);
 		title.setText(R.string.title);
@@ -113,14 +125,14 @@ public class App extends Activity
 		}
 		else
 		{
-			//startTheUpdateTimerTask();
 			// set the service if buletooth isEabled
 			// and the service is not already running
 			if ( appClient == null )
 			{
 				if ( D )
 					Log.i(TAG, "+++ ON START - SET UP THE APP +++");
-				setUpApp();
+				appClient = new AppClient2(appHandler);
+				appClient.start();
 			}
 		}
 
@@ -144,7 +156,7 @@ public class App extends Activity
 				// write right click to server
 				if ( D )
 					Log.i(TAG, "+++ RIGHT CLICK +++");
-				sendMessage("" + RIGHT_BUTTON_CLICK);
+				write("" + RIGHT_BUTTON_CLICK);
 
 				makeShortToast("right click");
 
@@ -161,7 +173,7 @@ public class App extends Activity
 				// write left click to server
 				if ( D )
 					Log.i(TAG, "+++ LEFT CLICK +++");
-				sendMessage("" + LEFT_BUTTON_CLICK);
+				write("" + LEFT_BUTTON_CLICK);
 
 				makeShortToast("left click");
 			}
@@ -178,7 +190,7 @@ public class App extends Activity
 					Log.i(TAG, "+++ SEND TEXT TO SERVER +++");
 				if ( editText.getText().length() > 0 )
 				{
-					sendMessage(editText.getText().toString());
+					write(editText.getText().toString());
 				}
 				else
 				{
@@ -186,14 +198,6 @@ public class App extends Activity
 				}
 			}
 		});
-		// create a new sevice
-		// this : refers to this class as a context
-		// appHandler : is used to handler communication from the service
-		// appClientService = new AppClientService(this, appHandler);
-		
-		appClient = new AppClient();
-		appClient.start();
-		
 	}
 
 
@@ -207,21 +211,18 @@ public class App extends Activity
 		if ( D )
 			Log.i(TAG, "+++ ON RESUME +++");
 
-		makeShortToast("update timer started");
-		// now start the update timer
-		startTheUpdateTimerTask();
-		
 		// check to see if a service has been started
-		if ( appClientService != null )
+		if ( appClient.getState() == 0 )
 		{
-			// if it has but it current state is none, start it up
-			if ( appClientService.getState() == AppClientService.NONE )
-			{
-				Log.i(TAG, "+++ ON RESUME - START THE SERVICE+++");
-				//appClientService.start();
-				//appClient.connectToSever();
-			}
+			Log.i(TAG, "+++ ON RESUME - START THE SERVICE+++");
+			appClient.start();
 		}
+
+		acceloDataReceiver = new AcceloDataReceiver();
+		IntentFilter intentFilter = new IntentFilter();
+		intentFilter.addAction(AccelometerService.ACCELEROMETER_DATA);
+		startService(accService);
+		registerReceiver(acceloDataReceiver, intentFilter);
 
 	}
 
@@ -231,7 +232,6 @@ public class App extends Activity
 	{
 		Toast.makeText(this, toast, Toast.LENGTH_SHORT).show();
 	}
-
 
 
 	/**
@@ -251,10 +251,8 @@ public class App extends Activity
 				{
 					Log.i(TAG, "+++ ON ACTIVITY REQUEST - CONNECT +++");
 					makeShortToast("connect to device");
-					//connectToServer(data);
-					makeShortToast("update timer started");
-					// now start the update timer
-					startTheUpdateTimerTask();
+					connectToServer(data);
+
 				}
 			break;
 			case REQUEST_ENABLE_BT:
@@ -273,33 +271,17 @@ public class App extends Activity
 	}
 
 
-/*	private void connectToServer( Intent data )
+	private void connectToServer( Intent data )
 	{
 		// remote MAC:
 		Log.i(TAG, "+++ CONNECT TO SERVER - USING THE REMOTE ADDRESS +++");
-		String remoteDeviceMacAddress = data.getExtras().getString(CheckBTDevices.EXTRA_DEVICE_ADDRESS);
+		//String remoteDeviceMacAddress = data.getExtras().getString(CheckBTDevices.EXTRA_DEVICE_ADDRESS);
 		// String remoteDeviceMacAddress = "00:15:83:3D:0A:57";
 
-		BluetoothDevice device = btAdapter.getRemoteDevice(remoteDeviceMacAddress);
+		//BluetoothDevice device = btAdapter.getRemoteDevice(remoteDeviceMacAddress);
 		// BluetoothDevice device = btAdapter.getRemoteDevice("00:15:83:3D:0A:57");
 
-		appClientService.connect(device);
-	}*/
-
-
-	/**
-	 * Sends a message.
-	 * 
-	 * @param message
-	 *        A string of text to send.
-	 */
-	public synchronized void sendMessage( String message )
-	{
-		// Check that there's actually something to send
-		if ( message != null )
-		{
-			appClient.sendDataFromTheAccToTheAppClient(message);
-		}
+		appClient.start();
 	}
 
 
@@ -349,6 +331,7 @@ public class App extends Activity
 		return false;
 	}
 
+
 	/**
 	 * 
 	 */
@@ -360,41 +343,55 @@ public class App extends Activity
 		return true;
 	}// end of onCreateOptionsMenu() method
 
-
-	/**
-	 * This method is where the update timer is set up the
-	 * the timer event must only be started once and allowed
-	 * to run in the background uninterrupted until the app
-	 * is stopped.
-	 * 
-	 * The Timer object has a schedule method that takes four
-	 * arguments in my case:
-	 * 
-	 * <pre>
-	 * 	updateTimer.schedule(new AcceleratorUpdater(new Handler(), this), 100, 100);
-	 *  
-	 *  AcceleratorUpdater: is a TimerTask that i created.
-	 *  Handler: 			is a reference to this (App) Activity, which the AcceleratorUpdater
-	 *  					needs to be able to refer back to the Main UI thread.
-	 *  Delay (100): 		is the startup time after the update timer is fired; milliseconds.
-	 *  Period (100):		update time every 100 milliseconds the timer will pass the data back to the Main UI
-	 *  					Thread via the Handler.
-	 * </pre>
-	 * 
-	 * This method will be started as soon as the connection is established.
+	/*
+	 * this method handles incoming messages from the service
+	 * these message include the current state of the service,
+	 * or any error messages.
 	 */
-	public void startTheUpdateTimerTask()
+	private final Handler appHandler = new Handler()
 	{
-		if ( D )
-			Log.e(TAG, "+++ START THE TIMER METHOD +++");
-		if ( updateTimer == null )
-		{
-			updateTimer = new Timer();
-			Log.d(TAG, "starting the update timer, updates every second");
-			updateTimer.schedule(new AccelerometerUpdaterService(new Handler(), this), 500, 100);
-		}
 
-	}// end of startTheUpdateTimerTask() method
+		@Override
+		public void handleMessage( Message message )
+		{
+			switch ( message.what )
+			{
+				case MESSAGE_DEVICE_NAME:
+					String connectDeviceName = message.getData().getString(DEVICE_NAME);
+					Toast.makeText(getApplicationContext(), "Connected to: " + connectDeviceName, Toast.LENGTH_SHORT).show();
+					if ( D )
+						Log.i(TAG, "+++ TOAST DEVICE NAME +++");
+				break;
+				case UPDATE_DATA:
+					App.this.write(message.getData().getString(DATA));
+					if ( D )
+						Log.i(TAG, "+++ TOAST MESSAGE +++");
+				break;
+			}
+
+		}
+	};
+
+
+	protected synchronized void write( String string )
+	{
+		appClient.write(acceloData);
+	}
+
+	private class AcceloDataReceiver extends BroadcastReceiver
+	{
+
+		static final String TAG = "Broadcast Receiver";
+
+
+		@Override
+		public void onReceive( Context arg0, Intent arg1 )
+		{
+			Log.d(TAG, "onReceive");
+			String data = arg1.getStringExtra("DATA");
+			appClient.write(data);
+		}
+	}
 
 
 	// ++++++++++++++++++++++++++++when the program ends clean up here+++++++++++++++++++++++++++++++++++++++
@@ -405,6 +402,10 @@ public class App extends Activity
 		if ( D )
 			Log.i(TAG, "+++ ON PAUSE +++");
 		super.onPause();
+		if ( acceloDataReceiver != null )
+		{
+			unregisterReceiver(acceloDataReceiver);
+		}
 	}// end of onPause() method
 
 
@@ -416,7 +417,7 @@ public class App extends Activity
 		super.onStop();
 		if ( D )
 			Log.i(TAG, "+++ ON STOP +++");
-			finish();
+
 	}// end of onStop() method
 
 
@@ -428,24 +429,9 @@ public class App extends Activity
 		super.onDestroy();
 		if ( D )
 			Log.i(TAG, "+++ ON DESTROY +++");
-		// cancel the update timer
-		// when the app is stopped
-		stopTheUpdateTimerTask();
-		
-		if ( appClient != null )
-		{
-			appClient.cancel();
-		}
-	}
+		// stop the Service
+		stopService(accService);
 
-	public void stopTheUpdateTimerTask()
-	{
-		if ( D )
-			Log.i(TAG, "+++ STOP THE TIMER METHOD +++");
-		if ( updateTimer != null )
-		{
-			updateTimer.cancel();
-		}
-	}// end of startTheUpdateTimerTask() method
+	}
 
 }// end of the class

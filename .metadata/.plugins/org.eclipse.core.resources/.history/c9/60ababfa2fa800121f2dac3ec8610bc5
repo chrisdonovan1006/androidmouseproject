@@ -1,0 +1,93 @@
+package itt.t00154755.mouseapp;
+
+import java.io.IOException;
+
+import android.annotation.SuppressLint;
+import android.bluetooth.BluetoothSocket;
+import android.util.Log;
+
+
+public class ClientCommunications
+{
+	private static final String TAG = "Client Comms Class";
+	private BluetoothSocket threadSocket = null;
+	private String acceloData = null;
+	private boolean isConnected = false;
+	
+	
+	public ClientCommunications(BluetoothSocket btSocket)
+	{
+		Log.i(TAG, "+++ SET UP THE CLIENT COMM THREAD +++");
+		threadSocket = btSocket;
+		if ( threadSocket.isConnected() )
+		{
+			isConnected = true;
+		}
+	}
+	
+	
+
+
+	@SuppressLint ( "NewApi" )
+	public ClientCommsThread(  )
+	{
+		
+
+	}
+
+
+	public void writeStringToAppClient( String acceloData )
+	{
+		// System.out.println(acceloData);
+		if ( acceloData.length() < 0 || acceloData == null)
+		{
+			String defaultData = "1,0,0";
+			this.acceloData = defaultData;
+		}
+		else
+		{
+			this.acceloData = acceloData;
+		}
+
+	}
+
+
+	@Override
+	public void run()
+	{
+
+		if ( isConnected )
+		{
+			try
+			{
+				
+				btSocket.getOutputStream().write(acceloData.getBytes());
+	            btSocket.getOutputStream().flush();
+	            btSocket.close();
+			}
+			catch ( IOException e )
+			{
+				Log.e(TAG, "error writing to the server");
+			}
+		}
+
+	}
+
+
+	public void cancel()
+	{
+		try
+		{
+			threadSocket.close();
+		}
+		catch ( IOException e )
+		{
+			Log.e(TAG, "Cancelling the Client Comm Thread");
+			Log.e(TAG, "error closing the socket");
+		}
+
+	}
+
+}
+
+	

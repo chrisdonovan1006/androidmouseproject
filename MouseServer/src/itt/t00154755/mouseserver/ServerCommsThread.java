@@ -1,45 +1,55 @@
 package itt.t00154755.mouseserver;
 
-import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+
+import javax.microedition.io.StreamConnection;
 
 public class ServerCommsThread implements Runnable
 {
 
 	private final String TAG = "Server Communication Thread";
-	private InputStream inputStream = null; // client
-	private CursorRobot cr = null;
+	private StreamConnection connection = null;
 
 
-	public ServerCommsThread( InputStream in )
+	public ServerCommsThread( StreamConnection connection )
 	{
 		System.out.println(TAG + "...constructor");
-		inputStream = in;
+		this.connection = connection;
 	}
 
 
 	@Override
 	public void run()
 	{
+		InputStream in = null;
+		
+		try
+		{
+			in = connection.openInputStream();
+		}
+		catch ( IOException e )
+		{
+			System.out.println("Error creating the Input stream");
+		}
 
 		// keep reading
 		while ( true )
 		{
 			try
 			{
-				DataInputStream is = new DataInputStream(inputStream);
-
 				byte[] bytes = new byte[1024];
 				int r;
-				while ( ( r = is.read(bytes) ) > 0 )
+				while ( ( r = in.read(bytes) ) > 0 )
 				{
 					String lineIn = new String(bytes, 0, r);
 
 					if ( lineIn != null )
 					{
 						System.out.println(TAG + "\npassing data to the robot");
-						sendDataToCursorRobot(lineIn);
+						// start a new Thread that will handle incoming traffic
+						Thread robotThread = new Thread(new CursorRobot( lineIn ));
+						robotThread.start();
 					}
 				}
 
@@ -53,14 +63,6 @@ public class ServerCommsThread implements Runnable
 				System.exit(-1);
 			}
 		}
-	}
-
-
-	private void sendDataToCursorRobot( String dataIn )
-	{
-		System.out.println(TAG + " " + dataIn);
-		cr = new CursorRobot();
-		cr.dataFromServer(dataIn);
 	}
 
 }// end of Class

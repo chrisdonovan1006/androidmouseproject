@@ -34,7 +34,7 @@ public class CheckBTDevices extends Activity
 	private static final boolean D = true;
 
 	// Return Intent extra
-	public static String EXTRA_DEVICE_ADDRESS = "device_address";
+	public static String EXTRA_DEVICE_ADDRESS = "";
 
 	// Member fields
 	private BluetoothAdapter btAdapter;
