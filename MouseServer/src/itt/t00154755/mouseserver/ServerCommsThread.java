@@ -3,65 +3,65 @@ package itt.t00154755.mouseserver;
 import java.io.IOException;
 import java.io.InputStream;
 
-import javax.microedition.io.StreamConnection;
-
 public class ServerCommsThread implements Runnable
 {
 
 	private final String TAG = "Server Communication Thread";
-	private StreamConnection connection = null;
+	private InputStream in = null;
 
-
-	public ServerCommsThread( StreamConnection connection )
+	public ServerCommsThread( InputStream inStream )
 	{
 		System.out.println(TAG + "...constructor");
-		this.connection = connection;
+		in = inStream;
 	}
-
-
 	@Override
 	public void run()
 	{
-		InputStream in = null;
-		
+		System.out.println(TAG + " in the run() ");
+
+		byte[] bytes = new byte[1024];
+		int r;
 		try
 		{
-			in = connection.openInputStream();
+			while ( ( r = in.read(bytes) ) > 0 )
+			{
+				String acceloData = ( new String(bytes, 0, r) );
+				System.out.println(TAG + acceloData);
+
+				Thread robotThread = new Thread(new CursorRobot(acceloData));
+				robotThread.start();
+			}
+
 		}
 		catch ( IOException e )
 		{
-			System.out.println("Error creating the Input stream");
-		}
+			// print the error stack
+			e.printStackTrace();
+			e.getCause();
 
-		// keep reading
-		while ( true )
+			try
+			{
+				in.close();
+			}
+			catch ( IOException ex )
+			{
+				System.out.println("error closing the input stream");
+			}
+			System.out.println(TAG + " - shutting down the server 1");
+			System.exit(-1);
+		}
+		finally
 		{
 			try
 			{
-				byte[] bytes = new byte[1024];
-				int r;
-				while ( ( r = in.read(bytes) ) > 0 )
-				{
-					String lineIn = new String(bytes, 0, r);
-
-					if ( lineIn != null )
-					{
-						System.out.println(TAG + "\npassing data to the robot");
-						// start a new Thread that will handle incoming traffic
-						Thread robotThread = new Thread(new CursorRobot( lineIn ));
-						robotThread.start();
-					}
-				}
-
+				in.close();
 			}
 			catch ( IOException e )
 			{
-				// print the error stack
-				e.printStackTrace();
-				e.getCause();
-				System.out.println(TAG + "shutting down the server 2");
-				System.exit(-1);
+				System.out.println("error closing the input stream");
 			}
+			System.out.println(TAG + " - shutting down the server 2");
+			System.exit(-1);
 		}
 	}
 

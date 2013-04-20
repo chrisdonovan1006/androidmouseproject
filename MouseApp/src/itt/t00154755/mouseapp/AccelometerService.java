@@ -7,52 +7,61 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
 import android.util.Log;
-import android.widget.Toast;
 
 /**
- * MyService
+ * AccelometerService
  * 
- * @author Nazmul Idris
- * @version 1.0
- * @since Jul 21, 2008, 12:03:01 PM
+ * @author
  */
 public class AccelometerService extends Service implements SensorEventListener
 {
 
 	private static final String TAG = "Accelometer Service";
 	private static final boolean D = true;
-	static final String ACCELEROMETER_DATA = "itt.t00154755.AccelometerService.ACCELEROMETER_DATA";
 	private static final int LEFTDOWN = 1;
 	private static final int RIGHTUP = 2;
 	private static final int LEFTUP = 3;
 	private static final int RIGHTDOWN = 4;
-	private String acceloData;
+	private App app;
+	private Handler appHandler;
+	// sensor manager variables
+	private SensorManager sm;
+	private Sensor s;
+	private AsyncTask<SensorEvent, Void, String> sensorValuesTask;
+	private SensorEvent newevent;
 
-
-	/** not using ipc... dont care about this method */
-	public IBinder onBind( Intent intent )
+	public AccelometerService()
 	{
-		return null;
+		app = new App();
 	}
 
 
-	@Override
-	public void onCreate()
+	public void initAccelometerService()
 	{
-		super.onCreate();
-		registerListener();
-
 		makeToastShort("AccelometerService started");
 	}
 
 
-	@Override
-	public void onDestroy()
+	public void endAccelometerService()
 	{
-		super.onDestroy();
-		makeToastShort("MyService stopped");
+		unregisterListener();
+		// stop the service
+	    stopSelf();
+		makeToastShort("AccelometerService stopped");
+	}
+
+
+	@Override
+	public int onStartCommand( Intent intent, int flags, int startId )
+	{
+		registerListener();
+		return START_STICKY;
 	}
 
 
@@ -61,10 +70,7 @@ public class AccelometerService extends Service implements SensorEventListener
 	private void registerListener()
 	{
 		if ( D )
-			Log.e(TAG, "+++ REGISTERLISTENER FOR SENSOR +++");
-		// sensor manager variables
-		SensorManager sm;
-		Sensor s;
+			Log.d(TAG, "+++ REGISTER-LISTENER FOR SENSOR +++");
 
 		sm = (SensorManager ) getSystemService(Context.SENSOR_SERVICE);
 		// check to make sure that the SensorList is not empty
@@ -75,6 +81,15 @@ public class AccelometerService extends Service implements SensorEventListener
 			// register the listener to the Sensor
 			sm.registerListener(this, s, SensorManager.SENSOR_DELAY_NORMAL);
 		}
+	}
+
+
+	private void unregisterListener()
+	{
+		if ( D )
+			Log.d(TAG, "+++ UNREGISTER-LISTENER FOR SENSOR +++");
+		sm.unregisterListener(this, s);
+
 	}
 
 
@@ -91,88 +106,102 @@ public class AccelometerService extends Service implements SensorEventListener
 	{
 		if ( D )
 			Log.d(TAG, "+++ SENSOR CHANGE +++");
-
-		getSensorValuesFromSensorEvent(event.values);
-
+		//long timestamp = event.timestamp;
+		newevent = event;
+		passOnTheEvent( newevent );
 	}
 
-
-	private void getSensorValuesFromSensorEvent( float[] values )
+	private void passOnTheEvent( SensorEvent event )
 	{
-		if ( D )
-			Log.d(TAG, "+++ CONVERTING THE DATA TO INT +++");
-		// remove the integer x and y values from the float array.
-		int xIntAxis = (int ) values[0];
-		int yIntAxis = (int ) values[1];
+		sensorValuesTask = new SensorValuesTask(app);
+		sensorValuesTask.execute(event);
+	}
 
-		if ( xIntAxis < 0 && yIntAxis < 0 )
+	private class SensorValuesTask extends AsyncTask<SensorEvent, Void, String>
+	{
+
+		public App app;
+		public String acceloData;
+
+
+		protected void onProgressUpdate( Void... progress )
 		{
-			// add only the positive values
-			acceloData = "" + LEFTDOWN + "," + Math.abs(xIntAxis) + "," + Math.abs(yIntAxis) + "\n";
-			setAcceloData(acceloData);
-			Log.d(TAG, "move mouse: " + LEFTDOWN);
 		}
-		else
-			if ( xIntAxis > 0 && yIntAxis > 0 )
+
+
+		public SensorValuesTask( App app )
+		{
+			this.app = app;
+			acceloData = "1,0,0";
+		}
+
+
+		@Override
+		protected String doInBackground( SensorEvent... values )
+		{
+			SensorEvent event = values[0];
+			// remove the integer x and y values from the float array.
+			int xIntAxis = (int ) event.values[0];
+			int yIntAxis = (int ) event.values[1];
+
+			if ( xIntAxis < 0 && yIntAxis < 0 )
 			{
 				// add only the positive values
-				acceloData = "" + RIGHTUP + "," + Math.abs(xIntAxis) + "," + Math.abs(yIntAxis) + "\n";
-				setAcceloData(acceloData);
-				Log.d(TAG, "move mouse: " + RIGHTUP);
+				if(D) Log.d(TAG, "move mouse: " + LEFTDOWN);
+				acceloData = "" + LEFTDOWN + "," + Math.abs(xIntAxis) + "," + Math.abs(yIntAxis) + "\n";
 			}
 			else
-				if ( xIntAxis < 0 && yIntAxis > 0 )
+				if ( xIntAxis > 0 && yIntAxis > 0 )
 				{
 					// add only the positive values
-					acceloData = "" + LEFTUP + "," + Math.abs(xIntAxis) + "," + Math.abs(yIntAxis) + "\n";
-					setAcceloData(acceloData);
-					Log.d(TAG, "move mouse: " + LEFTUP);
+					if(D) Log.d(TAG, "move mouse: " + RIGHTUP);
+					acceloData = "" + RIGHTUP + "," + Math.abs(xIntAxis) + "," + Math.abs(yIntAxis) + "\n";
 				}
 				else
-					if ( xIntAxis > 0 && yIntAxis < 0 )
+					if ( xIntAxis < 0 && yIntAxis > 0 )
 					{
 						// add only the positive values
-						acceloData = "" + RIGHTDOWN + "," + Math.abs(xIntAxis) + "," + Math.abs(yIntAxis) + "\n";
-						setAcceloData(acceloData);
-						Log.d(TAG, "move mouse: " + RIGHTDOWN);
+						if(D) Log.d(TAG, "move mouse: " + LEFTUP);
+						acceloData = "" + LEFTUP + "," + Math.abs(xIntAxis) + "," + Math.abs(yIntAxis) + "\n";
 					}
-
-		sendBackToActivity();
-
-	}
-
-
-	/**
-	 * 
-	 */
-	private void sendBackToActivity()
-	{
-		// Send back reading to Activity
-		Intent intent = new Intent();
-		String data = getAcceloData();
-		intent.putExtra("DATA", data);
-		sendBroadcast(intent);
-	}
+					else
+						if ( xIntAxis > 0 && yIntAxis < 0 )
+						{
+							// add only the positive values
+							if(D) Log.d(TAG, "move mouse: " + RIGHTDOWN);
+							acceloData = "" + RIGHTDOWN + "," + Math.abs(xIntAxis) + "," + Math.abs(yIntAxis) + "\n";
+						}
+			return acceloData;
+		}
 
 
-	private void setAcceloData( String acceloData )
-	{
-		this.acceloData = acceloData;
-
-	}
-
-
-	private String getAcceloData()
-	{
-		//
-		return acceloData;
+		protected void onPostExecute( String acceloData )
+		{
+			if(D) Log.d(TAG, "onPostExecute sending:  " + acceloData);
+			app.write(acceloData);
+		}
 	}
 
 
 	private void makeToastShort( String string )
 	{
-		//
-		Toast.makeText(this, string, Toast.LENGTH_SHORT).show();
+		// message back to UI
+		Message message = appHandler.obtainMessage(App.MESSAGE_TOAST_ACCELO);
+		Bundle bundle = new Bundle();
+		bundle.putString(App.TOAST, string);
+		message.setData(bundle);
+		appHandler.handleMessage(message);
 	}
 
-}// end class MyService
+
+	@Override
+	public IBinder onBind( Intent intent )
+	{
+		//
+		return null;
+	}
+
+
+
+
+}// end class

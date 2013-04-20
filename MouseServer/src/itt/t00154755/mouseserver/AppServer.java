@@ -4,6 +4,7 @@ package itt.t00154755.mouseserver;
 
 // imports
 import java.io.IOException;
+import java.io.InputStream;
 
 import javax.bluetooth.BluetoothStateException;
 import javax.bluetooth.DiscoveryAgent;
@@ -88,40 +89,46 @@ public class AppServer implements Runnable
 			printOutExceptionDetails(e, errorNum);
 		}
 
-		while ( true )
+		try
 		{
-			try
-			{
-				System.out.println("\n...waiting for the client...");
-				connection = connNotifier.acceptAndOpen();
+			System.out.println("\n...waiting for the client...");
+			connection = connNotifier.acceptAndOpen();
 
-			}
-			catch ( IOException e )
-			{
-				errorNum = 4;
-				printOutExceptionDetails(e, errorNum);
-			}
-			// if a client is accepted
-
-			
-			// display the details
-			RemoteDevice reDevice = null;
-			try
-			{
-				reDevice = RemoteDevice.getRemoteDevice(connection);
-
-				System.out.println(TAG + "...Server is Connected to: \n" + reDevice.getBluetoothAddress() + "\n" + reDevice.getFriendlyName(false));
-			}
-			catch ( IOException e )
-			{
-				errorNum = 6;
-				printOutExceptionDetails(e, errorNum);
-			}
-
-			// start a new Thread that will handle incoming traffic
-			Thread serverThread = new Thread(new ServerCommsThread(connection));
-			serverThread.start();
 		}
+		catch ( IOException e )
+		{
+			errorNum = 4;
+			printOutExceptionDetails(e, errorNum);
+		}
+		// if a client is accepted
+		InputStream in = null;
+		
+		try
+		{
+			in = connection.openInputStream();
+		}
+		catch ( IOException e )
+		{
+			System.out.println("Error creating the Input stream");
+		}
+		// display the details
+		RemoteDevice reDevice = null;
+		try
+		{
+			reDevice = RemoteDevice.getRemoteDevice(connection);
+
+			System.out.println(TAG + "...Server is Connected to: \n" + reDevice.getBluetoothAddress() + "\n" + reDevice.getFriendlyName(false));
+		}
+		catch ( IOException e )
+		{
+			errorNum = 6;
+			printOutExceptionDetails(e, errorNum);
+		}
+
+		// start a new Thread that will handle incoming traffic
+		Thread serverThread = new Thread(new ServerCommsThread(in));
+		serverThread.start();
+
 	}
 
 

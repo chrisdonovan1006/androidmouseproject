@@ -2,12 +2,11 @@ package itt.t00154755.mouseapp;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
-import android.content.BroadcastReceiver;
-import android.content.Context;
+import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 import android.view.Menu;
@@ -39,32 +38,27 @@ public class App extends Activity
 	// used to handle messages
 	public static final int MESSAGE_STATE_CHANGED = 1;
 	public static final int MESSAGE_DEVICE_NAME = 2;
-	public static final int MESSAGE_TOAST = 3;
-	public static final int UPDATE_DATA = 4;
-	public static final int NULL_PACKETS = 5;
+	public static final int MESSAGE_TOAST_ACCELO = 3;
+	public static final int MESSAGE_TOAST_CLIENT = 4;
 
 	// used to signal which mouse option is selected
-	public static final int RIGHT_BUTTON_CLICK = 1;
-	public static final int LEFT_BUTTON_CLICK = 2;
-	public static final int SCROOL_WHEEL_CLICK = 3;
-	public static final int MOUSE_MOVE = 4;
+	public static final int MOUSE_MOVE = 1;
+	public static final int RIGHT_BUTTON_CLICK = 2;
+	public static final int LEFT_BUTTON_CLICK = 3;
+	public static final int SCROOL_WHEEL_CLICK = 4;
 
 	// message types
 	public static final String DEVICE_NAME = "";
 	public static final String TOAST = "";
-	public static final String DATA = "";
-	public static final String NULL = "";
+
 	// request types
 	private static final int REQUEST_CONNECT_DEVICE = 1;
 	private static final int REQUEST_ENABLE_BT = 2;
 
-	private BluetoothAdapter btAdapter = null;
-	private AppClient2 appClient = null;
-	// service varibles
-	private Intent accService;
-	private AcceloDataReceiver acceloDataReceiver;
-
-	private String acceloData;
+	private BluetoothAdapter btAdapter;
+	private AppClient2 appClient2;
+	// service variables
+	private AccelometerService accService;
 
 
 	/*
@@ -79,11 +73,10 @@ public class App extends Activity
 			Log.i(TAG, "+++ ON CREATE +++");
 		setContentView(R.layout.main);
 
+		setUpApp();
+
 		// ensure that bluetooth isEnabled before continuing
 		ensureBluetoothIsEnabled();
-
-		accService = new Intent(this, AccelometerService.class);
-		startService(accService);
 
 		final TextView title = (TextView ) findViewById(R.id.title);
 		title.setText(R.string.title);
@@ -116,6 +109,7 @@ public class App extends Activity
 		super.onStart();
 		if ( D )
 			Log.i(TAG, "+++ ON START +++");
+
 		// check to ensure that the bluetooth is turned on
 		if ( !btAdapter.isEnabled() )
 		{
@@ -127,22 +121,88 @@ public class App extends Activity
 		{
 			// set the service if buletooth isEabled
 			// and the service is not already running
-			if ( appClient == null )
+			if ( appClient2 == null )
 			{
 				if ( D )
-					Log.i(TAG, "+++ ON START - SET UP THE APP +++");
-				appClient = new AppClient2(appHandler);
-				appClient.start();
+					Log.i(TAG, "+++ ON START - SET UP THE APPCLIENT +++");
+				appClient2 = new AppClient2(appHandler);
+				appClient2.start();
 			}
+
 		}
 
 	}// end of onStart() method
 
 
+	// this method is called after the app has been paused
+	// if the bluetooth setup is slow and the app is paused
+	// this method will be called
+	@Override
+	public synchronized void onResume()
+	{
+		super.onResume();
+		if ( D )
+			Log.i(TAG, "+++ ON RESUME +++");
+
+		// check to see if a service has been started
+		if ( appClient2.getState() == AppClient2.WAITING )
+		{
+			Log.i(TAG, "+++ ON RESUME - START THE APP CLIENT+++");
+			appClient2.start();
+		}
+		if ( appClient2.getState() == AppClient2.CONNECTED )
+		{
+			Log.i(TAG, "+++ ON RESUME - START THE SERVICE+++");
+			makeShortToast("start the accelerometer service");
+			Intent intent = new Intent(getApplicationContext(), AccelometerService.class);
+			startService(intent);
+		}
+
+	}
+
+
+	// utility method to make a short toast
+	public void makeShortToast( String toast )
+	{
+		Toast.makeText(this, toast, Toast.LENGTH_SHORT).show();
+	}
+
+
+	public synchronized void write( String acceloData )
+	{
+		if(D)
+			Log.i(TAG, "App write: " + acceloData);
+		
+		
+		if ( appClient2.getState() != AppClient2.CONNECTED )
+		{
+			return;
+		}
+		 // Check that there's actually something to send
+        if (acceloData.length() > 0) {
+            // Get the message bytes and tell the AppClient2 to write
+            byte[] send = acceloData.getBytes();
+            appClient2.write(send);
+        }
+	}
+
+
+	/**
+		 * 
+		 */
+	@Override
+	public boolean onCreateOptionsMenu( Menu menu )
+	{
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.option_menu, menu);
+		return true;
+	}// end of onCreateOptionsMenu() method
+
+
 	private void setUpApp()
 	{
 		if ( D )
-			Log.i(TAG, "+++ SET UP SERVICE +++");
+			Log.i(TAG, "+++ SET UP APP +++");
 
 		final EditText editText = (EditText ) findViewById(R.id.edText);
 
@@ -201,39 +261,6 @@ public class App extends Activity
 	}
 
 
-	// this method is called after the app has been paused
-	// if the bluetooth setup is slow and the app is paused
-	// this method will be called
-	@Override
-	public synchronized void onResume()
-	{
-		super.onResume();
-		if ( D )
-			Log.i(TAG, "+++ ON RESUME +++");
-
-		// check to see if a service has been started
-		if ( appClient.getState() == 0 )
-		{
-			Log.i(TAG, "+++ ON RESUME - START THE SERVICE+++");
-			appClient.start();
-		}
-
-		acceloDataReceiver = new AcceloDataReceiver();
-		IntentFilter intentFilter = new IntentFilter();
-		intentFilter.addAction(AccelometerService.ACCELEROMETER_DATA);
-		startService(accService);
-		registerReceiver(acceloDataReceiver, intentFilter);
-
-	}
-
-
-	// utility method to make a short toast
-	public void makeShortToast( String toast )
-	{
-		Toast.makeText(this, toast, Toast.LENGTH_SHORT).show();
-	}
-
-
 	/**
 	 * This method determines the current activity request and processes
 	 * the request.
@@ -275,13 +302,16 @@ public class App extends Activity
 	{
 		// remote MAC:
 		Log.i(TAG, "+++ CONNECT TO SERVER - USING THE REMOTE ADDRESS +++");
-		//String remoteDeviceMacAddress = data.getExtras().getString(CheckBTDevices.EXTRA_DEVICE_ADDRESS);
+		String remoteDeviceMacAddress = data.getExtras().getString(CheckBTDevices.EXTRA_DEVICE_ADDRESS);
 		// String remoteDeviceMacAddress = "00:15:83:3D:0A:57";
 
-		//BluetoothDevice device = btAdapter.getRemoteDevice(remoteDeviceMacAddress);
+		BluetoothDevice device = btAdapter.getRemoteDevice(remoteDeviceMacAddress);
 		// BluetoothDevice device = btAdapter.getRemoteDevice("00:15:83:3D:0A:57");
+		if ( device != null )
+		{
+			appClient2.start();
+		}
 
-		appClient.start();
 	}
 
 
@@ -331,24 +361,12 @@ public class App extends Activity
 		return false;
 	}
 
-
-	/**
-	 * 
-	 */
-	@Override
-	public boolean onCreateOptionsMenu( Menu menu )
-	{
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.option_menu, menu);
-		return true;
-	}// end of onCreateOptionsMenu() method
-
 	/*
 	 * this method handles incoming messages from the service
 	 * these message include the current state of the service,
 	 * or any error messages.
 	 */
-	private final Handler appHandler = new Handler()
+	private final Handler appHandler = new Handler(Looper.getMainLooper())
 	{
 
 		@Override
@@ -360,12 +378,17 @@ public class App extends Activity
 					String connectDeviceName = message.getData().getString(DEVICE_NAME);
 					Toast.makeText(getApplicationContext(), "Connected to: " + connectDeviceName, Toast.LENGTH_SHORT).show();
 					if ( D )
-						Log.i(TAG, "+++ TOAST DEVICE NAME +++");
+						Log.i(TAG, "+++ MESSAGE_DEVICE_NAME +++");
 				break;
-				case UPDATE_DATA:
-					App.this.write(message.getData().getString(DATA));
+				case MESSAGE_TOAST_ACCELO:
+					makeShortToast(message.getData().getString(TOAST));
 					if ( D )
-						Log.i(TAG, "+++ TOAST MESSAGE +++");
+						Log.i(TAG, "+++ MESSAGE_TOAST +++");
+				break;
+				case MESSAGE_TOAST_CLIENT:
+					makeShortToast(message.getData().getString(TOAST));
+					if ( D )
+						Log.i(TAG, "+++ MESSAGE_TOAST +++");
 				break;
 			}
 
@@ -373,39 +396,15 @@ public class App extends Activity
 	};
 
 
-	protected synchronized void write( String string )
-	{
-		appClient.write(acceloData);
-	}
-
-	private class AcceloDataReceiver extends BroadcastReceiver
-	{
-
-		static final String TAG = "Broadcast Receiver";
-
-
-		@Override
-		public void onReceive( Context arg0, Intent arg1 )
-		{
-			Log.d(TAG, "onReceive");
-			String data = arg1.getStringExtra("DATA");
-			appClient.write(data);
-		}
-	}
-
-
 	// ++++++++++++++++++++++++++++when the program ends clean up here+++++++++++++++++++++++++++++++++++++++
 
 	@Override
-	public void onPause()
+	public synchronized void onPause()
 	{
 		if ( D )
 			Log.i(TAG, "+++ ON PAUSE +++");
 		super.onPause();
-		if ( acceloDataReceiver != null )
-		{
-			unregisterReceiver(acceloDataReceiver);
-		}
+		accService.endAccelometerService();
 	}// end of onPause() method
 
 
@@ -417,7 +416,7 @@ public class App extends Activity
 		super.onStop();
 		if ( D )
 			Log.i(TAG, "+++ ON STOP +++");
-
+		accService.endAccelometerService();
 	}// end of onStop() method
 
 
@@ -430,7 +429,6 @@ public class App extends Activity
 		if ( D )
 			Log.i(TAG, "+++ ON DESTROY +++");
 		// stop the Service
-		stopService(accService);
 
 	}
 

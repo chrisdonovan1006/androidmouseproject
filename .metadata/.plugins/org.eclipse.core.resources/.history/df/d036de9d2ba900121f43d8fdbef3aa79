@@ -1,0 +1,82 @@
+package itt.t00154755.mouseserver;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayDeque;
+import java.util.Deque;
+
+public class ServerCommsThread implements Runnable
+{
+
+	private final String TAG = "Server Communication Thread";
+	private InputStream inStream = null;
+	private boolean isConnected = false;
+	private Deque<String> queue;
+
+
+	public ServerCommsThread( InputStream inStream )
+	{
+		System.out.println(TAG + "...constructor");
+		this.inStream = inStream;
+		if (inStream != null)
+		{
+			isConnected = true;
+		}
+		
+		queue = new ArrayDeque<String>();
+	}
+
+
+	@Override
+	public void run()
+	{
+		System.out.println(TAG + " in the run() ");
+
+				byte[] bytes = new byte[1024];
+				int r;
+				try
+				{
+					while ((r = inStream.read(bytes)) > 0) {
+						String acceloData = (new String(bytes, 0, r));
+						System.out.println(TAG + acceloData);
+
+								Thread robotThread = new Thread(new CursorRobot(queue.removeFirst()));
+								robotThread.start();
+							}
+
+						
+					
+				}
+		catch ( IOException e )
+		{
+			// print the error stack
+			e.printStackTrace();
+			e.getCause();
+
+			try
+			{
+				inStream.close();
+			}
+			catch ( IOException e1 )
+			{
+				System.out.println("closing the input stream");
+			}
+			System.out.println(TAG + "shutting down the server 1");
+			System.exit(-1);
+		}
+		finally
+		{
+			try
+			{
+				inStream.close();
+			}
+			catch ( IOException e1 )
+			{
+				System.out.println("closing the input stream");
+			}
+			System.out.println(TAG + "shutting down the server 2");
+			System.exit(-1);
+		}
+	}
+
+}// end of Class

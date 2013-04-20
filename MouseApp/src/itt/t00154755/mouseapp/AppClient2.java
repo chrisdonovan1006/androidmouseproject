@@ -1,7 +1,7 @@
 package itt.t00154755.mouseapp;
 
-import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.UUID;
 
 import android.bluetooth.BluetoothAdapter;
@@ -16,12 +16,14 @@ public class AppClient2
 {
 
 	private static final String TAG = "App Client 2";
-	private BluetoothAdapter btAdapter = null;
-	private ClientCommsThread clientCommThread = null;
+	private static final boolean D = true;
 
-	private final int WAITING = 0;
-	private final int CONNECTED = 1;
+	public static final int WAITING = 0;
+	public static final int CONNECTED = 1;
 	// private final int RUNNING = 2;
+
+	private BluetoothAdapter btAdapter;
+	private ClientCommsThread clientCommThread;
 	private int state;
 	private Handler accHandler;
 
@@ -29,7 +31,8 @@ public class AppClient2
 	public AppClient2( Handler accHandler )
 	{
 		// get the default adapter
-		Log.d(TAG, "getting default adapter");
+		if ( D )
+			Log.d(TAG, "getting default adapter");
 		btAdapter = BluetoothAdapter.getDefaultAdapter();
 		state = WAITING;
 
@@ -51,49 +54,57 @@ public class AppClient2
 	{
 		BluetoothDevice btDevice = null;
 		BluetoothSocket btSocket = null;
-
-		Log.d(TAG, "getting local device");
+		if ( D )
+			Log.d(TAG, "getting local device");
 		btDevice = btAdapter.getRemoteDevice("00:15:83:3D:0A:57");
 		btAdapter.cancelDiscovery();
-
-		Log.d(TAG, "connecting to server");
+		if ( D )
+			Log.d(TAG, "connecting to server");
 		try
 		{
 			btSocket = btDevice.createRfcommSocketToServiceRecord(UUID.fromString("27012f0c-68af-4fbf-8dbe-6bbaf7aa432a"));
 		}
 		catch ( IOException e )
 		{
-			Log.e(TAG, "error creating the RFCOMM connection");
+			if ( D )
+				Log.e(TAG, "error creating the RFCOMM connection");
 		}
-
-		Log.d(TAG, "about to connect");
-		try
+		if ( D )
+			Log.d(TAG, "about to connect");
+		while ( state == WAITING )
 		{
-			btSocket.connect();
-		}
-		catch ( IOException e1 )
-		{
-			//
-			e1.printStackTrace();
-		}
-		setState(CONNECTED);
-		Log.d(TAG, "Connected!");
+			try
+			{
+				btSocket.connect();
+			}
+			catch ( IOException e1 )
+			{
+				//
+				e1.printStackTrace();
+			}
+			
+			if ( D )
+				Log.d(TAG, "Connected!");
 
-		// message back to UI
-		Message message = accHandler.obtainMessage(App.MESSAGE_STATE_CHANGED);
-		Bundle bundle = new Bundle();
-		bundle.putString(App.TOAST, "The device is now connected to teh server");
-		message.setData(bundle);
-		accHandler.handleMessage(message);
-
+			// message back to UI
+			Message message = accHandler.obtainMessage(App.MESSAGE_TOAST_CLIENT);
+			Bundle bundle = new Bundle();
+			bundle.putString(App.TOAST, "The device is now connected to the server");
+			message.setData(bundle);
+			accHandler.handleMessage(message);
+			
+			setState(CONNECTED);
+		}
 		try
 		{
 			createClientCommThread(btSocket);
 		}
 		catch ( IOException e )
 		{
-			e.printStackTrace();
+			if ( D )
+				Log.e(TAG, "error creating the client comms thread");
 		}
+
 	}
 
 
@@ -110,9 +121,11 @@ public class AppClient2
 	 * @param state
 	 *        the state to set
 	 */
-	public synchronized void setState( int state )
+	public synchronized void setState( int stateIn )
 	{
-		this.state = state;
+		if ( D )
+			Log.i(TAG, "state : " + state + " => to: " + stateIn);
+		state = stateIn;
 	}
 
 
@@ -124,6 +137,25 @@ public class AppClient2
 	{
 		clientCommThread = new ClientCommsThread(socket);
 		clientCommThread.start();
+	}
+
+
+	public synchronized void write( byte[] acceloData )
+	{
+		if ( D )
+			Log.i(TAG, "Pass the data to the thread: " + acceloData);
+		// Create temporary object
+		ClientCommsThread cct;
+		// Synchronize a copy of the ConnectedThread
+		synchronized ( this )
+		{
+			if ( state != CONNECTED )
+				return;
+			cct = clientCommThread;
+		}
+		// Perform the write unsynchronized
+		cct.writeToAppClient(acceloData);
+
 	}
 
 
@@ -153,14 +185,6 @@ public class AppClient2
 		setState(WAITING);
 	}
 
-
-	public void write( String acceloData )
-	{
-		Log.i(TAG, "Pass the data to the thread");
-		clientCommThread.writeToAppClient(acceloData);
-		Log.i(TAG, "Values Passed: " + acceloData);
-	}
-
 	/**
 	 * 
 	 * @author Christopher
@@ -171,28 +195,51 @@ public class AppClient2
 
 		private static final String TAG = "Client Comms Thread";
 		private BluetoothSocket btSocket = null;
+		private final OutputStream outStream;
 
 
 		public ClientCommsThread( BluetoothSocket btSocket )
 		{
-			Log.i(TAG, "+++ SET UP THE CLIENT COMM THREAD +++");
-			this.btSocket = btSocket;
-		}
-
-
-		public void writeToAppClient( String acceloData )
-		{
-			DataOutputStream outStream = null;
+			OutputStream tmpOut = null;
+			if ( D )
+				Log.i(TAG, "+++ SET UP THE CLIENT COMM THREAD +++");
 			try
 			{
-				outStream = new DataOutputStream(btSocket.getOutputStream());
-				outStream.write(acceloData.getBytes());
-				outStream.flush();
+				tmpOut = btSocket.getOutputStream();
 			}
 			catch ( IOException e )
 			{
-				//
+				// TODO Auto-generated catch block
 				e.printStackTrace();
+			}
+			outStream = tmpOut;
+		}
+
+
+		public void writeToAppClient( byte[] acceloData )
+		{
+			try
+			{
+				outStream.write(acceloData);
+			}
+			catch ( IOException e )
+			{
+				if ( D )
+					Log.e(TAG, "error trying to write to the server");
+				try
+				{
+					outStream.close();
+				}
+				catch ( IOException e1 )
+				{
+					if ( D )
+						Log.e(TAG, "error trying to close the outstream");
+				}
+			}
+			catch ( Exception nullP )
+			{
+				if ( D )
+					Log.e(TAG, "null packet");
 			}
 		}
 
@@ -200,10 +247,7 @@ public class AppClient2
 		@Override
 		public void run()
 		{
-			while ( true )
-			{
-				continue;
-			}
+
 		}
 
 
@@ -216,8 +260,10 @@ public class AppClient2
 			}
 			catch ( IOException e )
 			{
-				Log.e(TAG, "Cancelling the Client Comm Thread");
-				Log.e(TAG, "error closing the socket");
+				if ( D )
+					Log.e(TAG, "Cancelling the Client Comm Thread");
+				if ( D )
+					Log.e(TAG, "error closing the socket");
 			}
 		}
 	}

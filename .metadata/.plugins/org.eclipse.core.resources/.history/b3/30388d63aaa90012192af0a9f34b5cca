@@ -1,0 +1,196 @@
+package itt.t00154755.mouseapp;
+
+import android.app.Service;
+import android.content.Context;
+import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Message;
+import android.util.Log;
+
+/**
+ * AccelometerService
+ * 
+ * @author
+ */
+public class AccelometerService extends Service implements SensorEventListener
+{
+
+	private static final String TAG = "Accelometer Service";
+	private static final boolean D = true;
+	private static final int LEFTDOWN = 1;
+	private static final int RIGHTUP = 2;
+	private static final int LEFTUP = 3;
+	private static final int RIGHTDOWN = 4;
+	private App app;
+	private Context appContext;
+	private Handler appHandler;
+
+	private String acceloData;
+	// sensor manager variables
+	private SensorManager sm;
+	private Sensor s;
+
+
+	public AccelometerService()
+	{
+		initAccelometerService();
+		app = new App();
+	}
+
+
+	public void initAccelometerService()
+	{
+		registerListener();
+		makeToastShort("AccelometerService started");
+	}
+
+
+	public void endAccelometerService()
+	{
+		unregisterListener();
+		makeToastShort("AccelometerService stopped");
+	}
+
+
+	// Method that registered the Listener for the Accelerometer
+	// Object.
+	private void registerListener()
+	{
+		if ( D )
+			Log.d(TAG, "+++ REGISTER-LISTENER FOR SENSOR +++");
+
+		sm = (SensorManager ) app.getSystemService(Context.SENSOR_SERVICE);
+		// check to make sure that the SensorList is not empty
+		if ( sm.getSensorList(Sensor.TYPE_ACCELEROMETER).size() != 0 )
+		{
+			// get the Accelerometer Sensor
+			s = sm.getSensorList(Sensor.TYPE_ACCELEROMETER).get(0);
+			// register the listener to the Sensor
+			sm.registerListener(this, s, SensorManager.SENSOR_DELAY_NORMAL);
+		}
+	}
+
+
+	private void unregisterListener()
+	{
+		if ( D )
+			Log.d(TAG, "+++ UNREGISTER-LISTENER FOR SENSOR +++");
+		sm.unregisterListener(this, s);
+
+	}
+
+
+	@Override
+	public void onAccuracyChanged( Sensor sensor, int accuracy )
+	{
+		//
+
+	}
+
+
+	@Override
+	public void onSensorChanged( SensorEvent event )
+	{
+		if ( D )
+			Log.d(TAG, "+++ SENSOR CHANGE +++");
+
+		if ( event != null )
+		{
+			new SensorValuesTask(app).execute(event);
+		}
+
+	}
+
+	private class SensorValuesTask extends AsyncTask<SensorEvent, Void, String>
+	{
+
+		private App app;
+
+
+		protected void onProgressUpdate( Void... progress )
+		{
+		}
+
+
+		public SensorValuesTask( App app )
+		{
+			this.app = app;
+		}
+
+
+		@Override
+		protected String doInBackground( SensorEvent... values )
+		{
+			SensorEvent event = values[0];
+			// remove the integer x and y values from the float array.
+			int xIntAxis = (int ) event.values[0];
+			int yIntAxis = (int ) event.values[1];
+
+			if ( xIntAxis < 0 && yIntAxis < 0 )
+			{
+				// add only the positive values
+				Log.d(TAG, "move mouse: " + LEFTDOWN);
+				acceloData = "" + LEFTDOWN + "," + Math.abs(xIntAxis) + "," + Math.abs(yIntAxis) + "\n";
+				return acceloData;
+			}
+			else
+				if ( xIntAxis > 0 && yIntAxis > 0 )
+				{
+					// add only the positive values
+					Log.d(TAG, "move mouse: " + RIGHTUP);
+					acceloData = "" + RIGHTUP + "," + Math.abs(xIntAxis) + "," + Math.abs(yIntAxis) + "\n";
+					return acceloData;
+				}
+				else
+					if ( xIntAxis < 0 && yIntAxis > 0 )
+					{
+						// add only the positive values
+						Log.d(TAG, "move mouse: " + LEFTUP);
+						acceloData = "" + LEFTUP + "," + Math.abs(xIntAxis) + "," + Math.abs(yIntAxis) + "\n";
+						return acceloData;
+					}
+					else
+						if ( xIntAxis > 0 && yIntAxis < 0 )
+						{
+							// add only the positive values
+							Log.d(TAG, "move mouse: " + RIGHTDOWN);
+							acceloData = "" + RIGHTDOWN + "," + Math.abs(xIntAxis) + "," + Math.abs(yIntAxis) + "\n";
+							return acceloData;
+						}
+			return acceloData;
+		}
+
+
+		protected void onPostExecute( String acceloData )
+		{
+			app.write(acceloData);
+		}
+	}
+
+
+	private void makeToastShort( String string )
+	{
+		// message back to UI
+		Message message = appHandler.obtainMessage(App.MESSAGE_TOAST);
+		Bundle bundle = new Bundle();
+		bundle.putString(App.TOAST, string);
+		message.setData(bundle);
+		appHandler.handleMessage(message);
+	}
+
+
+	@Override
+	public IBinder onBind( Intent intent )
+	{
+		// 
+		return null;
+	}
+
+}// end class
