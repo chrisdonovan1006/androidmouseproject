@@ -1,0 +1,11 @@
+package itt.t00154755.mouseapp;
+
+import android.app.AlertDialog;
+
+
+public class WaitToConnectDialog
+{
+	AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(null );
+	                                                  
+
+}

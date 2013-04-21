@@ -12,11 +12,14 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.util.Log;
+import android.view.Display;
+import android.view.Surface;
 
 /**
  * AccelometerService
  * 
- * @author
+ * @author Christopher
+ * 
  */
 public class AccelometerService extends Service implements SensorEventListener
 {
@@ -24,14 +27,14 @@ public class AccelometerService extends Service implements SensorEventListener
 	private static final String TAG = "Accelometer Service";
 	private static final boolean D = true;
 	private String accelerometerData = " 1 0 0 ";
-	private SensorEvent event;
 	private int xIntAxis;
 	private int yIntAxis;
 	// sensor movement direction
-	private static final int LEFTDOWN = 1;
-	private static final int RIGHTUP = 2;
-	private static final int LEFTUP = 3;
-	private static final int RIGHTDOWN = 4;
+	public static final int LEFTDOWN = 1;
+	public static final int RIGHTUP = 2;
+	public static final int LEFTUP = 3;
+	public static final int RIGHTDOWN = 4;
+
 	private Context context;
 	private Handler appHandler;
 	private Thread sendDataThread;
@@ -40,11 +43,15 @@ public class AccelometerService extends Service implements SensorEventListener
 	private SensorManager accelerometerManager;
 	private Sensor accelerometerSensor;
 
+	private boolean isRegistered = false;
+	private Display appDisplay;
 
-	public AccelometerService( Context context, Handler appHandler )
+
+	public AccelometerService( Context context, Handler appHandler, Display appDisplay )
 	{
 		this.context = context;
 		this.appHandler = appHandler;
+		this.appDisplay = appDisplay;
 	}
 
 
@@ -55,14 +62,18 @@ public class AccelometerService extends Service implements SensorEventListener
 		// until told otherwise
 		return START_STICKY;
 	}
-	
+
+
 	@Override
 	public void onCreate()
 	{
 		// TODO initiate the service
 		super.onCreate();
 		initAccelometerService();
+
 	}
+
+
 	@Override
 	public void onDestroy()
 	{
@@ -134,6 +145,8 @@ public class AccelometerService extends Service implements SensorEventListener
 			accelerometerSensor = accelerometerManager.getSensorList(Sensor.TYPE_ACCELEROMETER).get(0);
 			// register the listener to the Sensor
 			accelerometerManager.registerListener(this, accelerometerSensor, SensorManager.SENSOR_DELAY_GAME);
+
+			isRegistered = true;
 		}
 	}
 
@@ -142,7 +155,11 @@ public class AccelometerService extends Service implements SensorEventListener
 	{
 		if ( D )
 			Log.d(TAG, "+++ UNREGISTER-LISTENER FOR SENSOR +++");
-		accelerometerManager.unregisterListener(this, accelerometerSensor);
+
+		if ( isRegistered )
+		{
+			accelerometerManager.unregisterListener(this, accelerometerSensor);
+		}
 
 	}
 
@@ -150,7 +167,7 @@ public class AccelometerService extends Service implements SensorEventListener
 	@Override
 	public void onAccuracyChanged( Sensor sensor, int accuracy )
 	{
-		//
+		// not using the accuracy of the sensor
 	}
 
 
@@ -176,10 +193,45 @@ public class AccelometerService extends Service implements SensorEventListener
 
 	private void sendData( SensorEvent event )
 	{
-		this.event = event;
+		float[] filteredEvent = applyFilters(event);
 		// remove the integer x and y values from the float array.
-		xIntAxis = (int ) this.event.values[0];
-		yIntAxis = (int ) this.event.values[1];
+
+		/*
+		 * If Y is Positive and X=0 then the angle is 0
+		 * For Quadrant 1 the angle is abs(arctan(X/Y)).
+		 * If X is Positive and Y=0 then the angle is 90
+		 * For Quadrant 2 the angle is (abs(arctan(Y/X)) + 90)
+		 * If Y is negative and X=0 then the angle is 180
+		 * For Quadrant 3 the angle is (abs(arctan(X/Y)) + 180)
+		 * If X is Negative and Y=0 then the angle is 270
+		 * For Quadrant 4 the angle is (abs(arctan(Y/X)) + 270)
+		 */
+
+		float xFloatAxis = 0;
+		float yFloatAxis = 0;
+
+		switch ( appDisplay.getRotation() )
+		{
+			case Surface.ROTATION_0:
+				xFloatAxis = filteredEvent[0];
+				yFloatAxis = filteredEvent[1];
+			break;
+			case Surface.ROTATION_90:
+				xFloatAxis = -filteredEvent[1];
+				yFloatAxis = filteredEvent[0];
+			break;
+			case Surface.ROTATION_180:
+				xFloatAxis = -filteredEvent[1];
+				yFloatAxis = -filteredEvent[0];
+			break;
+			case Surface.ROTATION_270:
+				xFloatAxis = filteredEvent[0];
+				yFloatAxis = -filteredEvent[1];
+			break;
+		}
+		Log.d(TAG, "filtered values: " + xFloatAxis + ", " + yFloatAxis);
+		xIntAxis = (int ) xFloatAxis;
+		yIntAxis = (int ) yFloatAxis;
 
 		if ( xIntAxis < 0 && yIntAxis < 0 )
 		{
@@ -213,8 +265,52 @@ public class AccelometerService extends Service implements SensorEventListener
 						setAccelerometerData(" " + RIGHTDOWN + " " + Math.abs(xIntAxis) + " " + Math.abs(yIntAxis) + " ");
 					}
 
-		sendDataThread = new Thread(new SendDataThread()); // Thread created
-		sendDataThread.start();
+		try
+		{
+			Thread.sleep(32);
+
+			sendDataThread = new Thread(new SendDataThread()); // Thread created
+			sendDataThread.start(); // Thread started
+		}
+		catch ( InterruptedException e )
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		/*
+		 * sendDataThread = new Thread(new SendDataThread()); // Thread created
+		 * sendDataThread.start();
+		 */
+	}
+
+
+	/**
+	 * @param event
+	 * @return
+	 */
+	private float[] applyFilters( SensorEvent event )
+	{
+		// In this example, alpha is calculated as t / (t + dT),
+		// where t is the low-pass filter's time-constant and
+		// dT is the event delivery rate.
+		
+		// g = 0.9 * g + 0.1 * v
+		// g = 9.80665 m/s2
+		final float alpha = 9.80665f;
+		float[] gravity = new float[3];
+
+		// Isolate the force of gravity with the low-pass filter.
+		gravity[0] = alpha * gravity[0] + ( 1 - alpha ) * event.values[0];
+		gravity[1] = alpha * gravity[0] + ( 1 - alpha ) * event.values[1];
+		gravity[2] = alpha * gravity[0] + ( 1 - alpha ) * event.values[2];
+
+		 float[] linear_acceleration = new float[3];
+		 // Remove the gravity contribution with the high-pass filter.
+		 linear_acceleration[0] = event.values[0] - gravity[0];
+		 linear_acceleration[1] = event.values[1] - gravity[1];
+		 linear_acceleration[2] = event.values[2] - gravity[2];
+
+		return gravity;
 	}
 
 

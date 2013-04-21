@@ -24,3 +24,7 @@
 1366478843256	Encapsulate field 'accelerometerSensor'
 1366512280285	Extract method 'sendDeviceNameToUIHandler'
 1366512332481	Extract method 'sendConnectedToastToUIHandler'
+1366544388795	Delete element
+1366545176971	Delete element
+1366560098782	Rename field 'accService'
+1366579551889	Extract method 'applyFilters'

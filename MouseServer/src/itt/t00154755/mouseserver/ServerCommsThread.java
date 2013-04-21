@@ -9,11 +9,14 @@ public class ServerCommsThread implements Runnable
 	private final String TAG = "Server Communication Thread";
 	private InputStream in = null;
 
+
 	public ServerCommsThread( InputStream inStream )
 	{
 		System.out.println(TAG + "...constructor");
 		in = inStream;
 	}
+
+
 	@Override
 	public void run()
 	{

@@ -9,9 +9,11 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -64,8 +66,10 @@ public class App extends Activity
 	private AppClient2 appClient2;
 	
 	// service variables
-	private AccelometerService accService;
+	private AccelometerService appService;
 	public TextView title;
+	public WindowManager appWindow;
+	public Display appDisplay;
 
 
 	/*
@@ -79,6 +83,8 @@ public class App extends Activity
 		if ( D )
 			Log.i(TAG, "+++ ON CREATE +++");
 		setContentView(R.layout.main);
+		appWindow = (WindowManager) getSystemService(WINDOW_SERVICE);
+		appDisplay = appWindow.getDefaultDisplay();
 
 		setUpApp();
 
@@ -161,10 +167,8 @@ public class App extends Activity
 		{
 			Log.i(TAG, "+++ ON RESUME - START THE SERVICE+++");
 			makeShortToast("start the accelerometer service");
-			AccelometerService accelometerService = new AccelometerService(this.getApplicationContext(), appHandler);
+			AccelometerService accelometerService = new AccelometerService(this.getApplicationContext(), appHandler, appDisplay);
 			accelometerService.initAccelometerService();
-			
-			
 		}
 
 	}
@@ -419,7 +423,7 @@ public class App extends Activity
 		if ( D )
 			Log.i(TAG, "+++ ON PAUSE +++");
 		super.onPause();
-		accService.endAccelometerService();
+
 	}// end of onPause() method
 
 
@@ -431,7 +435,13 @@ public class App extends Activity
 		super.onStop();
 		if ( D )
 			Log.i(TAG, "+++ ON STOP +++");
-		accService.endAccelometerService();
+		if (appClient2 != null)
+		{
+			appClient2.closeClient();
+			appClient2 = null;
+		}
+		
+		
 	}// end of onStop() method
 
 
@@ -444,7 +454,11 @@ public class App extends Activity
 		if ( D )
 			Log.i(TAG, "+++ ON DESTROY +++");
 		// stop the Service
-
+		if (appService != null)
+		{
+			appService.endAccelometerService();
+			appService = null;
+		}
 	}
 
 }// end of the class

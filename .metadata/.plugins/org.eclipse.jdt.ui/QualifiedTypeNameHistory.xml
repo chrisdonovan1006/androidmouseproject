@@ -1,24 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="java.util.ArrayList"/>
-<fullyQualifiedTypeName name="java.lang.System"/>
-<fullyQualifiedTypeName name="javax.bluetooth.RemoteDevice"/>
-<fullyQualifiedTypeName name="android.view.MenuInflater"/>
-<fullyQualifiedTypeName name="itt.t00154755.mouseapp.R.menu"/>
-<fullyQualifiedTypeName name="android.preference.PreferenceActivity"/>
-<fullyQualifiedTypeName name="itt.t00154755.mouseapp.R.xml"/>
-<fullyQualifiedTypeName name="android.preference.PreferenceFragment"/>
-<fullyQualifiedTypeName name="android.text.method.ScrollingMovementMethod"/>
-<fullyQualifiedTypeName name="java.awt.Point"/>
-<fullyQualifiedTypeName name="java.awt.MouseInfo"/>
-<fullyQualifiedTypeName name="javax.bluetooth.LocalDevice"/>
-<fullyQualifiedTypeName name="android.os.Bundle"/>
-<fullyQualifiedTypeName name="android.bluetooth.BluetoothAdapter"/>
-<fullyQualifiedTypeName name="android.widget.Toast"/>
 <fullyQualifiedTypeName name="android.widget.EditText"/>
 <fullyQualifiedTypeName name="android.view.KeyEvent"/>
 <fullyQualifiedTypeName name="android.view.Window"/>
-<fullyQualifiedTypeName name="itt.t00154755.mouseapp.R.layout"/>
 <fullyQualifiedTypeName name="android.widget.TextView"/>
 <fullyQualifiedTypeName name="android.view.View.OnClickListener"/>
 <fullyQualifiedTypeName name="java.util.UUID"/>
@@ -56,8 +40,24 @@
 <fullyQualifiedTypeName name="android.os.Handler"/>
 <fullyQualifiedTypeName name="android.os.Message"/>
 <fullyQualifiedTypeName name="android.os.AsyncTask"/>
-<fullyQualifiedTypeName name="android.app.Activity"/>
 <fullyQualifiedTypeName name="java.io.OutputStream"/>
 <fullyQualifiedTypeName name="android.app.Service"/>
 <fullyQualifiedTypeName name="java.util.StringTokenizer"/>
+<fullyQualifiedTypeName name="android.app.AlertDialog"/>
+<fullyQualifiedTypeName name="android.app.Activity"/>
+<fullyQualifiedTypeName name="android.os.Bundle"/>
+<fullyQualifiedTypeName name="android.content.DialogInterface"/>
+<fullyQualifiedTypeName name="itt.t00154755.mouseapp.R.layout"/>
+<fullyQualifiedTypeName name="java.awt.Dimension"/>
+<fullyQualifiedTypeName name="java.awt.Toolkit"/>
+<fullyQualifiedTypeName name="java.awt.event.InputEvent"/>
+<fullyQualifiedTypeName name="java.awt.event.MouseEvent"/>
+<fullyQualifiedTypeName name="java.awt.event.KeyEvent"/>
+<fullyQualifiedTypeName name="java.lang.System"/>
+<fullyQualifiedTypeName name="java.awt.event.MouseMotionListener"/>
+<fullyQualifiedTypeName name="java.awt.event.MouseListener"/>
+<fullyQualifiedTypeName name="java.awt.event.KeyListener"/>
+<fullyQualifiedTypeName name="java.awt.Window"/>
+<fullyQualifiedTypeName name="android.view.Display"/>
+<fullyQualifiedTypeName name="android.view.Surface"/>
 </qualifiedTypeNameHistroy>

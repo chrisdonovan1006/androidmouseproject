@@ -16,6 +16,7 @@
         android:layout_below="@+id/title"
         android:text="@string/right" />
 
+    
     <TextView
         android:id="@+id/title"
         android:layout_width="wrap_content"

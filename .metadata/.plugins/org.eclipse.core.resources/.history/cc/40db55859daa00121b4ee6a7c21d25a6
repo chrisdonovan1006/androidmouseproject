@@ -1,0 +1,257 @@
+// packages
+
+package itt.t00154755.mouseserver;
+
+// imports
+import java.awt.AWTException;
+import java.awt.Dimension;
+import java.awt.HeadlessException;
+import java.awt.MouseInfo;
+import java.awt.Point;
+import java.awt.Robot;
+import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
+import java.util.StringTokenizer;
+
+/**
+ * @author Christopher Donovan
+ * 
+ */
+public class CursorRobot implements Runnable
+{
+
+	private static final String TAG = "Cursor Robot Thread";
+
+	private int[] convertedValues;
+	private Robot robot;
+	private Point startLocation;
+	private Point currentLocation;
+	private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	private double width;
+	private double height;
+	private int ctrWidth = 0;
+	private int ctrHeight = 0;
+
+	// used to signal which mouse option is selected
+	// started an 6 - 9 because the direction value
+	// is add to the same type of string that counts 1-4
+	public static final int MOUSE_MOVE = 6;
+	public static final int RIGHT_BUTTON_CLICK = 7;
+	public static final int LEFT_BUTTON_CLICK = 8;
+	public static final int SCROOL_WHEEL_CLICK = 9;
+
+
+	public CursorRobot( String dataIn )
+	{
+		System.out.print(TAG + "\ncreating the robot");
+		convertedValues = covertStringToIntArray(dataIn);
+
+		robot = initRobot();
+		setUpStartLocation();
+
+	}
+
+
+	private Robot initRobot()
+	{
+		try
+		{
+			robot = new Robot();
+
+			// addMouseMotionListener(robot);
+			// addMouseListener(robot);
+		}
+		catch ( AWTException eAWT )
+		{
+			// print the error stack
+			System.out.print(TAG + "\n");
+			eAWT.printStackTrace();
+			eAWT.getCause();
+			System.exit(-1);
+		}
+		return robot;
+	}
+
+
+	/**
+	 * 
+	 */
+	private void setUpStartLocation()
+	{
+		width = screenSize.getWidth();
+		height = screenSize.getHeight();
+		ctrWidth = (int ) ( width / 2 );
+		ctrHeight = (int ) ( height / 2 );
+		System.out.println("starting at: " + ctrWidth + ", " +ctrHeight);
+		startLocation = new Point(ctrWidth, ctrHeight);
+	}
+
+
+	@Override
+	public void run()
+	{
+		int state = convertedValues[0];
+		if ( state > 0 && state < 5 )
+		{
+			// move the mouse if the state is between 1 and 4 inclusive
+			moveCursor();
+		}
+		else
+		{
+			moveClicked(state);
+		}
+	}
+
+
+	private void moveClicked( int state )
+	{
+		switch ( state )
+		{
+			case SCROOL_WHEEL_CLICK:
+				robot.keyPress(KeyEvent.VK_1);
+				System.out.println("scrool");
+				robot.keyRelease(KeyEvent.VK_1);
+			break;
+			case LEFT_BUTTON_CLICK:
+				robot.keyPress(KeyEvent.VK_2);
+				System.out.println("left");
+				robot.keyRelease(KeyEvent.VK_2);
+			break;
+			case RIGHT_BUTTON_CLICK:
+				robot.keyPress(KeyEvent.VK_3);
+				System.out.println("right");
+				robot.keyRelease(KeyEvent.VK_3);
+			break;
+		}
+	}
+
+
+	/**
+	 * @throws HeadlessException
+	 */
+	private synchronized void moveCursor() throws HeadlessException
+	{
+		setCurrentLocation(MouseInfo.getPointerInfo().getLocation());
+		System.out.println(TAG + "\nmoving the mouse");
+		// the force of the movement
+		int direction = convertedValues[0];
+		int moveX = convertedValues[1];
+		int moveY = convertedValues[2];
+
+		// the current location of the cursor
+		Point currLoc = getCurrentLocation();
+		int currX = currLoc.x;
+		int currY = currLoc.y;
+
+		// amount to move = force + current
+		int moveToX = 0;
+		int moveToY = 0;
+
+		while ( true )
+		{
+
+			if ( direction == 1 )
+			{
+				// amount to move = force + current
+				moveToX = moveX - currX;
+				moveToY = moveY - currY;
+				System.out.println("move ld: " + moveToX + ", " + moveToY);
+				robot.mouseMove(moveToX, moveToY);
+			}
+			else
+				if ( direction == 2 )
+				{
+					// amount to move = force + current
+					moveToX = moveX + currX;
+					moveToY = moveY + currY;
+					System.out.println("move ru: " + moveToX + ", " + moveToY);
+					robot.mouseMove(moveToX, moveToY);
+				}
+				else
+					if ( direction == 3 )
+					{
+						// amount to move = force + current
+						moveToX = moveX - currX;
+						moveToY = moveY + currY;
+						System.out.println("move lu: " + moveToX + ", " + moveToY);
+						robot.mouseMove(moveToX, moveToY);
+					}
+					else
+						if ( direction == 4 )
+						{
+							// amount to move = force + current
+							moveToX = moveX + currX;
+							moveToY = moveY - currY;
+							System.out.println("move rd: " + moveToX + ", " + moveToY);
+							robot.mouseMove(moveToX, moveToY);
+						}
+
+		}
+	}
+
+
+	/**
+	 * 
+	 * @param acceloData
+	 * @return
+	 */
+	private synchronized int[] covertStringToIntArray( String acceloData )
+	{
+		// TODO: convert the incoming String to an int[] that will
+		StringTokenizer st = new StringTokenizer(acceloData);
+		int[] data = new int[acceloData.length()];
+		int i = 0;
+		while ( st.hasMoreTokens() )
+		{
+			int val = Integer.parseInt(st.nextToken());
+			if ( val >= 0 && val <= 9 )
+			{
+				data[i] = val;
+			}
+			i++;
+		}
+
+		return data;
+	}
+
+
+	/**
+	 * @return the currentLocation
+	 */
+	public synchronized Point getCurrentLocation()
+	{
+		return currentLocation;
+	}
+
+
+	/**
+	 * @param currentLocation
+	 *        the currentLocation to set
+	 */
+	public synchronized void setCurrentLocation( Point currentLocation )
+	{
+		this.currentLocation = currentLocation;
+	}
+
+
+	/**
+	 * @return the startLocation
+	 */
+	public synchronized Point getStartLocation()
+	{
+		return startLocation;
+	}
+
+
+	/**
+	 * @param startLocation
+	 *        the startLocation to set
+	 * @return
+	 */
+	public synchronized void setStartLocation( Point startLocation )
+	{
+		this.startLocation = startLocation;
+	}
+
+}// end of class
+

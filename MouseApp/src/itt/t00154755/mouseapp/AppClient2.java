@@ -12,6 +12,10 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
+/**
+ * @author Christopher
+ * 
+ */
 public class AppClient2
 {
 
@@ -47,8 +51,8 @@ public class AppClient2
 
 
 	/**
-	 * this method tries to connect to the server,
-	 * it either create a connection or not
+	 * this method connects to the server it opens an RFCOMM serial port connection
+	 * over TCP this ensure that the data
 	 */
 	private void connectToSever()
 	{
@@ -57,8 +61,8 @@ public class AppClient2
 		if ( D )
 			Log.d(TAG, "getting local device");
 		btDevice = btAdapter.getRemoteDevice("00:15:83:3D:0A:57");
-		String name = btDevice.getName();
-		sendDeviceNameToUIHandler(name);
+		// String name = btDevice.getName();
+		// sendDeviceNameToUIHandler(name);
 		btAdapter.cancelDiscovery();
 		if ( D )
 			Log.d(TAG, "connecting to server");
@@ -87,9 +91,8 @@ public class AppClient2
 
 			if ( D )
 				Log.d(TAG, "Connected!");
-			
+
 			sendConnectedToastToUIHandler();
-			
 
 			setState(CONNECTED);
 		}
@@ -107,7 +110,7 @@ public class AppClient2
 
 
 	/**
-	 * 
+	 * sends a toast back to the UI Handler once the connection is made
 	 */
 	private void sendConnectedToastToUIHandler()
 	{
@@ -121,7 +124,8 @@ public class AppClient2
 
 
 	/**
-	 * @param btDevice
+	 * @param name
+	 *        the friendly name of the connected blue-tooth device
 	 */
 	private void sendDeviceNameToUIHandler( String name )
 	{
@@ -136,6 +140,7 @@ public class AppClient2
 
 	/**
 	 * @return the state
+	 *         the current state of the connection process
 	 */
 	public synchronized int getState()
 	{
@@ -157,7 +162,9 @@ public class AppClient2
 
 	/**
 	 * @param btSocket
+	 *        the currently open blue-tooth socket
 	 * @throws IOException
+	 *         if the socket is not open
 	 */
 	public synchronized void createClientCommThread( BluetoothSocket socket ) throws IOException
 	{
@@ -166,10 +173,14 @@ public class AppClient2
 	}
 
 
+	/**
+	 * @param acceloData
+	 *        a byte[] representation of the accelerometer data reading
+	 */
 	public synchronized void write( byte[] acceloData )
 	{
 		if ( D )
-			Log.i(TAG, "Pass the data to the thread: " + acceloData);
+			Log.i(TAG, "Pass the data to the thread: " + acceloData.toString());
 		// Create temporary object
 		ClientCommsThread cct;
 		// Synchronize a copy of the ConnectedThread
@@ -186,7 +197,8 @@ public class AppClient2
 
 
 	/**
-	 * cancel the currently running thread
+	 * @param socket
+	 *        cancel the currently running thread
 	 */
 	public void cancel( BluetoothSocket socket )
 	{
@@ -211,8 +223,22 @@ public class AppClient2
 		setState(WAITING);
 	}
 
+
 	/**
-	 * 
+	 * @param socket
+	 *        cancel the currently running thread
+	 */
+	public void closeClient()
+	{
+		if ( clientCommThread != null )
+		{
+			clientCommThread.cancel();
+			clientCommThread = null;
+		}
+		setState(WAITING);
+	}
+
+	/**
 	 * @author Christopher
 	 * 
 	 */
@@ -224,6 +250,9 @@ public class AppClient2
 		private final OutputStream outStream;
 
 
+		/*
+		 * 
+		 */
 		public ClientCommsThread( BluetoothSocket btSocket )
 		{
 			OutputStream tmpOut = null;
@@ -242,6 +271,9 @@ public class AppClient2
 		}
 
 
+		/**
+		 * @param acceloData
+		 */
 		public void writeToAppClient( byte[] acceloData )
 		{
 			try
@@ -270,6 +302,11 @@ public class AppClient2
 		}
 
 
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see java.lang.Thread#run()
+		 */
 		@Override
 		public void run()
 		{
@@ -277,6 +314,9 @@ public class AppClient2
 		}
 
 
+		/**
+		 * 
+		 */
 		public void cancel()
 		{
 			try
