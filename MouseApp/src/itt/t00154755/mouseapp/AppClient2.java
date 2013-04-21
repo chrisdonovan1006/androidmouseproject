@@ -57,6 +57,8 @@ public class AppClient2
 		if ( D )
 			Log.d(TAG, "getting local device");
 		btDevice = btAdapter.getRemoteDevice("00:15:83:3D:0A:57");
+		String name = btDevice.getName();
+		sendDeviceNameToUIHandler(name);
 		btAdapter.cancelDiscovery();
 		if ( D )
 			Log.d(TAG, "connecting to server");
@@ -82,17 +84,13 @@ public class AppClient2
 				//
 				e1.printStackTrace();
 			}
-			
+
 			if ( D )
 				Log.d(TAG, "Connected!");
-
-			// message back to UI
-			Message message = accHandler.obtainMessage(App.MESSAGE_TOAST_CLIENT);
-			Bundle bundle = new Bundle();
-			bundle.putString(App.TOAST, "The device is now connected to the server");
-			message.setData(bundle);
-			accHandler.handleMessage(message);
 			
+			sendConnectedToastToUIHandler();
+			
+
 			setState(CONNECTED);
 		}
 		try
@@ -105,6 +103,34 @@ public class AppClient2
 				Log.e(TAG, "error creating the client comms thread");
 		}
 
+	}
+
+
+	/**
+	 * 
+	 */
+	private void sendConnectedToastToUIHandler()
+	{
+		// message back to UI
+		Message message = accHandler.obtainMessage(App.MESSAGE_TOAST_CLIENT);
+		Bundle bundle = new Bundle();
+		bundle.putString(App.TOAST, "The device is now connected to the server");
+		message.setData(bundle);
+		accHandler.handleMessage(message);
+	}
+
+
+	/**
+	 * @param btDevice
+	 */
+	private void sendDeviceNameToUIHandler( String name )
+	{
+		// message back to UI
+		Message message = accHandler.obtainMessage(App.MESSAGE_DEVICE_NAME);
+		Bundle bundle = new Bundle();
+		bundle.putString(App.DEVICE_NAME, name);
+		message.setData(bundle);
+		accHandler.handleMessage(message);
 	}
 
 

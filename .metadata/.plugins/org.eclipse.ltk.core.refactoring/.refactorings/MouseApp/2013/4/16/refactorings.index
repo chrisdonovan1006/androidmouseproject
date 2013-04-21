@@ -19,3 +19,8 @@
 1366460589736	Delete element
 1366460604811	Delete element
 1366460639591	Delete element
+1366478798871	Encapsulate field 'accelerometerData'
+1366478837711	Encapsulate field 'accelerometerManager'
+1366478843256	Encapsulate field 'accelerometerSensor'
+1366512280285	Extract method 'sendDeviceNameToUIHandler'
+1366512332481	Extract method 'sendConnectedToastToUIHandler'

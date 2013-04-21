@@ -60,7 +60,7 @@ public class ServerCommsThread implements Runnable
 			{
 				System.out.println("error closing the input stream");
 			}
-			System.out.println(TAG + " - shutting down the server 2");
+			System.out.println(TAG + " - shutting down the server - finally");
 			System.exit(-1);
 		}
 	}

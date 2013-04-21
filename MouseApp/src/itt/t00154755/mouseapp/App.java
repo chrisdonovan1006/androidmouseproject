@@ -35,30 +35,37 @@ public class App extends Activity
 	private static final String TAG = "Main App";
 	private static final boolean D = true;
 
-	// used to handle messages
+	// used to handle messages from the service and the client
 	public static final int MESSAGE_STATE_CHANGED = 1;
 	public static final int MESSAGE_DEVICE_NAME = 2;
 	public static final int MESSAGE_TOAST_ACCELO = 3;
 	public static final int MESSAGE_TOAST_CLIENT = 4;
-
+	public static final int MESSAGE_DATA_ACCELO = 5;
+	
 	// used to signal which mouse option is selected
-	public static final int MOUSE_MOVE = 1;
-	public static final int RIGHT_BUTTON_CLICK = 2;
-	public static final int LEFT_BUTTON_CLICK = 3;
-	public static final int SCROOL_WHEEL_CLICK = 4;
+	// started an 6 - 9 because the direction value
+	// is add to the same type of string that counts 1-4
+	public static final int MOUSE_MOVE = 6;
+	public static final int RIGHT_BUTTON_CLICK = 7;
+	public static final int LEFT_BUTTON_CLICK = 8;
+	public static final int SCROOL_WHEEL_CLICK = 9;
 
 	// message types
-	public static final String DEVICE_NAME = "";
-	public static final String TOAST = "";
-
+	public static final String DEVICE_NAME = "device";
+	public static final String TOAST = "toast";
+	public static final String DATA = "data";
+	
 	// request types
-	private static final int REQUEST_CONNECT_DEVICE = 1;
-	private static final int REQUEST_ENABLE_BT = 2;
+	public static final int REQUEST_CONNECT_DEVICE = 1;
+	public static final int REQUEST_ENABLE_BT = 2;
 
+	// class variables
 	private BluetoothAdapter btAdapter;
 	private AppClient2 appClient2;
+	
 	// service variables
 	private AccelometerService accService;
+	public TextView title;
 
 
 	/*
@@ -154,8 +161,10 @@ public class App extends Activity
 		{
 			Log.i(TAG, "+++ ON RESUME - START THE SERVICE+++");
 			makeShortToast("start the accelerometer service");
-			Intent intent = new Intent(getApplicationContext(), AccelometerService.class);
-			startService(intent);
+			AccelometerService accelometerService = new AccelometerService(this.getApplicationContext(), appHandler);
+			accelometerService.initAccelometerService();
+			
+			
 		}
 
 	}
@@ -374,8 +383,14 @@ public class App extends Activity
 		{
 			switch ( message.what )
 			{
+				case MESSAGE_DATA_ACCELO:
+					write(message.getData().getString(DATA));
+					if ( D )
+						Log.i(TAG, "+++ MESSAGE_DATA +++");
+				break;
 				case MESSAGE_DEVICE_NAME:
 					String connectDeviceName = message.getData().getString(DEVICE_NAME);
+					title.setText(connectDeviceName);
 					Toast.makeText(getApplicationContext(), "Connected to: " + connectDeviceName, Toast.LENGTH_SHORT).show();
 					if ( D )
 						Log.i(TAG, "+++ MESSAGE_DEVICE_NAME +++");
