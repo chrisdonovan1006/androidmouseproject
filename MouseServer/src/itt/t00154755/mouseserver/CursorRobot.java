@@ -10,11 +10,6 @@ import java.awt.Point;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
 import java.util.StringTokenizer;
 
 /**
@@ -33,7 +28,6 @@ public class CursorRobot extends RobotUtils implements Runnable, KeyListener
 	private int[] convertedValues;
 	private Point currentLocation;
 	
-
 	// sensor movement direction
 	public static final int LEFTDOWN = 1;
 	public static final int RIGHTUP = 2;
@@ -55,7 +49,7 @@ public class CursorRobot extends RobotUtils implements Runnable, KeyListener
 		convertedValues = covertStringToIntArray(dataIn);
 		
 		robot = initRobot();
-		setCurrentLocation(STARTLOCATION);
+		
 		//addMouseMotionListener(this);
 		//addMouseListener(this);
 
@@ -65,8 +59,6 @@ public class CursorRobot extends RobotUtils implements Runnable, KeyListener
 	public void init()
 	{
 		super.init();
-		
-		
 	}
 	
 	
@@ -135,7 +127,7 @@ public class CursorRobot extends RobotUtils implements Runnable, KeyListener
 	 */
 	private synchronized void moveCursor() throws HeadlessException
 	{
-
+		setCurrentLocation(STARTLOCATION);
 		System.out.println(TAG + "\nmoving the mouse");
 		// the force of the movement
 		int direction = convertedValues[0];
@@ -182,11 +174,7 @@ public class CursorRobot extends RobotUtils implements Runnable, KeyListener
 		// amount to move = force + current
 		moveToX = currX + moveX;
 		moveToY = currY - moveY;
-		if ( moveToX < getWidth() || moveToY < getHeight() )
-		{
-			moveToX = (int ) ( getWidth() / 2 );
-			moveToY = (int ) ( getHeight() / 2 );
-		}
+	
 		System.out.println("move rd: " + moveToX + ", " + moveToY);
 		robot.mouseMove(moveToX, moveToY);
 		setCurrentLocation(MouseInfo.getPointerInfo().getLocation());
@@ -207,11 +195,7 @@ public class CursorRobot extends RobotUtils implements Runnable, KeyListener
 		// amount to move = force + current
 		moveToX = currX - moveX;
 		moveToY = currY + moveY;
-		if ( moveToX < getWidth() || moveToY < getHeight() )
-		{
-			moveToX = (int ) ( getWidth() / 2 );
-			moveToY = (int ) ( getHeight() / 2 );
-		}
+
 		System.out.println("move lu: " + moveToX + ", " + moveToY);
 		robot.mouseMove(moveToX, moveToY);
 		setCurrentLocation(MouseInfo.getPointerInfo().getLocation());
@@ -232,11 +216,7 @@ public class CursorRobot extends RobotUtils implements Runnable, KeyListener
 		// amount to move = force + current
 		moveToX = currX + moveX;
 		moveToY = currY + moveY;
-		if ( moveToX < getWidth() || moveToY < getHeight() )
-		{
-			moveToX = (int ) ( getWidth() / 2 );
-			moveToY = (int ) ( getHeight() / 2 );
-		}
+
 		System.out.println("move ru: " + moveToX + ", " + moveToY);
 		robot.mouseMove(moveToX, moveToY);
 		setCurrentLocation(MouseInfo.getPointerInfo().getLocation());
@@ -257,12 +237,6 @@ public class CursorRobot extends RobotUtils implements Runnable, KeyListener
 		// amount to move = force + current
 		moveToX = currX - moveX;
 		moveToY = currY - moveY;
-		if ( moveToX < getWidth() || moveToY < getHeight() )
-		{
-			moveToX = (int ) ( getWidth() / 2 );
-			moveToY = (int ) ( getHeight() / 2 );
-		}
-
 		System.out.println("move ld: " + moveToX + ", " + moveToY);
 		robot.mouseMove(moveToX, moveToY);
 		setCurrentLocation(MouseInfo.getPointerInfo().getLocation());

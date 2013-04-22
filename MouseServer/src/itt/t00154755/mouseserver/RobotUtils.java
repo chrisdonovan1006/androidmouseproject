@@ -12,20 +12,10 @@ public abstract class RobotUtils
 	public final int ctrWidth = getCtrWidth();
 	public final int ctrHeight = getCtrHeight();
 	
-	private boolean moving = false;
-	
 	public void init()
 	{
 
 	}
-	
-	private void stop()
-	{
-		moving = false;
-	}
-	
-
-
 	/**
 	 * @return the width
 	 */

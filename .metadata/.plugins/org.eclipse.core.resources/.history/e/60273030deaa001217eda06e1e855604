@@ -1,0 +1,79 @@
+package itt.t00154755.mouseserver;
+
+import static org.junit.Assert.*;
+
+import java.awt.AWTException;
+import java.awt.HeadlessException;
+import java.awt.MouseInfo;
+import java.awt.Robot;
+
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+public class CursorRobotTest
+{
+	private static Robot testbot;
+	static int moveX; 
+	static int moveY; 
+	static int currX; 
+	static int currY;
+	@BeforeClass
+	public static void testSetup()
+	{
+		try
+		{
+			testbot = new Robot();
+		}
+		catch ( AWTException e )
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	@BeforeClass
+	public static void setup()
+	{
+		 moveX = 100; 
+		 moveY = 100; 
+		 currX = 100; 
+		 currY = 100;
+	}
+
+
+	@AfterClass
+	public static void testCleanup()
+	{
+		// Teardown for data used by the unit tests
+	}
+
+
+	@Test
+	public final void testGetWidth()
+	{
+		fail("Not yet implemented"); // TODO
+	}
+
+
+	@Test
+	public void moveLeftUp( int moveX, int moveY, int currX, int currY ) throws HeadlessException
+	{
+		
+		int moveToX;
+		int moveToY;
+		// amount to move = force + current
+		moveToX = currX - moveX;
+		moveToY = currY + moveY;
+		if ( moveToX < 1920 || moveToY < 1780 )
+		{
+			moveToX = (int ) ( 1920 / 2 );
+			moveToY = (int ) ( 1780 / 2 );
+		}
+		System.out.println("move lu: " + moveToX + ", " + moveToY);
+		testbot.mouseMove(moveToX, moveToY);
+		//setCurrentLocation(MouseInfo.getPointerInfo().getLocation());
+		
+		fail("Not yet implemented"); // TODO
+	}
+
+}

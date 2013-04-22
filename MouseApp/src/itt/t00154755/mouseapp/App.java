@@ -63,7 +63,7 @@ public class App extends Activity
 
 	// class variables
 	private BluetoothAdapter btAdapter;
-	private AppClient2 appClient2;
+	private AppClient appClient;
 	
 	// service variables
 	private AccelometerService appService;
@@ -134,12 +134,12 @@ public class App extends Activity
 		{
 			// set the service if buletooth isEabled
 			// and the service is not already running
-			if ( appClient2 == null )
+			if ( appClient == null )
 			{
 				if ( D )
 					Log.i(TAG, "+++ ON START - SET UP THE APPCLIENT +++");
-				appClient2 = new AppClient2(appHandler);
-				appClient2.start();
+				appClient = new AppClient(appHandler);
+				appClient.start();
 			}
 
 		}
@@ -158,12 +158,12 @@ public class App extends Activity
 			Log.i(TAG, "+++ ON RESUME +++");
 
 		// check to see if a service has been started
-		if ( appClient2.getState() == AppClient2.WAITING )
+		if ( appClient.getState() == AppClient.WAITING )
 		{
 			Log.i(TAG, "+++ ON RESUME - START THE APP CLIENT+++");
-			appClient2.start();
+			appClient.start();
 		}
-		if ( appClient2.getState() == AppClient2.CONNECTED )
+		if ( appClient.getState() == AppClient.CONNECTED )
 		{
 			Log.i(TAG, "+++ ON RESUME - START THE SERVICE+++");
 			makeShortToast("start the accelerometer service");
@@ -187,15 +187,15 @@ public class App extends Activity
 			Log.i(TAG, "App write: " + acceloData);
 		
 		
-		if ( appClient2.getState() != AppClient2.CONNECTED )
+		if ( appClient.getState() != AppClient.CONNECTED )
 		{
 			return;
 		}
 		 // Check that there's actually something to send
         if (acceloData.length() > 0) {
-            // Get the message bytes and tell the AppClient2 to write
+            // Get the message bytes and tell the AppClient to write
             byte[] send = acceloData.getBytes();
-            appClient2.write(send);
+            appClient.write(send);
         }
 	}
 
@@ -322,7 +322,7 @@ public class App extends Activity
 		// BluetoothDevice device = btAdapter.getRemoteDevice("00:15:83:3D:0A:57");
 		if ( device != null )
 		{
-			appClient2.start();
+			appClient.start();
 		}
 
 	}
@@ -435,10 +435,10 @@ public class App extends Activity
 		super.onStop();
 		if ( D )
 			Log.i(TAG, "+++ ON STOP +++");
-		if (appClient2 != null)
+		if (appClient != null)
 		{
-			appClient2.closeClient();
-			appClient2 = null;
+			appClient.closeClient();
+			appClient = null;
 		}
 		
 		

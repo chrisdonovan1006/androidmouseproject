@@ -265,22 +265,8 @@ public class AccelometerService extends Service implements SensorEventListener
 						setAccelerometerData(" " + RIGHTDOWN + " " + Math.abs(xIntAxis) + " " + Math.abs(yIntAxis) + " ");
 					}
 
-		try
-		{
-			Thread.sleep(32);
-
-			sendDataThread = new Thread(new SendDataThread()); // Thread created
-			sendDataThread.start(); // Thread started
-		}
-		catch ( InterruptedException e )
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		/*
-		 * sendDataThread = new Thread(new SendDataThread()); // Thread created
-		 * sendDataThread.start();
-		 */
+		sendDataThread = new Thread(new SendDataThread()); // Thread created
+		sendDataThread.start(); // Thread started
 	}
 
 
@@ -293,10 +279,10 @@ public class AccelometerService extends Service implements SensorEventListener
 		// In this example, alpha is calculated as t / (t + dT),
 		// where t is the low-pass filter's time-constant and
 		// dT is the event delivery rate.
-		
+
 		// g = 0.9 * g + 0.1 * v
 		// g = 9.80665 m/s2
-		final float alpha = 9.80665f;
+		final float alpha = 3f;
 		float[] gravity = new float[3];
 
 		// Isolate the force of gravity with the low-pass filter.
@@ -304,11 +290,11 @@ public class AccelometerService extends Service implements SensorEventListener
 		gravity[1] = alpha * gravity[0] + ( 1 - alpha ) * event.values[1];
 		gravity[2] = alpha * gravity[0] + ( 1 - alpha ) * event.values[2];
 
-		 float[] linear_acceleration = new float[3];
-		 // Remove the gravity contribution with the high-pass filter.
-		 linear_acceleration[0] = event.values[0] - gravity[0];
-		 linear_acceleration[1] = event.values[1] - gravity[1];
-		 linear_acceleration[2] = event.values[2] - gravity[2];
+		float[] linear_acceleration = new float[3];
+		// Remove the gravity contribution with the high-pass filter.
+		linear_acceleration[0] = event.values[0] - gravity[0];
+		linear_acceleration[1] = event.values[1] - gravity[1];
+		linear_acceleration[2] = event.values[2] - gravity[2];
 
 		return gravity;
 	}

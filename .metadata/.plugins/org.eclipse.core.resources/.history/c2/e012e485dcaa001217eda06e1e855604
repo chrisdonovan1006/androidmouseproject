@@ -1,0 +1,59 @@
+package itt.t00154755.mouseserver;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+
+public class CursorRobotTest
+{
+
+	@Test
+	public final void testGetWidth()
+	{
+		fail("Not yet implemented"); // TODO
+	}
+
+
+	@Test
+	public final void testGetHeight()
+	{
+		fail("Not yet implemented"); // TODO
+	}
+
+
+	@Test
+	public final void testKeyPressed()
+	{
+		fail("Not yet implemented"); // TODO
+	}
+
+
+	@Test
+	public final void testKeyReleased()
+	{
+		fail("Not yet implemented"); // TODO
+	}
+
+
+	@Test
+	public final void testKeyTyped()
+	{
+		fail("Not yet implemented"); // TODO
+	}
+
+
+	@Test
+	public final void testGetCtrWidth()
+	{
+		fail("Not yet implemented"); // TODO
+	}
+
+
+	@Test
+	public final void testGetCtrHeight()
+	{
+		fail("Not yet implemented"); // TODO
+	}
+
+}
