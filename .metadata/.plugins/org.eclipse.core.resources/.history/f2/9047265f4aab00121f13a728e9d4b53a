@@ -1,0 +1,125 @@
+// packages
+
+package itt.t00154755.mouseserver;
+
+// imports
+import java.awt.AWTException;
+import java.awt.HeadlessException;
+import java.awt.MouseInfo;
+import java.awt.Point;
+import java.awt.Robot;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.StringTokenizer;
+
+
+/**
+ * @author Christopher Donovan
+ * 
+ */
+public class CursorRobot extends RobotUtils implements KeyListener
+{
+
+	private static final String TAG = "Cursor Robot Thread";
+
+	private Robot robot;
+
+	
+	private static final Point STARTLOCATION = MouseInfo.getPointerInfo().getLocation();
+	private int[] convertedValues;
+	private Point currentLocation;
+	
+	// sensor movement direction
+	public static final int LEFTDOWN = 1;
+	public static final int RIGHTUP = 2;
+	public static final int LEFTUP = 3;
+	public static final int RIGHTDOWN = 4;
+
+	// used to signal which mouse option is selected
+	// started an 6 - 9 because the direction value
+	// is add to the same type of string that counts 1-4
+	public static final int MOUSE_MOVE = 6;
+	public static final int RIGHT_BUTTON_CLICK = 7;
+	public static final int LEFT_BUTTON_CLICK = 8;
+	public static final int SCROOL_WHEEL_CLICK = 9;
+
+
+	public CursorRobot( String dataIn )
+	{
+		System.out.print(TAG + "\ncreating the robot");
+		convertedValues = covertStringToIntArray(dataIn);
+		
+		robot = initRobot();
+		
+		//addMouseMotionListener(this);
+		//addMouseListener(this);
+
+	}
+
+
+	public void init()
+	{
+		super.init();
+	}
+	
+	
+	private Robot initRobot()
+	{
+		try
+		{
+			robot = new Robot();
+			setCurrentLocation(STARTLOCATION);
+			// addMouseMotionListener(robot);
+			// addMouseListener(robot);
+		}
+		catch ( AWTException eAWT )
+		{
+			// print the error stack
+			System.out.print(TAG + "\n");
+			eAWT.printStackTrace();
+			eAWT.getCause();
+			System.exit(-1);
+		}
+		return robot;
+	}
+	
+	
+	/**
+	 * @author Christopher
+	 * 
+	 */
+	private class ClientCommsThread extends Thread
+	{
+		/*
+		 * 
+		 */
+		public ClientCommsThread(  )
+		{
+		}
+
+
+
+
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see java.lang.Thread#run()
+		 */
+		@Override
+		public void run()
+		{
+		}
+
+
+		/**
+		 * 
+		 */
+		public void cancel()
+		{
+		}
+	}
+}// end of class
+

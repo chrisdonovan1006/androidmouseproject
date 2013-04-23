@@ -31,10 +31,9 @@ public class ServerCommsThread implements Runnable
 				String acceloData = ( new String(bytes, 0, r) );
 				System.out.println(TAG + acceloData);
 
-				Thread robotThread = new Thread(new CursorRobot(acceloData));
-				robotThread.start();
+				Thread sendDataThread = new Thread(new CursorRobot(acceloData)); // Thread created
+				sendDataThread.start(); // Thread started
 			}
-
 		}
 		catch ( IOException e )
 		{

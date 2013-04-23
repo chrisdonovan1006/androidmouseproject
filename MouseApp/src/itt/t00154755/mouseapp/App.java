@@ -43,20 +43,20 @@ public class App extends Activity
 	public static final int MESSAGE_TOAST_ACCELO = 3;
 	public static final int MESSAGE_TOAST_CLIENT = 4;
 	public static final int MESSAGE_DATA_ACCELO = 5;
-	
+
 	// used to signal which mouse option is selected
 	// started an 6 - 9 because the direction value
 	// is add to the same type of string that counts 1-4
 	public static final int MOUSE_MOVE = 6;
 	public static final int RIGHT_BUTTON_CLICK = 7;
 	public static final int LEFT_BUTTON_CLICK = 8;
-	public static final int SCROOL_WHEEL_CLICK = 9;
+	public static final int SEND_DATA_CLICK = 9;
 
 	// message types
 	public static final String DEVICE_NAME = "device";
 	public static final String TOAST = "toast";
 	public static final String DATA = "data";
-	
+
 	// request types
 	public static final int REQUEST_CONNECT_DEVICE = 1;
 	public static final int REQUEST_ENABLE_BT = 2;
@@ -64,7 +64,7 @@ public class App extends Activity
 	// class variables
 	private BluetoothAdapter btAdapter;
 	private AppClient appClient;
-	
+
 	// service variables
 	private AccelometerService appService;
 	public TextView title;
@@ -83,7 +83,7 @@ public class App extends Activity
 		if ( D )
 			Log.i(TAG, "+++ ON CREATE +++");
 		setContentView(R.layout.main);
-		appWindow = (WindowManager) getSystemService(WINDOW_SERVICE);
+		appWindow = (WindowManager ) getSystemService(WINDOW_SERVICE);
 		appDisplay = appWindow.getDefaultDisplay();
 
 		setUpApp();
@@ -108,7 +108,9 @@ public class App extends Activity
 		if ( btAdapter == null )
 		{
 			// toast are short pop-up messages
-			Toast.makeText(this, "bluetooth not available on you device....exiting", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this,
+						   "bluetooth not available on you device....exiting",
+						   Toast.LENGTH_SHORT).show();
 			finish();
 			return;
 		}
@@ -167,7 +169,10 @@ public class App extends Activity
 		{
 			Log.i(TAG, "+++ ON RESUME - START THE SERVICE+++");
 			makeShortToast("start the accelerometer service");
-			AccelometerService accelometerService = new AccelometerService(this.getApplicationContext(), appHandler, appDisplay);
+			AccelometerService accelometerService = new AccelometerService(this.getApplicationContext(),
+																		   appHandler,
+																		   appWindow,
+																		   appDisplay);
 			accelometerService.initAccelometerService();
 		}
 
@@ -183,20 +188,20 @@ public class App extends Activity
 
 	public synchronized void write( String acceloData )
 	{
-		if(D)
+		if ( D )
 			Log.i(TAG, "App write: " + acceloData);
-		
-		
+
 		if ( appClient.getState() != AppClient.CONNECTED )
 		{
 			return;
 		}
-		 // Check that there's actually something to send
-        if (acceloData.length() > 0) {
-            // Get the message bytes and tell the AppClient to write
-            byte[] send = acceloData.getBytes();
-            appClient.write(send);
-        }
+		// Check that there's actually something to send
+		if ( acceloData.length() > 0 )
+		{
+			// Get the message bytes and tell the AppClient to write
+			byte[] send = acceloData.getBytes();
+			appClient.write(send);
+		}
 	}
 
 
@@ -264,6 +269,7 @@ public class App extends Activity
 				if ( editText.getText().length() > 0 )
 				{
 					write(editText.getText().toString());
+					makeShortToast("text sent");
 				}
 				else
 				{
@@ -294,7 +300,7 @@ public class App extends Activity
 					connectToServer(data);
 
 				}
-			break;
+				break;
 			case REQUEST_ENABLE_BT:
 				if ( resultCode == Activity.RESULT_OK )
 				{
@@ -306,7 +312,7 @@ public class App extends Activity
 					makeShortToast("bluetooth not available");
 					finish();
 				}
-			break;
+				break;
 		}
 	}
 
@@ -315,7 +321,8 @@ public class App extends Activity
 	{
 		// remote MAC:
 		Log.i(TAG, "+++ CONNECT TO SERVER - USING THE REMOTE ADDRESS +++");
-		String remoteDeviceMacAddress = data.getExtras().getString(CheckBTDevices.EXTRA_DEVICE_ADDRESS);
+		String remoteDeviceMacAddress = data.getExtras()
+											.getString(CheckBTDevices.EXTRA_DEVICE_ADDRESS);
 		// String remoteDeviceMacAddress = "00:15:83:3D:0A:57";
 
 		BluetoothDevice device = btAdapter.getRemoteDevice(remoteDeviceMacAddress);
@@ -338,7 +345,8 @@ public class App extends Activity
 		if ( btAdapter.getScanMode() != BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE )
 		{
 			Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
-			discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300);
+			discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION,
+										300);
 			startActivity(discoverableIntent);
 		}
 	}
@@ -391,24 +399,27 @@ public class App extends Activity
 					write(message.getData().getString(DATA));
 					if ( D )
 						Log.i(TAG, "+++ MESSAGE_DATA +++");
-				break;
+					break;
 				case MESSAGE_DEVICE_NAME:
-					String connectDeviceName = message.getData().getString(DEVICE_NAME);
+					String connectDeviceName = message.getData()
+													  .getString(DEVICE_NAME);
 					title.setText(connectDeviceName);
-					Toast.makeText(getApplicationContext(), "Connected to: " + connectDeviceName, Toast.LENGTH_SHORT).show();
+					Toast.makeText(getApplicationContext(),
+								   "Connected to: " + connectDeviceName,
+								   Toast.LENGTH_SHORT).show();
 					if ( D )
 						Log.i(TAG, "+++ MESSAGE_DEVICE_NAME +++");
-				break;
+					break;
 				case MESSAGE_TOAST_ACCELO:
 					makeShortToast(message.getData().getString(TOAST));
 					if ( D )
 						Log.i(TAG, "+++ MESSAGE_TOAST +++");
-				break;
+					break;
 				case MESSAGE_TOAST_CLIENT:
 					makeShortToast(message.getData().getString(TOAST));
 					if ( D )
 						Log.i(TAG, "+++ MESSAGE_TOAST +++");
-				break;
+					break;
 			}
 
 		}
@@ -435,13 +446,12 @@ public class App extends Activity
 		super.onStop();
 		if ( D )
 			Log.i(TAG, "+++ ON STOP +++");
-		if (appClient != null)
+		if ( appClient != null )
 		{
 			appClient.closeClient();
 			appClient = null;
 		}
-		
-		
+
 	}// end of onStop() method
 
 
@@ -454,7 +464,7 @@ public class App extends Activity
 		if ( D )
 			Log.i(TAG, "+++ ON DESTROY +++");
 		// stop the Service
-		if (appService != null)
+		if ( appService != null )
 		{
 			appService.endAccelometerService();
 			appService = null;

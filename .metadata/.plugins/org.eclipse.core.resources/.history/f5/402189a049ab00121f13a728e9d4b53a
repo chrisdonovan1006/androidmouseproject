@@ -1,0 +1,57 @@
+package itt.t00154755.mouseserver;
+
+import java.awt.Dimension;
+import java.awt.Toolkit;
+
+public abstract class RobotUtils
+{
+
+	public final Dimension SCREENSIZE = Toolkit.getDefaultToolkit().getScreenSize();
+	public static double width;
+	public static double height;
+	public static int ctrWidth;
+	public static int ctrHeight;
+	
+	public void init()
+	{
+		width = getWidth();
+		height = getHeight();
+		ctrWidth = getCtrWidth();
+		ctrHeight = getCtrHeight();
+	}
+	/**
+	 * @return the width
+	 */
+	private double getWidth()
+	{
+		return SCREENSIZE.width;
+	}
+
+
+	/**
+	 * @return the height
+	 */
+	private double getHeight()
+	{
+		return SCREENSIZE.height;
+	}
+
+
+	/**
+	 * @return the ctrWidth
+	 */
+	private int getCtrWidth()
+	{
+		return SCREENSIZE.width / 2;
+	}
+
+
+	/**
+	 * @return the ctrHeight
+	 */
+	private int getCtrHeight()
+	{
+		return SCREENSIZE.height / 2;
+	}
+
+}

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="org.eclipse.jdt.launching.localJavaApplication">
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
-<listEntry value="/MouseServer/src/itt/t00154755/mouseserver/RunApp.java"/>
+<listEntry value="/MouseServer/src/itt/t00154755/mouseserver/RunServerListener.java"/>
 </listAttribute>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
 <listEntry value="1"/>
 </listAttribute>
 <booleanAttribute key="org.eclipse.jdt.debug.ui.CONSIDER_INHERITED_MAIN" value="true"/>
 <booleanAttribute key="org.eclipse.jdt.debug.ui.INCLUDE_EXTERNAL_JARS" value="true"/>
-<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="itt.t00154755.mouseserver.RunApp"/>
+<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="itt.t00154755.mouseserver.RunServerListener"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="MouseServer"/>
 </launchConfiguration>

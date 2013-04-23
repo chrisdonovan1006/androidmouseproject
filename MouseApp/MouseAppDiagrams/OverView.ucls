@@ -91,8 +91,8 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="11" language="java" name="itt.t00154755.mouseserver.AppServer" project="MouseServer" 
-    file="/MouseServer/src/itt/t00154755/mouseserver/AppServer.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="11" language="java" name="itt.t00154755.mouseserver.AppServerListener" project="MouseServer" 
+    file="/MouseServer/src/itt/t00154755/mouseserver/AppServerListener.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1034" y="657"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" accessors="true" 
       visibility="true">      
@@ -109,8 +109,8 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="13" language="java" name="itt.t00154755.mouseserver.RobotUtils" project="MouseServer" 
-    file="/MouseServer/src/itt/t00154755/mouseserver/RobotUtils.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="13" language="java" name="itt.t00154755.mouseserver.ServerUtils" project="MouseServer" 
+    file="/MouseServer/src/itt/t00154755/mouseserver/ServerUtils.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1805" y="335"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" accessors="true" 
       visibility="true">      

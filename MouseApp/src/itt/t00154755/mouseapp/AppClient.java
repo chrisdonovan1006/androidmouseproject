@@ -19,7 +19,7 @@ import android.util.Log;
 public class AppClient
 {
 
-	private static final String TAG = "App Client 2";
+	private static final String TAG = "App Client";
 	private static final boolean D = true;
 
 	public static final int WAITING = 0;
@@ -61,7 +61,7 @@ public class AppClient
 		if ( D )
 			Log.d(TAG, "getting local device");
 		btDevice = btAdapter.getRemoteDevice("00:15:83:3D:0A:57");
-		
+
 		btAdapter.cancelDiscovery();
 		if ( D )
 			Log.d(TAG, "connecting to server");
@@ -97,8 +97,8 @@ public class AppClient
 		}
 		try
 		{
-			//String name = btDevice.getName();
-			//sendDeviceNameToUIHandler(name);
+			// String name = btDevice.getName();
+			// sendDeviceNameToUIHandler(name);
 			createClientCommThread(btSocket);
 		}
 		catch ( IOException e )
@@ -124,20 +124,21 @@ public class AppClient
 	}
 
 
-/*	*//**
+	/*	*//**
 	 * @param name
 	 *        the friendly name of the connected blue-tooth device
-	 *//*
-	private void sendDeviceNameToUIHandler( String name )
-	{
-		// message back to UI
-		Message message = accHandler.obtainMessage(App.MESSAGE_DEVICE_NAME);
-		Bundle bundle = new Bundle();
-		bundle.putString(App.DEVICE_NAME, name);
-		message.setData(bundle);
-		accHandler.handleMessage(message);
-	}*/
-
+	 */
+	/*
+	 * private void sendDeviceNameToUIHandler( String name )
+	 * {
+	 * // message back to UI
+	 * Message message = accHandler.obtainMessage(App.MESSAGE_DEVICE_NAME);
+	 * Bundle bundle = new Bundle();
+	 * bundle.putString(App.DEVICE_NAME, name);
+	 * message.setData(bundle);
+	 * accHandler.handleMessage(message);
+	 * }
+	 */
 
 	/**
 	 * @return the state
@@ -167,7 +168,8 @@ public class AppClient
 	 * @throws IOException
 	 *         if the socket is not open
 	 */
-	public synchronized void createClientCommThread( BluetoothSocket socket ) throws IOException
+	public synchronized void
+			createClientCommThread( BluetoothSocket socket ) throws IOException
 	{
 		clientCommThread = new ClientCommsThread(socket);
 		clientCommThread.start();
@@ -233,7 +235,7 @@ public class AppClient
 	{
 		if ( clientCommThread != null )
 		{
-			//clientCommThread.cancel();
+			// clientCommThread.cancel();
 			clientCommThread = null;
 		}
 		setState(WAITING);
@@ -265,8 +267,8 @@ public class AppClient
 			}
 			catch ( IOException e )
 			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				if ( D )
+					Log.e(TAG, "error trying to open the output stream");
 			}
 			outStream = tmpOut;
 		}
@@ -284,7 +286,7 @@ public class AppClient
 			catch ( IOException e )
 			{
 				if ( D )
-					Log.e(TAG, "error trying to write to the server");
+					Log.e(TAG, "error while writing to the server");
 				try
 				{
 					outStream.close();
@@ -298,7 +300,7 @@ public class AppClient
 			catch ( Exception nullP )
 			{
 				if ( D )
-					Log.e(TAG, "null packet");
+					Log.e(TAG, "error trying to write to the server");
 			}
 		}
 
@@ -316,7 +318,7 @@ public class AppClient
 
 
 		/**
-		 * 
+		 * close the btSocket
 		 */
 		public void cancel()
 		{

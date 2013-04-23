@@ -1,1 +1,5 @@
 1366589393750	Move compilation units
+1366663485066	Extract method 'determinePhonePosition'
+1366663591524	Extract method 'sendCurrentPositionToUI'
+1366663712392	Rename method 'sendData'
+1366710369444	Move compilation units

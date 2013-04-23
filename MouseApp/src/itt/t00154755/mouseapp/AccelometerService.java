@@ -1,19 +1,24 @@
 package itt.t00154755.mouseapp;
 
+import android.annotation.TargetApi;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.Surface;
+import android.view.WindowManager;
 
 /**
  * AccelometerService
@@ -21,6 +26,7 @@ import android.view.Surface;
  * @author Christopher
  * 
  */
+@TargetApi ( Build.VERSION_CODES.GINGERBREAD )
 public class AccelometerService extends Service implements SensorEventListener
 {
 
@@ -45,13 +51,18 @@ public class AccelometerService extends Service implements SensorEventListener
 
 	private boolean isRegistered = false;
 	private Display appDisplay;
+	private WindowManager appWindow;
 
 
-	public AccelometerService( Context context, Handler appHandler, Display appDisplay )
+	public AccelometerService( Context context,
+							   Handler appHandler,
+							   WindowManager appWindow,
+							   Display appDisplay )
 	{
 		this.context = context;
 		this.appHandler = appHandler;
 		this.appDisplay = appDisplay;
+		this.appWindow = appWindow;
 	}
 
 
@@ -70,7 +81,6 @@ public class AccelometerService extends Service implements SensorEventListener
 		// TODO initiate the service
 		super.onCreate();
 		initAccelometerService();
-
 	}
 
 
@@ -85,6 +95,7 @@ public class AccelometerService extends Service implements SensorEventListener
 
 	public void initAccelometerService()
 	{
+		// TODO register the listener
 		makeToastShort("AccelometerService started");
 		registerListener();
 	}
@@ -92,6 +103,7 @@ public class AccelometerService extends Service implements SensorEventListener
 
 	public void endAccelometerService()
 	{
+		// TODO un-register the listener
 		unregisterListener();
 		// stop the service
 		stopSelf();
@@ -101,7 +113,7 @@ public class AccelometerService extends Service implements SensorEventListener
 
 	private void makeToastShort( String string )
 	{
-		// message back to UI
+		// TODO send message back to UI thread
 		Message message = appHandler.obtainMessage(App.MESSAGE_TOAST_ACCELO);
 		Bundle bundle = new Bundle();
 		bundle.putString(App.TOAST, string);
@@ -112,7 +124,7 @@ public class AccelometerService extends Service implements SensorEventListener
 
 	private void sendDataToUIActivity( String string )
 	{
-		// message back to UI
+		// TODO send message back to UI thread
 		Message message = appHandler.obtainMessage(App.MESSAGE_DATA_ACCELO);
 		Bundle bundle = new Bundle();
 		bundle.putString(App.DATA, string);
@@ -121,38 +133,52 @@ public class AccelometerService extends Service implements SensorEventListener
 	}
 
 
-	/**
-	 * @return the accelerometerManager
+	/*
+	 * Method that registered the Listener for
+	 * the Accelerometer sensor.
 	 */
-	public SensorManager getAccelerometerManager()
-	{
-		return (SensorManager ) context.getSystemService(Context.SENSOR_SERVICE);
-	}
-
-
-	// Method that registered the Listener for the Accelerometer
-	// Object.
 	private void registerListener()
 	{
+		// TODO register the listener
 		if ( D )
 			Log.d(TAG, "+++ REGISTER-LISTENER FOR SENSOR +++");
 
 		accelerometerManager = getAccelerometerManager();
 		// check to make sure that the SensorList is not empty
-		if ( accelerometerManager.getSensorList(Sensor.TYPE_ACCELEROMETER).size() != 0 )
+		if ( accelerometerManager.getSensorList(Sensor.TYPE_ACCELEROMETER)
+								 .size() != 0 )
 		{
 			// get the Accelerometer Sensor
-			accelerometerSensor = accelerometerManager.getSensorList(Sensor.TYPE_ACCELEROMETER).get(0);
+			accelerometerSensor = accelerometerManager.getSensorList(Sensor.TYPE_ACCELEROMETER)
+													  .get(0);
 			// register the listener to the Sensor
-			accelerometerManager.registerListener(this, accelerometerSensor, SensorManager.SENSOR_DELAY_GAME);
+			accelerometerManager.registerListener(this,
+												  accelerometerSensor,
+												  SensorManager.SENSOR_DELAY_UI);
 
 			isRegistered = true;
 		}
 	}
 
 
+	/**
+	 * @return the accelerometerManager
+	 */
+	private SensorManager getAccelerometerManager()
+	{
+		// TODO return the manager object
+		return (SensorManager ) context.getSystemService(Context.SENSOR_SERVICE);
+	}
+
+
+	/*
+	 * Method that unregisters the Listener for
+	 * the Accelerometer sensor.
+	 */
 	private void unregisterListener()
 	{
+		// TODO check if the manager is registered
+		// TODO if it is then unregister it
 		if ( D )
 			Log.d(TAG, "+++ UNREGISTER-LISTENER FOR SENSOR +++");
 
@@ -171,65 +197,151 @@ public class AccelometerService extends Service implements SensorEventListener
 	}
 
 
+	/**
+	 * This method receives an event each time the
+	 * that the sensor changes
+	 */
 	@Override
 	public void onSensorChanged( SensorEvent event )
 	{
+		// TODO get the current event
 		if ( D )
 			Log.d(TAG, "+++ SENSOR CHANGE +++");
 		// long timestamp = event.timestamp;
-		sendData(event);
-	}
-	// javarevisited.blogspot.com/2011/02/how-to-implement-thread-in-java.html#ixzz2R3ICcqPJ
-	private class SendDataThread implements Runnable
-	{
-
-		public void run()
+		try
 		{
-			sendDataToUIActivity(getAccelerometerData());
+			prepareTheData(event);
 		}
-
+		catch ( InterruptedException e )
+		{
+			// TODO this shouldn't happen
+			
+		}
 	}
 
-
-	private void sendData( SensorEvent event )
+	/*
+	 * The event is passed to this method
+	 */
+	private void prepareTheData( SensorEvent event ) throws InterruptedException
 	{
-		float[] filteredEvent = applyFilters(event);
-		// remove the integer x and y values from the float array.
-
-		/*
-		 * If Y is Positive and X=0 then the angle is 0
-		 * For Quadrant 1 the angle is abs(arctan(X/Y)).
-		 * If X is Positive and Y=0 then the angle is 90
-		 * For Quadrant 2 the angle is (abs(arctan(Y/X)) + 90)
-		 * If Y is negative and X=0 then the angle is 180
-		 * For Quadrant 3 the angle is (abs(arctan(X/Y)) + 180)
-		 * If X is Negative and Y=0 then the angle is 270
-		 * For Quadrant 4 the angle is (abs(arctan(Y/X)) + 270)
-		 */
+		// TODO step 1. filter the data using a low and high filter
+		// float[] filteredEvent = applyFilters(event);
 
 		float xFloatAxis = 0;
 		float yFloatAxis = 0;
 
-		switch ( appDisplay.getRotation() )
+		int rotation = appWindow.getDefaultDisplay().getRotation();
+	    DisplayMetrics dm = new DisplayMetrics();
+	    appWindow.getDefaultDisplay().getMetrics(dm);
+	    int width = dm.widthPixels;
+	    int height = dm.heightPixels;
+	    int orientation;
+	    // if the device's natural orientation is portrait:
+	    if ((rotation == Surface.ROTATION_0
+	            || rotation == Surface.ROTATION_180) && height > width ||
+	        (rotation == Surface.ROTATION_90
+	            || rotation == Surface.ROTATION_270) && width > height) {
+	        switch(rotation) {
+	            case Surface.ROTATION_0:
+	                orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+	                xFloatAxis = event.values[0];
+					yFloatAxis = event.values[1];
+	                break;
+	            case Surface.ROTATION_90:
+	                orientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
+	                xFloatAxis = -event.values[1];
+					yFloatAxis = event.values[0];
+	                break;
+	            case Surface.ROTATION_180:
+	                orientation =
+	                    ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT;
+	                xFloatAxis = -event.values[1];
+					yFloatAxis = -event.values[0];
+	                break;
+	            case Surface.ROTATION_270:
+	                orientation =
+	                    ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE;
+	                xFloatAxis = event.values[0];
+					yFloatAxis = -event.values[1];
+	                break;
+	            default:
+	                Log.e(TAG, "Unknown screen orientation. Defaulting to " +
+	                        "portrait.");
+	                orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+	                xFloatAxis = event.values[0];
+					yFloatAxis = event.values[1];
+	                break; 
+	        }
+	    }
+		// TODO step 2. find the current rotation of the phone
+	/*	switch ( appDisplay.getRotation() )
 		{
 			case Surface.ROTATION_0:
-				xFloatAxis = filteredEvent[0];
-				yFloatAxis = filteredEvent[1];
-			break;
+				xFloatAxis = event.values[0];
+				yFloatAxis = event.values[1];
+				break;
 			case Surface.ROTATION_90:
-				xFloatAxis = -filteredEvent[1];
-				yFloatAxis = filteredEvent[0];
-			break;
+				xFloatAxis = -event.values[1];
+				yFloatAxis = event.values[0];
+				break;
 			case Surface.ROTATION_180:
-				xFloatAxis = -filteredEvent[1];
-				yFloatAxis = -filteredEvent[0];
-			break;
+				xFloatAxis = -event.values[1];
+				yFloatAxis = -event.values[0];
+				break;
 			case Surface.ROTATION_270:
-				xFloatAxis = filteredEvent[0];
-				yFloatAxis = -filteredEvent[1];
-			break;
-		}
+				xFloatAxis = event.values[0];
+				yFloatAxis = -event.values[1];
+				break;
+		}*/
 		Log.d(TAG, "filtered values: " + xFloatAxis + ", " + yFloatAxis);
+
+		// TODO step 3. determine the phones current tilting position
+		determinePhonePosition(xFloatAxis, yFloatAxis);
+		
+		// TODO make this thread sleep for 100th of a second
+		Thread.sleep(100);
+		// TODO step 4. send the data back to the main UI thread
+		sendCurrentReadingsToUI();
+	}
+
+
+	/**
+	 * @param event
+	 * @return
+	 */
+	/*
+	 * private float[] applyFilters( SensorEvent event )
+	 * {
+	 * // In this example, alpha is calculated as t / (t + dT),
+	 * // where t is the low-pass filter's time-constant and
+	 * // dT is the event delivery rate.
+	 * long eTime = event.timestamp;
+	 * // g = 0.9 * g + 0.1 * v
+	 * // g = 9.80665 m/s2
+	 * final float alpha = 0.9f;
+	 * float[] gravity = new float[3];
+	 * 
+	 * // Isolate the force of gravity with the low-pass filter.
+	 * gravity[0] = alpha * gravity[0] + ( 1 - alpha ) * event.values[0];
+	 * gravity[1] = alpha * gravity[1] + ( 1 - alpha ) * event.values[1];
+	 * gravity[2] = alpha * gravity[2] + ( 1 - alpha ) * event.values[2];
+	 * 
+	 * float[] linear_acceleration = new float[3];
+	 * // Remove the gravity contribution with the high-pass filter.
+	 * linear_acceleration[0] = event.values[0] - gravity[0];
+	 * linear_acceleration[1] = event.values[1] - gravity[1];
+	 * linear_acceleration[2] = event.values[2] - gravity[2];
+	 * 
+	 * return gravity;
+	 * }
+	 */
+	
+	/**
+	 * @param xFloatAxis
+	 * @param yFloatAxis
+	 */
+	private void determinePhonePosition( float xFloatAxis, float yFloatAxis )
+	{
 		xIntAxis = (int ) xFloatAxis;
 		yIntAxis = (int ) yFloatAxis;
 
@@ -238,7 +350,12 @@ public class AccelometerService extends Service implements SensorEventListener
 			// add only the positive values
 			if ( D )
 				Log.d(TAG, "move mouse: " + LEFTDOWN);
-			setAccelerometerData(" " + LEFTDOWN + " " + Math.abs(xIntAxis) + " " + Math.abs(yIntAxis) + " ");
+			setAccelerometerData(" " + LEFTDOWN
+								 + " "
+								 + Math.abs(xIntAxis)
+								 + " "
+								 + Math.abs(yIntAxis)
+								 + " ");
 		}
 		else
 			if ( xIntAxis > 0 && yIntAxis > 0 )
@@ -246,7 +363,13 @@ public class AccelometerService extends Service implements SensorEventListener
 				// add only the positive values
 				if ( D )
 					Log.d(TAG, "move mouse: " + RIGHTUP);
-				setAccelerometerData(" " + RIGHTUP + " " + Math.abs(xIntAxis) + " " + Math.abs(yIntAxis) + " ");
+				setAccelerometerData(" " + RIGHTUP
+									 + " "
+									 + " "
+									 + Math.abs(xIntAxis)
+									 + " "
+									 + Math.abs(yIntAxis)
+									 + " ");
 			}
 			else
 				if ( xIntAxis < 0 && yIntAxis > 0 )
@@ -254,7 +377,13 @@ public class AccelometerService extends Service implements SensorEventListener
 					// add only the positive values
 					if ( D )
 						Log.d(TAG, "move mouse: " + LEFTUP);
-					setAccelerometerData(" " + LEFTUP + " " + Math.abs(xIntAxis) + " " + Math.abs(yIntAxis) + " ");
+					setAccelerometerData(" " + LEFTUP
+										 + " "
+										 + " "
+										 + Math.abs(xIntAxis)
+										 + " "
+										 + Math.abs(yIntAxis)
+										 + " ");
 				}
 				else
 					if ( xIntAxis > 0 && yIntAxis < 0 )
@@ -262,41 +391,34 @@ public class AccelometerService extends Service implements SensorEventListener
 						// add only the positive values
 						if ( D )
 							Log.d(TAG, "move mouse: " + RIGHTDOWN);
-						setAccelerometerData(" " + RIGHTDOWN + " " + Math.abs(xIntAxis) + " " + Math.abs(yIntAxis) + " ");
+						setAccelerometerData(" " + RIGHTDOWN
+											 + " "
+											 + " "
+											 + Math.abs(xIntAxis)
+											 + " "
+											 + Math.abs(yIntAxis)
+											 + " ");
 					}
 
+		
+	}
+	
+	private  void sendCurrentReadingsToUI()
+	{
+		// TODO create a new thread and start sending the data to the main UI thread
 		sendDataThread = new Thread(new SendDataThread()); // Thread created
 		sendDataThread.start(); // Thread started
+		
 	}
 
-
-	/**
-	 * @param event
-	 * @return
-	 */
-	private float[] applyFilters( SensorEvent event )
+	//
+	private class SendDataThread implements Runnable
 	{
-		// In this example, alpha is calculated as t / (t + dT),
-		// where t is the low-pass filter's time-constant and
-		// dT is the event delivery rate.
-
-		// g = 0.9 * g + 0.1 * v
-		// g = 9.80665 m/s2
-		final float alpha = 3f;
-		float[] gravity = new float[3];
-
-		// Isolate the force of gravity with the low-pass filter.
-		gravity[0] = alpha * gravity[0] + ( 1 - alpha ) * event.values[0];
-		gravity[1] = alpha * gravity[0] + ( 1 - alpha ) * event.values[1];
-		gravity[2] = alpha * gravity[0] + ( 1 - alpha ) * event.values[2];
-
-		float[] linear_acceleration = new float[3];
-		// Remove the gravity contribution with the high-pass filter.
-		linear_acceleration[0] = event.values[0] - gravity[0];
-		linear_acceleration[1] = event.values[1] - gravity[1];
-		linear_acceleration[2] = event.values[2] - gravity[2];
-
-		return gravity;
+		// TODO send the data
+		public void run()
+		{
+			sendDataToUIActivity(getAccelerometerData());
+		}
 	}
 
 
@@ -305,6 +427,7 @@ public class AccelometerService extends Service implements SensorEventListener
 	 */
 	public String getAccelerometerData()
 	{
+		// TODO retunr the current data
 		return accelerometerData;
 	}
 
@@ -315,6 +438,7 @@ public class AccelometerService extends Service implements SensorEventListener
 	 */
 	public void setAccelerometerData( String accelerometerData )
 	{
+		// TODO set the data
 		this.accelerometerData = accelerometerData;
 	}
 
@@ -322,7 +446,9 @@ public class AccelometerService extends Service implements SensorEventListener
 	@Override
 	public IBinder onBind( Intent intent )
 	{
-		// TODO Auto-generated method stub
+		// TODO this service is not bound to the main
+		// because it is running on the main UI and the thread is
+		// create and pushed out
 		return null;
 	}
 

@@ -3,31 +3,47 @@
 package itt.t00154755.mouseserver;
 
 // imports
+
 import java.awt.AWTException;
+import java.awt.Dimension;
 import java.awt.HeadlessException;
 import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.Robot;
+import java.awt.Toolkit;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.StringTokenizer;
 
 /**
  * @author Christopher Donovan
  * 
  */
-public class CursorRobot extends RobotUtils implements Runnable, KeyListener
+public class CursorRobot extends ServerUtils implements Runnable
 {
 
 	private static final String TAG = "Cursor Robot Thread";
 
 	private Robot robot;
+	// class variable that gets the screen size of the connected monitor
+	private final static Dimension SCREENSIZE = Toolkit.getDefaultToolkit()
+													   .getScreenSize();
 
-	
-	private static final Point STARTLOCATION = MouseInfo.getPointerInfo().getLocation();
+	//
+	private String acceloData;
 	private int[] convertedValues;
+
 	private Point currentLocation;
-	
+	private Point startLocation;
+
+	public static double width;
+	public static double height;
+	public static int ctrWidth;
+	public static int ctrHeight;
+
+	private int currentX;
+	private int currentY;
+
 	// sensor movement direction
 	public static final int LEFTDOWN = 1;
 	public static final int RIGHTUP = 2;
@@ -40,36 +56,28 @@ public class CursorRobot extends RobotUtils implements Runnable, KeyListener
 	public static final int MOUSE_MOVE = 6;
 	public static final int RIGHT_BUTTON_CLICK = 7;
 	public static final int LEFT_BUTTON_CLICK = 8;
-	public static final int SCROOL_WHEEL_CLICK = 9;
+	public static final int SEND_TEXT_CLICK = 9;
 
 
-	public CursorRobot( String dataIn )
+	public CursorRobot( String acceloData )
 	{
-		System.out.print(TAG + "\ncreating the robot");
-		convertedValues = covertStringToIntArray(dataIn);
-		
-		robot = initRobot();
-		
-		//addMouseMotionListener(this);
-		//addMouseListener(this);
-
+		initRobot();
+		this.acceloData = acceloData;
+		convertedValues = convertStringToIntArray(acceloData);
 	}
 
 
-	public void init()
+	private void initRobot()
 	{
-		super.init();
-	}
-	
-	
-	private Robot initRobot()
-	{
+		height = getHeight();
+		width = getWidth();
+		ctrHeight = getCtrHeight();
+		ctrWidth = getCtrWidth();
+
 		try
 		{
 			robot = new Robot();
-
-			// addMouseMotionListener(robot);
-			// addMouseListener(robot);
+			startLocation = new Point(ctrHeight, ctrWidth);
 		}
 		catch ( AWTException eAWT )
 		{
@@ -78,15 +86,21 @@ public class CursorRobot extends RobotUtils implements Runnable, KeyListener
 			eAWT.printStackTrace();
 			eAWT.getCause();
 			System.exit(-1);
+			// reset the robot object
+			robot = null;
 		}
-		return robot;
+
+		System.out.println("start position: x=" + startLocation.x
+						   + ", y="
+						   + startLocation.y);
 	}
 
 
 	@Override
-	public synchronized void run()
+	public void run()
 	{
 		int state = convertedValues[0];
+
 		if ( state > 0 && state < 5 )
 		{
 			// move the mouse if the state is between 1 and 4 inclusive
@@ -94,30 +108,33 @@ public class CursorRobot extends RobotUtils implements Runnable, KeyListener
 		}
 		else
 		{
+			// mouse click
 			moveClicked(state);
 		}
+
 	}
 
 
-	private void moveClicked( int state )
+	private synchronized void moveClicked( int state )
 	{
 		switch ( state )
 		{
-			case SCROOL_WHEEL_CLICK:
-				robot.keyPress(KeyEvent.VK_1);
-				System.out.println("scrool");
-				robot.keyRelease(KeyEvent.VK_1);
-			break;
+			case SEND_TEXT_CLICK:
+				robot.keyPress(KeyEvent.VK_ENTER);
+				System.out.println(acceloData.subSequence(1,
+														  acceloData.length() - 1));
+				robot.keyRelease(KeyEvent.VK_ENTER);
+				break;
 			case LEFT_BUTTON_CLICK:
-				robot.keyPress(KeyEvent.VK_2);
-				System.out.println("left");
-				robot.keyRelease(KeyEvent.VK_2);
-			break;
+				robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
+				System.out.println("left click");
+				robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
+				break;
 			case RIGHT_BUTTON_CLICK:
-				robot.keyPress(KeyEvent.VK_3);
-				System.out.println("right");
-				robot.keyRelease(KeyEvent.VK_3);
-			break;
+				robot.mousePress(InputEvent.BUTTON3_DOWN_MASK);
+				System.out.println("right click");
+				robot.mousePress(InputEvent.BUTTON3_DOWN_MASK);
+				break;
 		}
 	}
 
@@ -127,119 +144,81 @@ public class CursorRobot extends RobotUtils implements Runnable, KeyListener
 	 */
 	private synchronized void moveCursor() throws HeadlessException
 	{
-		setCurrentLocation(STARTLOCATION);
+
 		System.out.println(TAG + "\nmoving the mouse");
-		// the force of the movement
+		// the direction of the movement
 		int direction = convertedValues[0];
-		int moveX = convertedValues[1];
-		int moveY = convertedValues[2];
+		int x = convertedValues[1];
+		int y = convertedValues[2];
 
-		// the current location of the cursor
-		Point currLoc = getCurrentLocation();
-		int currX = currLoc.x;
-		int currY = currLoc.y;
-
-		while ( true )
+		switch ( direction )
 		{
-			switch ( direction )
-			{
-				case LEFTDOWN:
-					moveLeftDown(moveX, moveY, currX, currY);
+			case LEFTDOWN:
+				moveLeftDown(x, y);
 				break;
-				case RIGHTUP:
-					moveRightUp(moveX, moveY, currX, currY);
+			case RIGHTUP:
+				moveRightUp(x, y);
 				break;
-				case LEFTUP:
-					moveLeftUp(moveX, moveY, currX, currY);
+			case LEFTUP:
+				moveLeftUp(x, y);
 				break;
-				case RIGHTDOWN:
-					moveRightDown(moveX, moveY, currX, currY);
+			case RIGHTDOWN:
+				moveRightDown(x, y);
 				break;
-			}
 		}
 	}
 
 
-	/**
-	 * @param moveX
-	 * @param moveY
-	 * @param currX
-	 * @param currY
-	 * @throws HeadlessException
-	 */
-	private void moveRightDown( int moveX, int moveY, int currX, int currY ) throws HeadlessException
+	private void moveRightDown( int x, int y )
 	{
-		int moveToX;
-		int moveToY;
-		// amount to move = force + current
-		moveToX = currX + moveX;
-		moveToY = currY - moveY;
-	
-		System.out.println("move rd: " + moveToX + ", " + moveToY);
-		robot.mouseMove(moveToX, moveToY);
-		setCurrentLocation(MouseInfo.getPointerInfo().getLocation());
+		int currentX = startLocation.x + getCurrentX();
+		int currentY = startLocation.x + getCurrentY();
+
+		robot.mouseMove(currentX + x, currentY - y);
+		System.out.println("moveRightDown" + MouseInfo.getPointerInfo()
+													  .getLocation()
+													  .toString());
+		setCurrentX(MouseInfo.getPointerInfo().getLocation().x);
+		setCurrentX(MouseInfo.getPointerInfo().getLocation().y);
 	}
 
 
-	/**
-	 * @param moveX
-	 * @param moveY
-	 * @param currX
-	 * @param currY
-	 * @throws HeadlessException
-	 */
-	private void moveLeftUp( int moveX, int moveY, int currX, int currY ) throws HeadlessException
+	private void moveLeftUp( int x, int y )
 	{
-		int moveToX;
-		int moveToY;
-		// amount to move = force + current
-		moveToX = currX - moveX;
-		moveToY = currY + moveY;
-
-		System.out.println("move lu: " + moveToX + ", " + moveToY);
-		robot.mouseMove(moveToX, moveToY);
-		setCurrentLocation(MouseInfo.getPointerInfo().getLocation());
+		int currentX = startLocation.x + getCurrentX();
+		int currentY = startLocation.x + getCurrentY();
+		robot.mouseMove(currentX - x, currentY + y);
+		System.out.println("moveRightDown" + MouseInfo.getPointerInfo()
+													  .getLocation()
+													  .toString());
+		setCurrentX(MouseInfo.getPointerInfo().getLocation().x);
+		setCurrentX(MouseInfo.getPointerInfo().getLocation().y);
 	}
 
 
-	/**
-	 * @param moveX
-	 * @param moveY
-	 * @param currX
-	 * @param currY
-	 * @throws HeadlessException
-	 */
-	private void moveRightUp( int moveX, int moveY, int currX, int currY ) throws HeadlessException
+	private void moveRightUp( int x, int y )
 	{
-		int moveToX;
-		int moveToY;
-		// amount to move = force + current
-		moveToX = currX + moveX;
-		moveToY = currY + moveY;
-
-		System.out.println("move ru: " + moveToX + ", " + moveToY);
-		robot.mouseMove(moveToX, moveToY);
-		setCurrentLocation(MouseInfo.getPointerInfo().getLocation());
+		int currentX = startLocation.x + getCurrentX();
+		int currentY = startLocation.x + getCurrentY();
+		robot.mouseMove(currentX + x, currentY + y);
+		System.out.println("moveRightDown" + MouseInfo.getPointerInfo()
+													  .getLocation()
+													  .toString());
+		setCurrentX(MouseInfo.getPointerInfo().getLocation().x);
+		setCurrentX(MouseInfo.getPointerInfo().getLocation().y);
 	}
 
 
-	/**
-	 * @param moveX
-	 * @param moveY
-	 * @param currX
-	 * @param currY
-	 * @throws HeadlessException
-	 */
-	private void moveLeftDown( int moveX, int moveY, int currX, int currY ) throws HeadlessException
+	private void moveLeftDown( int x, int y )
 	{
-		int moveToX;
-		int moveToY;
-		// amount to move = force + current
-		moveToX = currX - moveX;
-		moveToY = currY - moveY;
-		System.out.println("move ld: " + moveToX + ", " + moveToY);
-		robot.mouseMove(moveToX, moveToY);
-		setCurrentLocation(MouseInfo.getPointerInfo().getLocation());
+		int currentX = startLocation.x + getCurrentX();
+		int currentY = startLocation.x + getCurrentY();
+		robot.mouseMove(currentX - x, currentY - y);
+		System.out.println("moveRightDown" + MouseInfo.getPointerInfo()
+													  .getLocation()
+													  .toString());
+		setCurrentX(MouseInfo.getPointerInfo().getLocation().x);
+		setCurrentX(MouseInfo.getPointerInfo().getLocation().y);
 	}
 
 
@@ -248,7 +227,7 @@ public class CursorRobot extends RobotUtils implements Runnable, KeyListener
 	 * @param acceloData
 	 * @return
 	 */
-	private synchronized int[] covertStringToIntArray( String acceloData )
+	private synchronized int[] convertStringToIntArray( String acceloData )
 	{
 		// TODO: convert the incoming String to an int[] that will
 		StringTokenizer st = new StringTokenizer(acceloData);
@@ -271,7 +250,7 @@ public class CursorRobot extends RobotUtils implements Runnable, KeyListener
 	/**
 	 * @return the currentLocation
 	 */
-	public synchronized Point getCurrentLocation()
+	public Point getCurrentLocation()
 	{
 		return currentLocation;
 	}
@@ -281,15 +260,17 @@ public class CursorRobot extends RobotUtils implements Runnable, KeyListener
 	 * @param currentLocation
 	 *        the currentLocation to set
 	 */
-	public synchronized void setCurrentLocation( Point currentLocation )
+	public void setCurrentLocation( Point currentLocation )
 	{
+
 		this.currentLocation = currentLocation;
 	}
+
 
 	/**
 	 * @return the width
 	 */
-	public synchronized double getWidth()
+	private double getWidth()
 	{
 		return SCREENSIZE.width;
 	}
@@ -298,32 +279,66 @@ public class CursorRobot extends RobotUtils implements Runnable, KeyListener
 	/**
 	 * @return the height
 	 */
-	public synchronized double getHeight()
+	private double getHeight()
 	{
 		return SCREENSIZE.height;
 	}
 
-	@Override
-	public void keyPressed( KeyEvent arg0 )
+
+	/**
+	 * @return the ctrWidth
+	 */
+	private int getCtrWidth()
 	{
-		// TODO Auto-generated method stub
-		
+		return SCREENSIZE.width / 2;
 	}
 
 
-	@Override
-	public void keyReleased( KeyEvent arg0 )
+	/**
+	 * @return the ctrHeight
+	 */
+	private int getCtrHeight()
 	{
-		// TODO Auto-generated method stub
-		
+		return SCREENSIZE.height / 2;
 	}
 
 
-	@Override
-	public void keyTyped( KeyEvent arg0 )
+	/**
+	 * @return the currentX
+	 */
+	public int getCurrentX()
 	{
-		// TODO Auto-generated method stub
-		
+		return currentX;
 	}
+
+
+	/**
+	 * @param currentX
+	 *        the currentX to set
+	 */
+	public void setCurrentX( int currentX )
+	{
+		this.currentX = currentX;
+	}
+
+
+	/**
+	 * @return the currentY
+	 */
+	public int getCurrentY()
+	{
+		return currentY;
+	}
+
+
+	/**
+	 * @param currentY
+	 *        the currentY to set
+	 */
+	public void setCurrentY( int currentY )
+	{
+		this.currentY = currentY;
+	}
+
 }// end of class
 
