@@ -4,10 +4,12 @@ import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Display;
 import android.view.Menu;
@@ -52,6 +54,12 @@ public class MainMouseApp extends Activity
 	public static final int LEFT_BUTTON_CLICK = 8;
 	public static final int SEND_DATA_CLICK = 9;
 
+	// mouse colors
+	public static final int WHITE = 11;
+	public static final int GREEN = 12;
+	public static final int RED = 13;
+	public static final int BLUE = 14;
+
 	// message types
 	public static final String DEVICE_NAME = "btDevice";
 	public static final String TOAST = "toast";
@@ -67,9 +75,15 @@ public class MainMouseApp extends Activity
 
 	// service variables
 	private AccelometerService appService;
-	public TextView title;
 	public WindowManager appWindow;
 	public Display appDisplay;
+
+	// display variables
+	public TextView title;
+	public TextView xAxis;
+	public TextView yAxis;
+	public TextView xReadings;
+	public TextView yReadings;
 
 
 	/*
@@ -93,9 +107,181 @@ public class MainMouseApp extends Activity
 		setUpApp();
 
 		final TextView title = (TextView ) findViewById(R.id.title);
-		title.setText(R.string.title);
+		title.setText(getUserName());
 
 	}// end of onCreate() method
+
+
+	// executes immediately after the onCreate()
+	@Override
+	public void onStart()
+	{
+		super.onStart();
+		if ( D )
+			Log.i(TAG, "+++ ON START +++");
+
+		// check to ensure that the bluetooth is turned on
+		if ( !btAdapter.isEnabled() )
+		{
+			// if not start a new activity by request the permission for the user
+			Intent requestBT = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+			startActivityForResult(requestBT, REQUEST_ENABLE_BT);
+		}
+		else
+		{
+			// set up the client only if blue-tooth isEabled
+			// and the client is not already running
+			if ( appClient == null )
+			{
+				if ( D )
+					Log.i(TAG, "+++ ON START - SET UP THE APPCLIENT +++");
+				appClient = new AppClient(this, appHandler);
+				appClient.start();
+			}
+		}
+
+		setUpAccelerometerService();
+
+	}// end of onStart() method
+
+
+	// this method is called after the app has been paused
+	// if the blue-tooth setup is slow and the app is paused
+	// this method will be called
+	@Override
+	public synchronized void onResume()
+	{
+		super.onResume();
+		if ( D )
+			Log.i(TAG, "+++ ON RESUME +++");
+
+		if ( appClient.getState() == AppClient.WAITING )
+		{
+			appClient.start();
+		}
+		// if the client is connected start the service
+		// need to wait for the client to be connected
+		// before starting the service
+		if ( appClient.getState() == AppClient.CONNECTED )
+		{
+			setUpAccelerometerService();
+		}
+
+		if ( getMouseColor() != WHITE )
+		{
+			// appClient.write(getMouseColor());
+		}
+	}
+
+
+	/**
+	 * 
+	 */
+	private void setUpAccelerometerService()
+	{
+		Log.i(TAG, "+++ START THE SERVICE+++");
+		makeShortToast("start the accelerometer service");
+		// set up a new service
+		AccelometerService accelometerService = new AccelometerService(this.getApplicationContext(),
+																	   appHandler,
+																	   appWindow);
+		// start the service
+		accelometerService.initAccelometerService();
+	}
+
+
+	/**
+	 * Method used to display the Options Menu
+	 */
+	@Override
+	public boolean onCreateOptionsMenu( Menu menu )
+	{
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.option_menu, menu);
+		return true;
+	}// end of onCreateOptionsMenu() method
+
+
+	/**
+	 * Method used to handle which menu item is selected.
+	 */
+	@Override
+	public boolean onOptionsItemSelected( MenuItem item )
+	{
+		switch ( item.getItemId() )
+		{
+			case R.id.connect:
+				if ( D )
+					Log.e(TAG, "+++ CONNECT OPTION +++");
+				Intent btSearchIntent = new Intent(this, CheckBTDevices.class);
+				startActivityForResult(btSearchIntent, REQUEST_CONNECT_DEVICE);
+				return true;
+			case R.id.discoverable:
+				if ( D )
+					Log.e(TAG, "+++ DISCOVERABLE OPTION +++");
+				ensureDiscoverable();
+				return true;
+			case R.id.prefs:
+				if ( D )
+					Log.e(TAG, "+++ PREFS OPTION +++");
+				Intent btPrefsIntent = new Intent(this, Prefs.class);
+				startActivity(btPrefsIntent);
+				return true;
+			case R.id.exit:
+				if ( D )
+					Log.e(TAG, "+++ EXIT OPTION +++");
+				if ( appService != null )
+				{
+					appService.endAccelometerService();
+				}
+				finish();
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
+		}
+	}
+
+
+	public String getUserName()
+	{
+		SharedPreferences getPrefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+		String username = getPrefs.getString("username", "name not set");
+		if ( username != null )
+		{
+			return username;
+		}
+		return username;
+	}
+
+
+	/**
+	 * 
+	 */
+	private int getMouseColor()
+	{
+		SharedPreferences getPrefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+		int mouseColor = 0;
+		String colours = getPrefs.getString("colorlist", "1");
+		if ( colours.contains("2") )
+		{
+			mouseColor = GREEN;
+		}
+		else
+			if ( colours.contains("3") )
+			{
+				mouseColor = RED;
+			}
+			else
+				if ( colours.contains("4") )
+				{
+					mouseColor = BLUE;
+				}
+				else
+				{
+					mouseColor = WHITE;
+				}
+		return mouseColor;
+	}
 
 
 	/*
@@ -116,67 +302,6 @@ public class MainMouseApp extends Activity
 			finish();
 			return;
 		}
-	}
-
-
-	// executes immediately after the onCreate()
-	@Override
-	public void onStart()
-	{
-		super.onStart();
-		if ( D )
-			Log.i(TAG, "+++ ON START +++");
-
-		// check to ensure that the bluetooth is turned on
-		if ( !btAdapter.isEnabled() )
-		{
-			// if not start a new activity by request the permission for the user
-			Intent requestBT = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-			startActivityForResult(requestBT, REQUEST_ENABLE_BT);
-		}
-		else
-		{
-			// set the service if bule-tooth isEabled
-			// and the service is not already running
-			if ( appClient == null )
-			{
-				if ( D )
-					Log.i(TAG, "+++ ON START - SET UP THE APPCLIENT +++");
-				appClient = new AppClient(this, appHandler);
-				appClient.start();
-			}
-
-
-		}
-
-	}// end of onStart() method
-
-
-	// this method is called after the app has been paused
-	// if the blue-tooth setup is slow and the app is paused
-	// this method will be called
-	@Override
-	public synchronized void onResume()
-	{
-		super.onResume();
-		if ( D )
-			Log.i(TAG, "+++ ON RESUME +++");
-
-			// if the client is connected start the service
-			// need to wait for the client to be connected
-			// before starting the service
-			if ( appClient.getState() == AppClient.CONNECTED )
-			{
-				Log.i(TAG, "+++ ON RESUME - START THE SERVICE+++");
-				makeShortToast("start the accelerometer service");
-				// set up a new service
-				AccelometerService accelometerService = new AccelometerService(this.getApplicationContext(),
-																			   appHandler,
-																			   appWindow);
-				// start the service
-				accelometerService.initAccelometerService();
-			}
-
 	}
 
 
@@ -210,18 +335,6 @@ public class MainMouseApp extends Activity
 	}
 
 
-	/**
-	 * Method used to display the Options Menu
-	 */
-	@Override
-	public boolean onCreateOptionsMenu( Menu menu )
-	{
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.option_menu, menu);
-		return true;
-	}// end of onCreateOptionsMenu() method
-
-
 	/*
 	 * this method place the button and text box on the screen
 	 * also registers the button click listeners
@@ -232,6 +345,20 @@ public class MainMouseApp extends Activity
 			Log.i(TAG, "+++ SET UP APP +++");
 
 		final EditText editText = (EditText ) findViewById(R.id.edText);
+		final TextView xAxis = (TextView ) findViewById(R.id.tvx);
+		final TextView yAxis = (TextView ) findViewById(R.id.tvy);
+		final TextView xReadings = (TextView ) findViewById(R.id.tvXReadings);
+		final TextView yReadings = (TextView ) findViewById(R.id.tvYReadings);
+
+		SharedPreferences getPrefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+		boolean turnOnReadings = getPrefs.getBoolean("showdata", false);
+		if ( turnOnReadings == true )
+		{
+			xAxis.setVisibility(View.VISIBLE);
+			yAxis.setVisibility(View.VISIBLE);
+			xReadings.setVisibility(View.VISIBLE);
+			yReadings.setVisibility(View.VISIBLE);
+		}
 
 		final Button rightbtn = (Button ) findViewById(R.id.bRight);
 		rightbtn.setOnClickListener(new View.OnClickListener()
@@ -294,8 +421,11 @@ public class MainMouseApp extends Activity
 	 * the request.
 	 * 
 	 * @param requestCode
+	 *        the type of request to be carried out
 	 * @param resultCode
+	 *        did the request passed or fail
 	 * @param data
+	 *        the data returned from the request in the Intent
 	 */
 	public void onActivityResult( int requestCode, int resultCode, Intent data )
 	{
@@ -307,7 +437,6 @@ public class MainMouseApp extends Activity
 					Log.i(TAG, "+++ ON ACTIVITY REQUEST - CONNECT +++");
 					makeShortToast("connect to btDevice");
 					connectToServer(data);
-
 				}
 				break;
 			case REQUEST_ENABLE_BT:
@@ -329,13 +458,13 @@ public class MainMouseApp extends Activity
 	private void connectToServer( Intent data )
 	{
 		// remote MAC:
-		if (D)
-		Log.i(TAG, "+++ CONNECT TO SERVER - USING THE REMOTE ADDRESS +++");
-		//String remoteDeviceMacAddress = data.getExtras()
-			//								.getString(CheckBTDevices.EXTRA_DEVICE_ADDRESS);
+		if ( D )
+			Log.i(TAG, "+++ CONNECT TO SERVER - USING THE REMOTE ADDRESS +++");
+		// String remoteDeviceMacAddress = data.getExtras()
+		// .getString(CheckBTDevices.EXTRA_DEVICE_ADDRESS);
 		// String remoteDeviceMacAddress = "00:15:83:3D:0A:57";
 
-		//BluetoothDevice btDevice = btAdapter.getRemoteDevice(remoteDeviceMacAddress);
+		// BluetoothDevice btDevice = btAdapter.getRemoteDevice(remoteDeviceMacAddress);
 		BluetoothDevice btDevice = btAdapter.getRemoteDevice("00:15:83:3D:0A:57");
 		if ( btDevice != null )
 		{
@@ -349,7 +478,6 @@ public class MainMouseApp extends Activity
 	 * This method is used to ensure that the current btDevice is discoverable to
 	 * others blue-tooth btDevice.
 	 */
-
 	public void ensureDiscoverable()
 	{
 		if ( btAdapter.getScanMode() != BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE )
@@ -359,36 +487,6 @@ public class MainMouseApp extends Activity
 										300);
 			startActivity(discoverableIntent);
 		}
-	}
-
-
-	/**
-	 * Method used to handle which menu item is selected.
-	 */
-	@Override
-	public boolean onOptionsItemSelected( MenuItem item )
-	{
-		switch ( item.getItemId() )
-		{
-			case R.id.connect:
-				if ( D )
-					Log.e(TAG, "+++ CONNECT +++");
-				Intent btSearchIntent = new Intent(this, CheckBTDevices.class);
-				startActivityForResult(btSearchIntent, REQUEST_CONNECT_DEVICE);
-				return true;
-			case R.id.discoverable:
-				if ( D )
-					Log.e(TAG, "+++ DISCOVERABLE +++");
-				ensureDiscoverable();
-				return true;
-			case R.id.prefs:
-				if ( D )
-					Log.e(TAG, "+++ PREFS +++");
-				Intent btPrefsIntent = new Intent(this, Prefs.class);
-				startActivity(btPrefsIntent);
-				return true;
-		}
-		return false;
 	}
 
 	/*
@@ -405,7 +503,10 @@ public class MainMouseApp extends Activity
 			switch ( message.what )
 			{
 				case MESSAGE_DATA_ACCELO:
-					write(message.getData().getString(DATA));
+
+					String dataIn = message.getData().getString(DATA);
+					write(dataIn);
+					// setDataIn(dataIn);
 					if ( D )
 						Log.i(TAG, "+++ MESSAGE_DATA +++");
 					break;
@@ -432,20 +533,32 @@ public class MainMouseApp extends Activity
 			}
 
 		}
+
+		/*
+		 * private void setDataIn( String datIn )
+		 * {
+		 * if ( dataIn != null )
+		 * {
+		 * xReadings.setText(dataIn.substring(1, 3));
+		 * yReadings.setText(dataIn.substring(3, 5));
+		 * }
+		 * 
+		 * }
+		 */
 	};
 
 
-	// ++++++++++++++++++++++++++++when the program ends clean up here+++++++++++++++++++++++++++++++++++++++
+	// ++++++++++++++++++++++++++++ When the program ends - Clean up here +++++++++++++++++++++++++++++++++++++++
 
 	@Override
 	public synchronized void onPause()
 	{
+		super.onPause();
 		if ( D )
 			Log.i(TAG, "+++ ON PAUSE +++");
-		super.onPause();
 		if ( appClient.getState() == AppClient.CONNECTED )
 		{
-			appClient.setState(AppClient.WAITING);
+			appClient.closeClient();
 		}
 
 	}// end of onPause() method
@@ -459,10 +572,6 @@ public class MainMouseApp extends Activity
 		super.onStop();
 		if ( D )
 			Log.i(TAG, "+++ ON STOP +++");
-		if ( appClient.getState() == AppClient.CONNECTED )
-		{
-			appClient.setState(AppClient.WAITING);
-		}
 
 	}// end of onStop() method
 

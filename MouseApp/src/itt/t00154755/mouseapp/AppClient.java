@@ -244,6 +244,13 @@ public class AppClient
 	public synchronized void
 			createClientCommThread( BluetoothSocket btSocket ) throws IOException
 	{
+		// close any running thread
+		if (clientCommThread != null)
+		{
+			clientCommThread.cancel();
+		}
+		
+		//start a new thread
 		clientCommThread = new ClientCommsThread(btSocket);
 		clientCommThread.start();
 	}
@@ -269,6 +276,29 @@ public class AppClient
 		}
 		// Perform the write unsynchronized
 		cct.writeToAppClient(acceloData);
+
+	}
+	
+	/**
+	 * @param acceloData
+	 *        a byte[] representation of the accelerometer data reading
+	 */
+	public synchronized void write( int options )
+	{
+		// method referenced
+		if ( D )
+			Log.i(TAG, "Pass the data to the thread");
+		// Create temporary object
+		ClientCommsThread cct;
+		// Synchronize a copy of the ConnectedThread
+		synchronized ( this )
+		{
+			if ( state != CONNECTED )
+				return;
+			cct = clientCommThread;
+		}
+		// Perform the write unsynchronized
+		cct.writeOptionsAppClient(options);
 
 	}
 
@@ -334,6 +364,43 @@ public class AppClient
 			try
 			{
 				outStream.write(acceloData);
+			}
+			catch ( IOException e )
+			{
+				if ( D )
+					Log.e(TAG, "error while writing to the server");
+				e.printStackTrace();
+				cancel();
+				try
+				{
+					outStream.close();
+					cancel();
+				}
+				catch ( IOException e1 )
+				{
+					if ( D )
+						Log.e(TAG, "error trying to close the outstream");
+					e1.printStackTrace();
+				}
+			}
+			catch ( Exception e2 )
+			{
+				if ( D )
+					Log.e(TAG, "error trying to write to the server");
+				cancel();
+				e2.printStackTrace();
+			}
+		}
+		
+		/**
+		 * @param options
+		 *        int representation of the pop menu options
+		 */
+		public void writeOptionsAppClient( int options )
+		{
+			try
+			{
+				outStream.write(options);
 			}
 			catch ( IOException e )
 			{

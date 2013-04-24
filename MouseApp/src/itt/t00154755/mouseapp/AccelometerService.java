@@ -256,16 +256,6 @@ public class AccelometerService extends Service implements SensorEventListener
 
 		// step 2. find the current rotation of the phone
 		int rotation = appWindow.getDefaultDisplay().getRotation();
-		/*
-		 * DisplayMetrics dm = new DisplayMetrics();
-		 * appWindow.getDefaultDisplay().getMetrics(dm);
-		 * int width = dm.widthPixels;
-		 * int height = dm.heightPixels;
-		 * //
-		 * if ( ( rotation == Surface.ROTATION_0 || rotation == Surface.ROTATION_180 ) && height > width
-		 * || ( rotation == Surface.ROTATION_90 || rotation == Surface.ROTATION_270 )
-		 * && width > height )
-		 */
 		{
 			switch ( rotation )
 			{

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Mouse App</string>
+    <string name="bt_connectedDevices">Connected to</string>
+    <string name="bt_available">Available Devices</string>
+    <string name="bt_bSearch">Search for devices</string>
+    <string name="bt_not_found">No devices found</string>
+    <string name="bt_searching">Searching for devices</string>
+    <string name="bt_choose">Choose a device</string>
+    <string name="connect">Connect</string>
+    <string name="discoverable">Discoverable</string>
+    <string name="sendtexttoserver">Send Text</string>
+    <string name="title">Waiting to connect</string>
+    <string name="infoaboutbt">This is information about bluetooth</string>
+    <string name="prefs">Preferences</string>
+    <string name="right">right button</string>
+    <string name="left">left button</string>
+    <string name="waiting">Waiting for connection</string>
+ 
+</resources>

@@ -3,20 +3,20 @@
     
     <EditTextPreference
         android:title="Display Name"
-        android:key="edittext"
+        android:key="username"
         android:summary="Enter your name.">
     </EditTextPreference>
 
     <CheckBoxPreference
         android:title="Show Data" 
         android:defaultValue="false"
-        android:key="checkbox"
+        android:key="showdata"
         android:summary="Show data on screen."/>
 
     <ListPreference
         android:title="Choose Color"
-        android:key="list"
-        android:entries="@array/list"
+        android:key="colorlist"
+        android:entries="@array/colorlist"
         android:entryValues="@array/lValues"
         android:summary="Change cursor color.">
     </ListPreference>

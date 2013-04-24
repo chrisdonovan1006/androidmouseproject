@@ -11,3 +11,5 @@
 1366750108859	Rename field 'device'
 1366755418444	Extract method 'getDeviceName'
 1366757032426	Delete element
+1366792577502	Extract method 'getMouseColor'
+1366792767805	Extract method 'setUpAccelerometerService'

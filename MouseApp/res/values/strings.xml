@@ -17,5 +17,10 @@
     <string name="right">right button</string>
     <string name="left">left button</string>
     <string name="waiting">Waiting for connection</string>
- 
+    <string name="exit">Exit</string>
+    <string name="xaxis">X Axis: </string>
+    <string name="yaxis">Y Axis:</string>
+    <string name="xreading">0.0</string>
+    <string name="yreading">0.0</string>
+
 </resources>

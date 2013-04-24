@@ -16,7 +16,6 @@
         android:layout_below="@+id/title"
         android:text="@string/right" />
 
-    
     <TextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
@@ -55,5 +54,44 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/title"
         android:text="@string/left" />
+
+    <TextView
+        android:id="@+id/tvy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/bLeft"
+        android:layout_below="@+id/bLeft"
+        android:text="@string/yaxis"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/tvx"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/tvy"
+        android:layout_below="@+id/tvy"
+        android:layout_marginTop="15dp"
+        android:text="@string/xaxis"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/tvXReadings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/tvy"
+        android:layout_alignBottom="@+id/tvy"
+        android:layout_centerHorizontal="true"
+        android:text="@string/xreading"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/tvYReadings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/tvx"
+        android:layout_alignBottom="@+id/tvx"
+        android:layout_alignLeft="@+id/tvXReadings"
+        android:text="@string/yreading"
+        android:visibility="gone" />
 
 </RelativeLayout>

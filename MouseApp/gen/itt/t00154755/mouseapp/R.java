@@ -9,8 +9,8 @@ package itt.t00154755.mouseapp;
 
 public final class R {
     public static final class array {
+        public static final int colorlist=0x7f050000;
         public static final int lValues=0x7f050001;
-        public static final int list=0x7f050000;
     }
     public static final class attr {
     }
@@ -33,17 +33,22 @@ public final class R {
         public static final int bSearch=0x7f0a0005;
         public static final int bt_available=0x7f0a0001;
         public static final int bt_connectedDevices=0x7f0a0003;
-        public static final int connect=0x7f0a000d;
-        public static final int discoverable=0x7f0a000e;
+        public static final int connect=0x7f0a0011;
+        public static final int discoverable=0x7f0a0012;
         public static final int edText=0x7f0a0009;
+        public static final int exit=0x7f0a0014;
         public static final int lvAvailable=0x7f0a0002;
         public static final int lvConnected=0x7f0a0004;
-        public static final int prefs=0x7f0a000f;
-        public static final int progressBar1=0x7f0a000c;
+        public static final int prefs=0x7f0a0013;
+        public static final int progressBar1=0x7f0a0010;
         public static final int sendTextToServer=0x7f0a000a;
         public static final int title=0x7f0a0007;
         public static final int tvAbout=0x7f0a0000;
-        public static final int waitingtoconnect=0x7f0a000b;
+        public static final int tvXReadings=0x7f0a000d;
+        public static final int tvYReadings=0x7f0a000e;
+        public static final int tvx=0x7f0a000c;
+        public static final int tvy=0x7f0a000b;
+        public static final int waitingtoconnect=0x7f0a000f;
     }
     public static final class layout {
         public static final int about=0x7f030000;
@@ -64,6 +69,7 @@ public final class R {
         public static final int bt_searching=0x7f070005;
         public static final int connect=0x7f070007;
         public static final int discoverable=0x7f070008;
+        public static final int exit=0x7f070010;
         public static final int infoaboutbt=0x7f07000b;
         public static final int left=0x7f07000e;
         public static final int prefs=0x7f07000c;
@@ -71,6 +77,10 @@ public final class R {
         public static final int sendtexttoserver=0x7f070009;
         public static final int title=0x7f07000a;
         public static final int waiting=0x7f07000f;
+        public static final int xaxis=0x7f070011;
+        public static final int xreading=0x7f070013;
+        public static final int yaxis=0x7f070012;
+        public static final int yreading=0x7f070014;
     }
     public static final class style {
         /** 

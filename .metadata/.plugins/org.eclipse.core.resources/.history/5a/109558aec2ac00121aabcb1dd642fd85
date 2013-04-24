@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+    
+    <EditTextPreference
+        android:title="Display Name"
+        android:key="username"
+        android:summary="Enter your name.">
+    </EditTextPreference>
+
+    <CheckBoxPreference
+        android:title="Show Data" 
+        android:defaultValue="false"
+        android:key="checkbox"
+        android:summary="Show data on screen."/>
+
+    <ListPreference
+        android:title="Choose Color"
+        android:key="colorlist"
+        android:entries="@array/colorlist"
+        android:entryValues="@array/lValues"
+        android:summary="Change cursor color.">
+    </ListPreference>
+
+</PreferenceScreen>
