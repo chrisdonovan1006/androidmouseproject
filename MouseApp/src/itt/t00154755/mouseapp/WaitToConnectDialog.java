@@ -1,58 +1,38 @@
 package itt.t00154755.mouseapp;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 
-public class WaitToConnectDialog extends Activity
+public class WaitToConnectDialog extends DialogFragment 
 {
 
 	public void onCreate( Bundle savedInstanceState )
 	{
-
-		super.onCreate(savedInstanceState);
-
-		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(null);
-
-		// set title
-		alertDialogBuilder.setTitle("Waiting to connect to device...");
-
-		// set dialog message
-		alertDialogBuilder.setMessage("Click yes to exit!")
-						  .setCancelable(false)
-						  .setPositiveButton("Yes",
-											 new DialogInterface.OnClickListener()
-											 {
-
-												 public void
-														 onClick( DialogInterface dialog,
-																  int id )
-												 {
-													 // if this button is clicked, close
-													 // current activity
-													 WaitToConnectDialog.this.finish();
-												 }
-											 })
-						  .setNegativeButton("No",
-											 new DialogInterface.OnClickListener()
-											 {
-
-												 public void
-														 onClick( DialogInterface dialog,
-																  int id )
-												 {
-													 // if this button is clicked, just close
-													 // the dialog box and do nothing
-													 dialog.cancel();
-												 }
-											 });
-
-		// create alert dialog
-		AlertDialog alertDialog = alertDialogBuilder.create();
-
-		// show it
-		alertDialog.show();
+		/* The activity that creates an instance of this dialog fragment must
+	     * implement this interface in order to receive event callbacks.
+	     * Each method passes the DialogFragment in case the host needs to query it. 
+	    public interface WaitToConnectDialog {
+	        public void onDialogPositiveClick(DialogFragment dialog);
+	        public void onDialogNegativeClick(DialogFragment dialog);
+	    }
+	    
+	    // Use this instance of the interface to deliver action events
+	    WaitToConnectDialog mListener;
+	    
+	    // Override the Fragment.onAttach() method to instantiate the NoticeDialogListener
+	    @Override
+	    public void onAttach(Activity activity) {
+	        super.onAttach(activity);
+	        // Verify that the host activity implements the callback interface
+	        try {
+	            // Instantiate the NoticeDialogListener so we can send events to the host
+	            mListener = (WaitToConnectDialog) activity;
+	        } catch (ClassCastException e) {
+	            // The activity doesn't implement the interface, throw exception
+	            throw new ClassCastException(activity.toString()
+	                    + " must implement WaitToConnectDialog");
+	        }
+	    }*/
 	}
 
 }

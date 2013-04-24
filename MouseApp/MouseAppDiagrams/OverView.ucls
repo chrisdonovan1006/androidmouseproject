@@ -28,8 +28,8 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="4" language="java" name="itt.t00154755.mouseapp.App" project="MouseApp" 
-    file="/MouseApp/src/itt/t00154755/mouseapp/App.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="4" language="java" name="itt.t00154755.mouseapp.MainMouseAppnMouseApp" project="MouseApp" 
+    file="/MouseApp/src/itt/t00154755/mouseapp/MainMouseApp.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="647" y="105"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" accessors="true" 
       visibility="true">      

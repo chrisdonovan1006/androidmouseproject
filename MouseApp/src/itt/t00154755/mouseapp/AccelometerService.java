@@ -1,38 +1,42 @@
 package itt.t00154755.mouseapp;
 
-import android.annotation.TargetApi;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Display;
 import android.view.Surface;
 import android.view.WindowManager;
 
 /**
- * AccelometerService
+ * @author Christopher Donovan
+ * @author AccelometerService.java
+ *         <p>
+ *         This service runs in the background for the life of the application. It contains the Accelerometer sensor which runs returns an event each time the
+ *         sensor changes. The event contains an integer array with the values of the x, y, and z axis. the service sends the data back to the main UI thread
+ *         through a handler this data is then passed on to the client which in turn forwards it to the server.
  * 
- * @author Christopher
+ * 
  * 
  */
-@TargetApi ( Build.VERSION_CODES.GINGERBREAD )
 public class AccelometerService extends Service implements SensorEventListener
 {
 
+	// used for debugging
 	private static final String TAG = "Accelometer Service";
 	private static final boolean D = true;
+
+	// the data string
 	private String accelerometerData = " 1 0 0 ";
+
+	// the x, y axis's
 	private int xIntAxis;
 	private int yIntAxis;
 	// sensor movement direction
@@ -41,27 +45,38 @@ public class AccelometerService extends Service implements SensorEventListener
 	public static final int LEFTUP = 3;
 	public static final int RIGHTDOWN = 4;
 
+	// these variables are read in from the main activity
 	private Context context;
 	private Handler appHandler;
+	private WindowManager appWindow;
+
+	// the  which sends the data
 	private Thread sendDataThread;
 
 	// sensor manager variables
 	private SensorManager accelerometerManager;
 	private Sensor accelerometerSensor;
 
+	// boolean to check if the accelerometer is registered
 	private boolean isRegistered = false;
-	private Display appDisplay;
-	private WindowManager appWindow;
 
 
+	/**
+	 * 
+	 * @param context
+	 *        the global application interface
+	 * @param appHandler
+	 *        allow data transfer to the main UI
+	 * @param appWindow
+	 *        the device window
+	 */
 	public AccelometerService( Context context,
 							   Handler appHandler,
-							   WindowManager appWindow,
-							   Display appDisplay )
+							   WindowManager appWindow )
 	{
+		//
 		this.context = context;
 		this.appHandler = appHandler;
-		this.appDisplay = appDisplay;
 		this.appWindow = appWindow;
 	}
 
@@ -69,7 +84,7 @@ public class AccelometerService extends Service implements SensorEventListener
 	@Override
 	public int onStartCommand( Intent intent, int flags, int startId )
 	{
-		// TODO: return start sticky this allows the service to run
+		// return start sticky this allows the service to run
 		// until told otherwise
 		return START_STICKY;
 	}
@@ -78,7 +93,7 @@ public class AccelometerService extends Service implements SensorEventListener
 	@Override
 	public void onCreate()
 	{
-		// TODO initiate the service
+		// initiate the service
 		super.onCreate();
 		initAccelometerService();
 	}
@@ -87,7 +102,7 @@ public class AccelometerService extends Service implements SensorEventListener
 	@Override
 	public void onDestroy()
 	{
-		// TODO stop the service and the helper thread
+		// stop the service and the helper thread
 		super.onDestroy();
 		endAccelometerService();
 	}
@@ -95,7 +110,7 @@ public class AccelometerService extends Service implements SensorEventListener
 
 	public void initAccelometerService()
 	{
-		// TODO register the listener
+		// register the listener
 		makeToastShort("AccelometerService started");
 		registerListener();
 	}
@@ -103,7 +118,7 @@ public class AccelometerService extends Service implements SensorEventListener
 
 	public void endAccelometerService()
 	{
-		// TODO un-register the listener
+		// unregister the listener
 		unregisterListener();
 		// stop the service
 		stopSelf();
@@ -113,10 +128,10 @@ public class AccelometerService extends Service implements SensorEventListener
 
 	private void makeToastShort( String string )
 	{
-		// TODO send message back to UI thread
-		Message message = appHandler.obtainMessage(App.MESSAGE_TOAST_ACCELO);
+		// send message back to UI thread
+		Message message = appHandler.obtainMessage(MainMouseApp.MESSAGE_TOAST_ACCELO);
 		Bundle bundle = new Bundle();
-		bundle.putString(App.TOAST, string);
+		bundle.putString(MainMouseApp.TOAST, string);
 		message.setData(bundle);
 		appHandler.handleMessage(message);
 	}
@@ -124,10 +139,10 @@ public class AccelometerService extends Service implements SensorEventListener
 
 	private void sendDataToUIActivity( String string )
 	{
-		// TODO send message back to UI thread
-		Message message = appHandler.obtainMessage(App.MESSAGE_DATA_ACCELO);
+		// send message back to UI thread
+		Message message = appHandler.obtainMessage(MainMouseApp.MESSAGE_DATA_ACCELO);
 		Bundle bundle = new Bundle();
-		bundle.putString(App.DATA, string);
+		bundle.putString(MainMouseApp.DATA, string);
 		message.setData(bundle);
 		appHandler.handleMessage(message);
 	}
@@ -139,7 +154,7 @@ public class AccelometerService extends Service implements SensorEventListener
 	 */
 	private void registerListener()
 	{
-		// TODO register the listener
+		// register the listener
 		if ( D )
 			Log.d(TAG, "+++ REGISTER-LISTENER FOR SENSOR +++");
 
@@ -155,7 +170,7 @@ public class AccelometerService extends Service implements SensorEventListener
 			accelerometerManager.registerListener(this,
 												  accelerometerSensor,
 												  SensorManager.SENSOR_DELAY_UI);
-
+			// set registered
 			isRegistered = true;
 		}
 	}
@@ -166,7 +181,7 @@ public class AccelometerService extends Service implements SensorEventListener
 	 */
 	private SensorManager getAccelerometerManager()
 	{
-		// TODO return the manager object
+		// get the system service using the main class reference, return the manager object
 		return (SensorManager ) context.getSystemService(Context.SENSOR_SERVICE);
 	}
 
@@ -177,8 +192,8 @@ public class AccelometerService extends Service implements SensorEventListener
 	 */
 	private void unregisterListener()
 	{
-		// TODO check if the manager is registered
-		// TODO if it is then unregister it
+		// check if the manager is registered
+		// if it is then unregister it
 		if ( D )
 			Log.d(TAG, "+++ UNREGISTER-LISTENER FOR SENSOR +++");
 
@@ -204,7 +219,7 @@ public class AccelometerService extends Service implements SensorEventListener
 	@Override
 	public void onSensorChanged( SensorEvent event )
 	{
-		// TODO get the current event
+		// get the current event
 		if ( D )
 			Log.d(TAG, "+++ SENSOR CHANGE +++");
 		// long timestamp = event.timestamp;
@@ -214,99 +229,88 @@ public class AccelometerService extends Service implements SensorEventListener
 		}
 		catch ( InterruptedException e )
 		{
-			// TODO this shouldn't happen
-			
+			// this shouldn't happen
+
 		}
 	}
+
 
 	/*
 	 * The event is passed to this method
 	 */
-	private void prepareTheData( SensorEvent event ) throws InterruptedException
+	private void
+			prepareTheData( SensorEvent event ) throws InterruptedException
 	{
-		// TODO step 1. filter the data using a low and high filter
+		// step 1. filter the data using a low and high filter
 		// float[] filteredEvent = applyFilters(event);
 
 		float xFloatAxis = 0;
 		float yFloatAxis = 0;
 
+		// @link http://developer.android.com/reference/android/view/Display.html
+		// @link http://www.monkeycoder.co.nz/Community/posts.php?topic=1943
+		// @link http://stackoverflow.com/questions/4757632/screen-rotation-using-display-getrotation
+		
+		// best explanation here
+		// @link http://android-developers.blogspot.ie/2010/09/one-screen-turn-deserves-another.html
+
+		// step 2. find the current rotation of the phone
 		int rotation = appWindow.getDefaultDisplay().getRotation();
-	    DisplayMetrics dm = new DisplayMetrics();
-	    appWindow.getDefaultDisplay().getMetrics(dm);
-	    int width = dm.widthPixels;
-	    int height = dm.heightPixels;
-	    int orientation;
-	    // if the device's natural orientation is portrait:
-	    if ((rotation == Surface.ROTATION_0
-	            || rotation == Surface.ROTATION_180) && height > width ||
-	        (rotation == Surface.ROTATION_90
-	            || rotation == Surface.ROTATION_270) && width > height) {
-	        switch(rotation) {
-	            case Surface.ROTATION_0:
-	                orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
-	                xFloatAxis = event.values[0];
-					yFloatAxis = event.values[1];
-	                break;
-	            case Surface.ROTATION_90:
-	                orientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
-	                xFloatAxis = -event.values[1];
-					yFloatAxis = event.values[0];
-	                break;
-	            case Surface.ROTATION_180:
-	                orientation =
-	                    ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT;
-	                xFloatAxis = -event.values[1];
-					yFloatAxis = -event.values[0];
-	                break;
-	            case Surface.ROTATION_270:
-	                orientation =
-	                    ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE;
-	                xFloatAxis = event.values[0];
-					yFloatAxis = -event.values[1];
-	                break;
-	            default:
-	                Log.e(TAG, "Unknown screen orientation. Defaulting to " +
-	                        "portrait.");
-	                orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
-	                xFloatAxis = event.values[0];
-					yFloatAxis = event.values[1];
-	                break; 
-	        }
-	    }
-		// TODO step 2. find the current rotation of the phone
-	/*	switch ( appDisplay.getRotation() )
+		/*
+		 * DisplayMetrics dm = new DisplayMetrics();
+		 * appWindow.getDefaultDisplay().getMetrics(dm);
+		 * int width = dm.widthPixels;
+		 * int height = dm.heightPixels;
+		 * //
+		 * if ( ( rotation == Surface.ROTATION_0 || rotation == Surface.ROTATION_180 ) && height > width
+		 * || ( rotation == Surface.ROTATION_90 || rotation == Surface.ROTATION_270 )
+		 * && width > height )
+		 */
 		{
-			case Surface.ROTATION_0:
-				xFloatAxis = event.values[0];
-				yFloatAxis = event.values[1];
-				break;
-			case Surface.ROTATION_90:
-				xFloatAxis = -event.values[1];
-				yFloatAxis = event.values[0];
-				break;
-			case Surface.ROTATION_180:
-				xFloatAxis = -event.values[1];
-				yFloatAxis = -event.values[0];
-				break;
-			case Surface.ROTATION_270:
-				xFloatAxis = event.values[0];
-				yFloatAxis = -event.values[1];
-				break;
-		}*/
+			switch ( rotation )
+			{
+				case Surface.ROTATION_0:
+					xFloatAxis = event.values[0];
+					yFloatAxis = event.values[1];
+					break;
+				case Surface.ROTATION_90:
+					xFloatAxis = -event.values[1];
+					yFloatAxis = event.values[0];
+					break;
+				case Surface.ROTATION_180:
+					xFloatAxis = -event.values[1];
+					yFloatAxis = -event.values[0];
+					break;
+				case Surface.ROTATION_270:
+					xFloatAxis = event.values[0];
+					yFloatAxis = -event.values[1];
+					break;
+				default:
+					Log.e(TAG, "Set the rotation to 0 position.");
+					xFloatAxis = event.values[0];
+					yFloatAxis = event.values[1];
+					break;
+			}
+		}
+
 		Log.d(TAG, "filtered values: " + xFloatAxis + ", " + yFloatAxis);
 
-		// TODO step 3. determine the phones current tilting position
+		// step 3. determine the phones current tilting position
 		determinePhonePosition(xFloatAxis, yFloatAxis);
-		
-		// TODO make this thread sleep for 100th of a second
-		Thread.sleep(100);
-		// TODO step 4. send the data back to the main UI thread
+
+		// make this thread sleep for 100th of a second
+		// Thread.sleep(100);
+		// step 4. send the data back to the main UI thread
 		sendCurrentReadingsToUI();
 	}
 
 
-	/**
+	/*
+	 * 
+	 * @link http://developer.android.com/guide/topics/sensors/sensors_motion.html#sensors-motion-accel
+	 * 
 	 * @param event
+	 * 
 	 * @return
 	 */
 	/*
@@ -318,6 +322,8 @@ public class AccelometerService extends Service implements SensorEventListener
 	 * long eTime = event.timestamp;
 	 * // g = 0.9 * g + 0.1 * v
 	 * // g = 9.80665 m/s2
+	 * 
+	 * // alpha must be: > 0 & < 1
 	 * final float alpha = 0.9f;
 	 * float[] gravity = new float[3];
 	 * 
@@ -335,9 +341,13 @@ public class AccelometerService extends Service implements SensorEventListener
 	 * return gravity;
 	 * }
 	 */
-	
-	/**
+
+	/*
+	 * Using the filters applied the next task is to determine the
+	 * current position of the sensors values.
+	 * 
 	 * @param xFloatAxis
+	 * 
 	 * @param yFloatAxis
 	 */
 	private void determinePhonePosition( float xFloatAxis, float yFloatAxis )
@@ -348,6 +358,9 @@ public class AccelometerService extends Service implements SensorEventListener
 		if ( xIntAxis < 0 && yIntAxis < 0 )
 		{
 			// add only the positive values
+			// a number format exception will be
+			// thrown on the server side if negative
+			// values are passed across.
 			if ( D )
 				Log.d(TAG, "move mouse: " + LEFTDOWN);
 			setAccelerometerData(" " + LEFTDOWN
@@ -400,21 +413,26 @@ public class AccelometerService extends Service implements SensorEventListener
 											 + " ");
 					}
 
-		
-	}
-	
-	private  void sendCurrentReadingsToUI()
-	{
-		// TODO create a new thread and start sending the data to the main UI thread
-		sendDataThread = new Thread(new SendDataThread()); // Thread created
-		sendDataThread.start(); // Thread started
-		
 	}
 
-	//
+	/*
+	 * Create a new Thread that begin passing the data to the main UI
+	 * Thread.
+	 */
+	private void sendCurrentReadingsToUI()
+	{
+		//  create a new thread and start sending the data to the main UI thread
+		sendDataThread = new Thread(new SendDataThread()); // Thread created
+		sendDataThread.start(); // Thread started
+
+	}
+
+	/*
+	 * private inner class that implements the Runnable interface.
+	 */
 	private class SendDataThread implements Runnable
 	{
-		// TODO send the data
+		// send the data
 		public void run()
 		{
 			sendDataToUIActivity(getAccelerometerData());
@@ -427,7 +445,7 @@ public class AccelometerService extends Service implements SensorEventListener
 	 */
 	public String getAccelerometerData()
 	{
-		// TODO retunr the current data
+		// return the current data
 		return accelerometerData;
 	}
 
@@ -438,7 +456,7 @@ public class AccelometerService extends Service implements SensorEventListener
 	 */
 	public void setAccelerometerData( String accelerometerData )
 	{
-		// TODO set the data
+		// set the data
 		this.accelerometerData = accelerometerData;
 	}
 
@@ -446,7 +464,7 @@ public class AccelometerService extends Service implements SensorEventListener
 	@Override
 	public IBinder onBind( Intent intent )
 	{
-		// TODO this service is not bound to the main
+		// this service is not bound to the main
 		// because it is running on the main UI and the thread is
 		// create and pushed out
 		return null;

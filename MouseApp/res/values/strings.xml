@@ -16,6 +16,6 @@
     <string name="prefs">Preferences</string>
     <string name="right">right button</string>
     <string name="left">left button</string>
-
-
+    <string name="waiting">Waiting for connection</string>
+ 
 </resources>

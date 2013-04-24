@@ -1,19 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="android.widget.TextView"/>
-<fullyQualifiedTypeName name="android.view.View.OnClickListener"/>
-<fullyQualifiedTypeName name="java.util.UUID"/>
-<fullyQualifiedTypeName name="javax.bluetooth.UUID"/>
-<fullyQualifiedTypeName name="android.content.Intent"/>
-<fullyQualifiedTypeName name="java.io.PrintStream"/>
-<fullyQualifiedTypeName name="android.hardware.SensorEventListener"/>
 <fullyQualifiedTypeName name="android.hardware.SensorManager"/>
 <fullyQualifiedTypeName name="android.hardware.Sensor"/>
-<fullyQualifiedTypeName name="android.content.Context"/>
 <fullyQualifiedTypeName name="android.hardware.SensorEvent"/>
 <fullyQualifiedTypeName name="itt.t00154755.mouseapp.R.string"/>
 <fullyQualifiedTypeName name="java.io.InputStream"/>
-<fullyQualifiedTypeName name="android.app.ListActivity"/>
 <fullyQualifiedTypeName name="itt.t00154755.mouseapp.R.id"/>
 <fullyQualifiedTypeName name="itt.t00154755.mouseapp.CheckBTDevices"/>
 <fullyQualifiedTypeName name="java.io.DataInputStream"/>
@@ -41,7 +32,6 @@
 <fullyQualifiedTypeName name="android.app.Service"/>
 <fullyQualifiedTypeName name="java.util.StringTokenizer"/>
 <fullyQualifiedTypeName name="android.app.AlertDialog"/>
-<fullyQualifiedTypeName name="android.app.Activity"/>
 <fullyQualifiedTypeName name="android.os.Bundle"/>
 <fullyQualifiedTypeName name="android.content.DialogInterface"/>
 <fullyQualifiedTypeName name="itt.t00154755.mouseapp.R.layout"/>
@@ -60,4 +50,14 @@
 <fullyQualifiedTypeName name="org.junit.AfterClass"/>
 <fullyQualifiedTypeName name="java.awt.Robot"/>
 <fullyQualifiedTypeName name="java.awt.event.KeyEvent"/>
+<fullyQualifiedTypeName name="android.support.v4.app.DialogFragment"/>
+<fullyQualifiedTypeName name="android.support.v4.app.FragmentActivity"/>
+<fullyQualifiedTypeName name="android.app.Activity"/>
+<fullyQualifiedTypeName name="android.content.DialogInterface.OnClickListener"/>
+<fullyQualifiedTypeName name="android.preference.PreferenceActivity"/>
+<fullyQualifiedTypeName name="android.preference.PreferenceFragment"/>
+<fullyQualifiedTypeName name="android.content.Context"/>
+<fullyQualifiedTypeName name="android.app.ListActivity"/>
+<fullyQualifiedTypeName name="android.R"/>
+<fullyQualifiedTypeName name="android.R.layout"/>
 </qualifiedTypeNameHistroy>

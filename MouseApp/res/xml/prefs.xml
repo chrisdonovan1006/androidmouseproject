@@ -2,23 +2,23 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
     
     <EditTextPreference
-        android:title="EditText"
+        android:title="Display Name"
         android:key="edittext"
-        android:summary="enter your name">
+        android:summary="Enter your name.">
     </EditTextPreference>
 
     <CheckBoxPreference
-        android:title="CheckBox" 
-        android:defaultValue="true"
+        android:title="Show Data" 
+        android:defaultValue="false"
         android:key="checkbox"
-        android:summary="this ia a checkbox"/>
+        android:summary="Show data on screen."/>
 
     <ListPreference
-        android:title="List"
+        android:title="Choose Color"
         android:key="list"
         android:entries="@array/list"
         android:entryValues="@array/lValues"
-        android:summary="this is a list">
+        android:summary="Change cursor color.">
     </ListPreference>
 
 </PreferenceScreen>

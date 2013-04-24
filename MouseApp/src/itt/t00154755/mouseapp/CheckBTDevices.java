@@ -21,22 +21,24 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 /**
- * This Activity appears as a dialog. It lists any paired devices and
- * devices detected in the area after discovery. When a device is chosen
- * by the user, the MAC address of the device is sent back to the parent
- * Activity in the result Intent.
+ * @author Christopher Donovan
+ * 
+ *         This Activity appears as a dialog. It lists any paired devices and
+ *         devices detected in the area after discovery. When a device is chosen
+ *         by the user, the MAC address of the device is sent back to the parent
+ *         Activity in the result Intent.
  */
 public class CheckBTDevices extends Activity
 {
 
 	// Debugging
-	private static final String TAG = "CheckBTDevices";
+	private static final String TAG = "Check BT Devices";
 	private static final boolean D = true;
 
 	// Return Intent extra
 	public static String EXTRA_DEVICE_ADDRESS = "";
 
-	// Member fields
+	// Class fields
 	private BluetoothAdapter btAdapter;
 	private ArrayAdapter<String> connectedDevicesArrayAdapter;
 	private ArrayAdapter<String> availableDevicesArrayAdapter;
@@ -52,12 +54,12 @@ public class CheckBTDevices extends Activity
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.checkbt);
 
-		// Set result CANCELED incase the user backs out
+		// Set result CANCELED in case the user backs out
 		setResult(Activity.RESULT_CANCELED);
 
 		// Initialize the button to perform device discovery
 		final Button searchButton = (Button ) findViewById(R.id.bSearch);
-		
+
 		// add the onClickListener and hide the button once clicked
 		searchButton.setOnClickListener(new View.OnClickListener()
 		{
@@ -71,8 +73,10 @@ public class CheckBTDevices extends Activity
 
 		// Initialize array adapters. One for already paired devices and
 		// one for newly discovered devices
-		connectedDevicesArrayAdapter = new ArrayAdapter<String>(CheckBTDevices.this, R.layout.device_name);
-		availableDevicesArrayAdapter = new ArrayAdapter<String>(CheckBTDevices.this, R.layout.device_name);
+		connectedDevicesArrayAdapter = new ArrayAdapter<String>(CheckBTDevices.this,
+																android.R.layout.simple_list_item_1);
+		availableDevicesArrayAdapter = new ArrayAdapter<String>(CheckBTDevices.this,
+																android.R.layout.simple_list_item_1);
 
 		// Find and set up the ListView for paired devices
 		ListView connectedListView = (ListView ) findViewById(R.id.lvConnected);
@@ -104,12 +108,14 @@ public class CheckBTDevices extends Activity
 			findViewById(R.id.bt_connectedDevices).setVisibility(View.VISIBLE);
 			for ( BluetoothDevice device : pairedDevices )
 			{
-				connectedDevicesArrayAdapter.add(device.getName() + "\n" + device.getAddress());
+				connectedDevicesArrayAdapter.add(device.getName() + "\n"
+												 + device.getAddress());
 			}
 		}
 		else
 		{
-			String noDevices = getResources().getText(R.string.bt_not_found).toString();
+			String noDevices = getResources().getText(R.string.bt_not_found)
+											 .toString();
 			connectedDevicesArrayAdapter.add(noDevices);
 		}
 	}
@@ -174,7 +180,8 @@ public class CheckBTDevices extends Activity
 				// If it's already paired, skip it, because it's been listed already
 				if ( device.getBondState() != BluetoothDevice.BOND_BONDED )
 				{
-					availableDevicesArrayAdapter.add(device.getName() + "\n" + device.getAddress());
+					availableDevicesArrayAdapter.add(device.getName() + "\n"
+													 + device.getAddress());
 				}
 				// When discovery is finished, change the Activity title
 			}
@@ -185,22 +192,46 @@ public class CheckBTDevices extends Activity
 					setTitle(R.string.bt_choose);
 					if ( availableDevicesArrayAdapter.getCount() == 0 )
 					{
-						String noDevices = getResources().getText(R.string.bt_not_found).toString();
+						String noDevices = getResources().getText(R.string.bt_not_found)
+														 .toString();
 						availableDevicesArrayAdapter.add(noDevices);
 					}
 				}
 		}
 	};
 
-private OnItemClickListener listClick = new OnItemClickListener()
-{
-	public void onItemClick( AdapterView<?> arg0, View v, int arg2, long arg3 )
+	private OnItemClickListener listClick = new OnItemClickListener()
 	{
+
+		public void onItemClick( AdapterView<?> arg0,
+								 View v,
+								 int arg2,
+								 long arg3 )
+		{
 			// Cancel discovery because it's costly and we're about to connect
 			btAdapter.cancelDiscovery();
 
-			// 
-			String info = ((TextView ) v).getText().toString();
+			//
+			switch ( v.getId() )
+			{
+				case R.id.lvAvailable:
+					getDeviceName(v);
+					break;
+
+				case R.id.lvConnected:
+					getDeviceName(v);
+					break;
+			}
+
+		}
+
+
+		/**
+		 * @param v
+		 */
+		private void getDeviceName( View v )
+		{
+			String info = ( (TextView ) v ).getText().toString();
 			String address = info.substring(info.length() - 17);
 
 			// Create the result Intent and include the MAC address
@@ -209,8 +240,7 @@ private OnItemClickListener listClick = new OnItemClickListener()
 
 			// Set result and finish this Activity
 			setResult(Activity.RESULT_OK, intent);
-	}
-};
-	
+		}
+	};
 
 }

@@ -3,3 +3,11 @@
 1366663591524	Extract method 'sendCurrentPositionToUI'
 1366663712392	Rename method 'sendData'
 1366710369444	Move compilation units
+1366726131501	Rename type 'App'
+1366726234692	Rename field 'accHandler'
+1366729298372	Rename local variable 'socket'
+1366735412631	Delete element
+1366739507698	Delete element
+1366750108859	Rename field 'device'
+1366755418444	Extract method 'getDeviceName'
+1366757032426	Delete element
