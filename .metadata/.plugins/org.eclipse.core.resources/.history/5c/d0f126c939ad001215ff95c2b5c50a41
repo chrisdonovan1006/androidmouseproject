@@ -1,0 +1,112 @@
+/**
+ * 
+ */
+package itt.t00154755.mouseserver;
+
+import static org.junit.Assert.*;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+
+/**
+ * @author Christopher Donovan
+ *
+ */
+public class CursorRobotTest
+{
+
+	public CursorRobotTest()
+	{
+	}
+
+
+	/**
+	 * @throws java.lang.Exception
+	 */
+	@Before
+	public void setUp() throws Exception
+	{
+	}
+
+
+	/**
+	 * @throws java.lang.Exception
+	 */
+	@After
+	public void tearDown() throws Exception
+	{
+	}
+
+
+	/**
+	 * Test method for {@link itt.t00154755.mouseserver.CursorRobot#CursorRobot()}.
+	 */
+	@Test
+	public final void testCursorRobot()
+	{
+		fail("Not yet implemented"); // TODO
+	}
+
+
+	/**
+	 * Test method for {@link itt.t00154755.mouseserver.CursorRobot#setAcceloData(java.lang.String)}.
+	 */
+	@Test
+	public final void testSetAcceloData()
+	{
+		fail("Not yet implemented"); // TODO
+	}
+
+
+	/**
+	 * Test method for {@link itt.t00154755.mouseserver.CursorRobot#getCurrentX()}.
+	 */
+	@Test
+	public final void testGetCurrentX()
+	{
+		fail("Not yet implemented"); // TODO
+	}
+
+
+	/**
+	 * Test method for {@link itt.t00154755.mouseserver.CursorRobot#setCurrentX(int)}.
+	 */
+	@Test
+	public final void testSetCurrentX()
+	{
+		fail("Not yet implemented"); // TODO
+	}
+
+
+	/**
+	 * Test method for {@link itt.t00154755.mouseserver.CursorRobot#getCurrentY()}.
+	 */
+	@Test
+	public final void testGetCurrentY()
+	{
+		fail("Not yet implemented"); // TODO
+	}
+
+
+	/**
+	 * Test method for {@link itt.t00154755.mouseserver.CursorRobot#setCurrentY(int)}.
+	 */
+	@Test
+	public final void testSetCurrentY()
+	{
+		fail("Not yet implemented"); // TODO
+	}
+
+
+	/**
+	 * Test method for {@link itt.t00154755.mouseserver.CursorRobot#run()}.
+	 */
+	@Test
+	public final void testRun()
+	{
+		fail("Not yet implemented"); // TODO
+	}
+
+}

@@ -26,7 +26,7 @@ import android.view.WindowManager;
  * 
  * 
  */
-public class AccelometerService extends Service implements SensorEventListener
+public class AccelometerService extends Service implements SensorEventListener, AppCommunication
 {
 
 	// used for debugging
@@ -50,7 +50,7 @@ public class AccelometerService extends Service implements SensorEventListener
 	private Handler appHandler;
 	private WindowManager appWindow;
 
-	// the  which sends the data
+	// the which sends the data
 	private Thread sendDataThread;
 
 	// sensor manager variables
@@ -111,7 +111,7 @@ public class AccelometerService extends Service implements SensorEventListener
 	public void initAccelometerService()
 	{
 		// register the listener
-		makeToastShort("AccelometerService started");
+		sendDataToUIThread("AccelometerService started", 1);
 		registerListener();
 	}
 
@@ -122,31 +122,112 @@ public class AccelometerService extends Service implements SensorEventListener
 		unregisterListener();
 		// stop the service
 		stopSelf();
-		makeToastShort("AccelometerService stopped");
+		sendDataToUIThread("AccelometerService stopped", 1);
 	}
 
 
-	private void makeToastShort( String string )
+	/**
+	 * @return the accelerometerData
+	 */
+	public String getAccelerometerData()
 	{
-		// send message back to UI thread
-		Message message = appHandler.obtainMessage(MainMouseApp.MESSAGE_TOAST_ACCELO);
-		Bundle bundle = new Bundle();
-		bundle.putString(MainMouseApp.TOAST, string);
-		message.setData(bundle);
-		appHandler.handleMessage(message);
+		// return the current data
+		return accelerometerData;
 	}
 
 
-	private void sendDataToUIActivity( String string )
+	/**
+	 * @param accelerometerData
+	 *        the accelerometerData to set
+	 */
+	public void setAccelerometerData( String accelerometerData )
+	{
+		// set the data
+		this.accelerometerData = accelerometerData;
+	}
+
+
+	@Override
+	public IBinder onBind( Intent intent )
+	{
+		// this service is not bound to the main
+		// because it is running on the main UI and the thread is
+		// create and pushed out
+		return null;
+	}
+
+
+	@Override
+	public void onAccuracyChanged( Sensor sensor, int accuracy )
+	{
+		// not using the accuracy of the sensor
+	}
+
+
+	/**
+	 * This method receives an event each time the
+	 * that the sensor changes
+	 */
+	@Override
+	public void onSensorChanged( SensorEvent event )
+	{
+		// get the current event
+		if ( D )
+			Log.d(TAG, "+++ SENSOR CHANGE +++");
+		// long timestamp = event.timestamp;
+		try
+		{
+			prepareTheData(event);
+		}
+		catch ( InterruptedException e )
+		{
+			// this shouldn't happen
+
+		}
+	}
+
+
+	@Override
+	public void sendDataToUIThread( String data )
 	{
 		// send message back to UI thread
 		Message message = appHandler.obtainMessage(MainMouseApp.MESSAGE_DATA_ACCELO);
 		Bundle bundle = new Bundle();
-		bundle.putString(MainMouseApp.DATA, string);
+		bundle.putString(MainMouseApp.DATA, data);
 		message.setData(bundle);
 		appHandler.handleMessage(message);
 	}
 
+
+	@Override
+	public void sendDataToUIThread( int data )
+	{
+		// not in use
+
+	}
+
+
+	@Override
+	public void sendDataToUIThread( byte[] data )
+	{
+		// not in use
+
+	}
+
+
+	@Override
+	public void sendDataToUIThread( String data, int type )
+	{
+		if (type == 1)
+		{
+			// send message back to UI thread
+			Message message = appHandler.obtainMessage(MainMouseApp.MESSAGE_TOAST_ACCELO);
+			Bundle bundle = new Bundle();
+			bundle.putString(MainMouseApp.TOAST, data);
+			message.setData(bundle);
+			appHandler.handleMessage(message);
+		}
+	}
 
 	/*
 	 * Method that registered the Listener for
@@ -169,7 +250,7 @@ public class AccelometerService extends Service implements SensorEventListener
 			// register the listener to the Sensor
 			accelerometerManager.registerListener(this,
 												  accelerometerSensor,
-												  SensorManager.SENSOR_DELAY_UI);
+												  SensorManager.SENSOR_DELAY_GAME);
 			// set registered
 			isRegistered = true;
 		}
@@ -205,36 +286,6 @@ public class AccelometerService extends Service implements SensorEventListener
 	}
 
 
-	@Override
-	public void onAccuracyChanged( Sensor sensor, int accuracy )
-	{
-		// not using the accuracy of the sensor
-	}
-
-
-	/**
-	 * This method receives an event each time the
-	 * that the sensor changes
-	 */
-	@Override
-	public void onSensorChanged( SensorEvent event )
-	{
-		// get the current event
-		if ( D )
-			Log.d(TAG, "+++ SENSOR CHANGE +++");
-		// long timestamp = event.timestamp;
-		try
-		{
-			prepareTheData(event);
-		}
-		catch ( InterruptedException e )
-		{
-			// this shouldn't happen
-
-		}
-	}
-
-
 	/*
 	 * The event is passed to this method
 	 */
@@ -250,7 +301,7 @@ public class AccelometerService extends Service implements SensorEventListener
 		// @link http://developer.android.com/reference/android/view/Display.html
 		// @link http://www.monkeycoder.co.nz/Community/posts.php?topic=1943
 		// @link http://stackoverflow.com/questions/4757632/screen-rotation-using-display-getrotation
-		
+
 		// best explanation here
 		// @link http://android-developers.blogspot.ie/2010/09/one-screen-turn-deserves-another.html
 
@@ -260,19 +311,27 @@ public class AccelometerService extends Service implements SensorEventListener
 			switch ( rotation )
 			{
 				case Surface.ROTATION_0:
+					// the phone natural position is x = short edge across
+					// with the screen facing you
 					xFloatAxis = event.values[0];
 					yFloatAxis = event.values[1];
 					break;
 				case Surface.ROTATION_90:
-					xFloatAxis = -event.values[1];
+					// turn the phone 90 degrees with the screen facing you
+					// x = long edge across
+					xFloatAxis = event.values[1];
 					yFloatAxis = event.values[0];
 					break;
 				case Surface.ROTATION_180:
+					// turn the phone 90 degrees with the screen facing you
+					// x = short edge but it is upside down
 					xFloatAxis = -event.values[1];
 					yFloatAxis = -event.values[0];
 					break;
 				case Surface.ROTATION_270:
-					xFloatAxis = event.values[0];
+					// turn the phone 90 degrees with the screen facing you
+					// x = long edge but it is still upside down
+					xFloatAxis = -event.values[0];
 					yFloatAxis = -event.values[1];
 					break;
 				default:
@@ -283,6 +342,8 @@ public class AccelometerService extends Service implements SensorEventListener
 			}
 		}
 
+		// xFloatAxis = event.values[0];
+		// yFloatAxis = event.values[1];
 		Log.d(TAG, "filtered values: " + xFloatAxis + ", " + yFloatAxis);
 
 		// step 3. determine the phones current tilting position
@@ -345,7 +406,13 @@ public class AccelometerService extends Service implements SensorEventListener
 		xIntAxis = (int ) xFloatAxis;
 		yIntAxis = (int ) yFloatAxis;
 
-		if ( xIntAxis < 0 && yIntAxis < 0 )
+		/*
+		 * to move the cursor in the direction
+		 * i am us the position and negative values
+		 * i.e if -x, +y will move the cursor left (-x)
+		 * and down (+y)
+		 */
+		if ( xIntAxis < 0 && yIntAxis > 0 )
 		{
 			// add only the positive values
 			// a number format exception will be
@@ -360,14 +427,17 @@ public class AccelometerService extends Service implements SensorEventListener
 								 + Math.abs(yIntAxis)
 								 + " ");
 		}
+		/*
+		 * if +x, -y will move the cursor right (+x)
+		 * and up (-y)
+		 */
 		else
-			if ( xIntAxis > 0 && yIntAxis > 0 )
+			if ( xIntAxis < 0 && yIntAxis > 0 )
 			{
 				// add only the positive values
 				if ( D )
 					Log.d(TAG, "move mouse: " + RIGHTUP);
 				setAccelerometerData(" " + RIGHTUP
-									 + " "
 									 + " "
 									 + Math.abs(xIntAxis)
 									 + " "
@@ -375,13 +445,12 @@ public class AccelometerService extends Service implements SensorEventListener
 									 + " ");
 			}
 			else
-				if ( xIntAxis < 0 && yIntAxis > 0 )
+				if ( xIntAxis < 0 && yIntAxis < 0 )
 				{
 					// add only the positive values
 					if ( D )
 						Log.d(TAG, "move mouse: " + LEFTUP);
 					setAccelerometerData(" " + LEFTUP
-										 + " "
 										 + " "
 										 + Math.abs(xIntAxis)
 										 + " "
@@ -389,13 +458,12 @@ public class AccelometerService extends Service implements SensorEventListener
 										 + " ");
 				}
 				else
-					if ( xIntAxis > 0 && yIntAxis < 0 )
+					if ( xIntAxis > 0 && yIntAxis > 0 )
 					{
 						// add only the positive values
 						if ( D )
 							Log.d(TAG, "move mouse: " + RIGHTDOWN);
 						setAccelerometerData(" " + RIGHTDOWN
-											 + " "
 											 + " "
 											 + Math.abs(xIntAxis)
 											 + " "
@@ -405,13 +473,14 @@ public class AccelometerService extends Service implements SensorEventListener
 
 	}
 
+
 	/*
 	 * Create a new Thread that begin passing the data to the main UI
 	 * Thread.
 	 */
 	private void sendCurrentReadingsToUI()
 	{
-		//  create a new thread and start sending the data to the main UI thread
+		// create a new thread and start sending the data to the main UI thread
 		sendDataThread = new Thread(new SendDataThread()); // Thread created
 		sendDataThread.start(); // Thread started
 
@@ -422,42 +491,12 @@ public class AccelometerService extends Service implements SensorEventListener
 	 */
 	private class SendDataThread implements Runnable
 	{
+
 		// send the data
 		public void run()
 		{
-			sendDataToUIActivity(getAccelerometerData());
+			sendDataToUIThread(getAccelerometerData());
 		}
-	}
-
-
-	/**
-	 * @return the accelerometerData
-	 */
-	public String getAccelerometerData()
-	{
-		// return the current data
-		return accelerometerData;
-	}
-
-
-	/**
-	 * @param accelerometerData
-	 *        the accelerometerData to set
-	 */
-	public void setAccelerometerData( String accelerometerData )
-	{
-		// set the data
-		this.accelerometerData = accelerometerData;
-	}
-
-
-	@Override
-	public IBinder onBind( Intent intent )
-	{
-		// this service is not bound to the main
-		// because it is running on the main UI and the thread is
-		// create and pushed out
-		return null;
 	}
 
 }// end class

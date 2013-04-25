@@ -1,5 +1,6 @@
 package itt.t00154755.mouseapp;
 
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.UUID;
@@ -55,7 +56,7 @@ public class AppClient
 	 * @param appHandler
 	 *        the main UI threads handler
 	 */
-	public AppClient(Context context, Handler appHandler )
+	public AppClient( Context context, Handler appHandler )
 	{
 		// get the default adapter
 		if ( D )
@@ -92,7 +93,7 @@ public class AppClient
 		// returns the device on which the app is running
 		btDevice = btAdapter.getRemoteDevice("00:15:83:3D:0A:57");
 		// check to ensure that the bluetooth is turned on
-		
+
 		// must cancel the discovery process before trying to connect
 		// as the discovery process is resource heavy
 		btAdapter.cancelDiscovery();
@@ -122,7 +123,7 @@ public class AppClient
 			 * 
 			 * @link http://en.wikipedia.org/wiki/Bluetooth_protocols#Radio_frequency_communication_.28RFCOMM.29
 			 */
-			btSocket = btDevice.createRfcommSocketToServiceRecord(UUID.fromString("27012f0c-68af-4fbf-8dbe-6bbaf7aa432a"));
+			btSocket = btDevice.createRfcommSocketToServiceRecord(UUID.fromString("5a17e500-ad3a-11e2-9e96-0800200c9a66"));
 		}
 		catch ( IOException e )
 		{
@@ -245,12 +246,12 @@ public class AppClient
 			createClientCommThread( BluetoothSocket btSocket ) throws IOException
 	{
 		// close any running thread
-		if (clientCommThread != null)
+		if ( clientCommThread != null )
 		{
 			clientCommThread.cancel();
 		}
-		
-		//start a new thread
+
+		// start a new thread
 		clientCommThread = new ClientCommsThread(btSocket);
 		clientCommThread.start();
 	}
@@ -275,10 +276,11 @@ public class AppClient
 			cct = clientCommThread;
 		}
 		// Perform the write unsynchronized
-		cct.writeToAppClient(acceloData);
+		cct.sendDataToUIThread(acceloData);
 
 	}
-	
+
+
 	/**
 	 * @param acceloData
 	 *        a byte[] representation of the accelerometer data reading
@@ -298,7 +300,7 @@ public class AppClient
 			cct = clientCommThread;
 		}
 		// Perform the write unsynchronized
-		cct.writeOptionsAppClient(options);
+		cct.sendDataToUIThread(options);
 
 	}
 
@@ -325,7 +327,7 @@ public class AppClient
 	 *         This class creates an Output Stream using the btSocket
 	 *         and fires the data to the server.
 	 */
-	private class ClientCommsThread extends Thread
+	private class ClientCommsThread extends Thread implements AppCommunication
 	{
 
 		private static final String TAG = "Client Comms Thread";
@@ -353,80 +355,13 @@ public class AppClient
 			}
 			outStream = tmpOut;
 		}
-
-
-		/**
-		 * @param acceloData
-		 *        the byte[] representation of the accelerometer data
-		 */
-		public void writeToAppClient( byte[] acceloData )
-		{
-			try
-			{
-				outStream.write(acceloData);
-			}
-			catch ( IOException e )
-			{
-				if ( D )
-					Log.e(TAG, "error while writing to the server");
-				e.printStackTrace();
-				cancel();
-				try
-				{
-					outStream.close();
-					cancel();
-				}
-				catch ( IOException e1 )
-				{
-					if ( D )
-						Log.e(TAG, "error trying to close the outstream");
-					e1.printStackTrace();
-				}
-			}
-			catch ( Exception e2 )
-			{
-				if ( D )
-					Log.e(TAG, "error trying to write to the server");
-				cancel();
-				e2.printStackTrace();
-			}
-		}
 		
-		/**
-		 * @param options
-		 *        int representation of the pop menu options
-		 */
-		public void writeOptionsAppClient( int options )
+
+		@Override
+		public void sendDataToUIThread( String data, int type )
 		{
-			try
-			{
-				outStream.write(options);
-			}
-			catch ( IOException e )
-			{
-				if ( D )
-					Log.e(TAG, "error while writing to the server");
-				e.printStackTrace();
-				cancel();
-				try
-				{
-					outStream.close();
-					cancel();
-				}
-				catch ( IOException e1 )
-				{
-					if ( D )
-						Log.e(TAG, "error trying to close the outstream");
-					e1.printStackTrace();
-				}
-			}
-			catch ( Exception e2 )
-			{
-				if ( D )
-					Log.e(TAG, "error trying to write to the server");
-				cancel();
-				e2.printStackTrace();
-			}
+			// TODO Auto-generated method stub
+			
 		}
 
 
@@ -438,7 +373,7 @@ public class AppClient
 		@Override
 		public void run()
 		{
-
+			// the output stream is added here but i am not using it
 		}
 
 
@@ -469,6 +404,133 @@ public class AppClient
 				e.printStackTrace();
 			}
 		}
-	}
 
+
+		/**
+		 * @param acceloData
+		 *        the byte[] representation of the accelerometer data
+		 */
+		@Override
+		public void sendDataToUIThread( byte[] data )
+		{
+			try
+			{
+				outStream.write(data);
+			}
+			catch ( IOException e )
+			{
+				if ( D )
+					Log.e(TAG, "error while writing to the server");
+				e.printStackTrace();
+				cancel();
+				try
+				{
+					outStream.close();
+					cancel();
+				}
+				catch ( IOException e1 )
+				{
+					if ( D )
+						Log.e(TAG, "error trying to close the outstream");
+					e1.printStackTrace();
+				}
+			}
+			catch ( Exception e2 )
+			{
+				if ( D )
+					Log.e(TAG, "error trying to write to the server");
+				cancel();
+				e2.printStackTrace();
+			}
+
+		}
+
+
+		/**
+		 * @param data
+		 *        int representation of the pop menu options
+		 */
+
+		@Override
+		public void sendDataToUIThread( int data )
+		{
+			DataOutputStream dataOutStream = new DataOutputStream(outStream);
+			try
+			{
+				dataOutStream.writeInt(data);
+			}
+			catch ( IOException e )
+			{
+				if ( D )
+					Log.e(TAG, "error while writing int to the server");
+				e.printStackTrace();
+				cancel();
+				try
+				{
+					outStream.close();
+					cancel();
+				}
+				catch ( IOException e1 )
+				{
+					if ( D )
+						Log.e(TAG,
+							  "error trying to close the int dataoutstream");
+					e1.printStackTrace();
+				}
+			}
+			catch ( Exception e2 )
+			{
+				if ( D )
+					Log.e(TAG, "error trying to write to the server int");
+				cancel();
+				e2.printStackTrace();
+			}
+
+		}
+
+
+		/**
+		 * @param data
+		 *        String representation of the pop menu options
+		 */
+		@Override
+		public void sendDataToUIThread( String data )
+		{
+			DataOutputStream dataOutStream = new DataOutputStream(outStream);
+
+			try
+			{
+				dataOutStream.writeBytes(data);
+			}
+			catch ( IOException e )
+			{
+				if ( D )
+					Log.e(TAG, "error while writing the string to the server");
+				e.printStackTrace();
+				cancel();
+				try
+				{
+					outStream.close();
+					cancel();
+				}
+				catch ( IOException e1 )
+				{
+					if ( D )
+						Log.e(TAG,
+							  "error trying to close the string  dataoutstream");
+					e1.printStackTrace();
+				}
+			}
+			catch ( Exception e2 )
+			{
+				if ( D )
+					Log.e(TAG, "error trying to write to the server");
+				cancel();
+				e2.printStackTrace();
+			}
+
+		}
+
+
+	}
 }

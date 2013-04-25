@@ -13,3 +13,9 @@
 1366757032426	Delete element
 1366792577502	Extract method 'getMouseColor'
 1366792767805	Extract method 'setUpAccelerometerService'
+1366801977173	Move files
+1366816031799	Rename field 'connectedDevicesArrayAdapter'
+1366816043195	Rename field 'availableDevicesArrayAdapter'
+1366836829674	Delete element
+1366836841555	Delete elements
+1366855994857	Move compilation units

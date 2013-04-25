@@ -8,15 +8,15 @@ public class ServerCommsThread implements Runnable
 
 	private final String TAG = "Server Communication Thread";
 	private InputStream in = null;
-
-
+	
 	public ServerCommsThread( InputStream inStream )
 	{
 		System.out.println(TAG + "...constructor");
 		in = inStream;
 	}
 
-
+	// the run method will read the data in to a string
+	// the data will then pass to the cursor class
 	@Override
 	public void run()
 	{
@@ -26,13 +26,20 @@ public class ServerCommsThread implements Runnable
 		int r;
 		try
 		{
+			// create a new cursor robot object
+			CursorRobot cursorRobot = new CursorRobot();
+			// create a new thread and pass in the runnable object
+			Thread sendDataThread = new Thread(cursorRobot);
+			// start the thread
+			sendDataThread.start();
 			while ( ( r = in.read(bytes) ) > 0 )
 			{
+				// read the data in from the client
 				String acceloData = ( new String(bytes, 0, r) );
-				System.out.println(TAG + acceloData);
-
-				Thread sendDataThread = new Thread(new CursorRobot(acceloData)); // Thread created
-				sendDataThread.start(); // Thread started
+				//System.out.println(TAG + acceloData);
+				
+				//pass the data to the robot class
+				cursorRobot.setAcceloData(acceloData);
 			}
 		}
 		catch ( IOException e )
@@ -43,6 +50,7 @@ public class ServerCommsThread implements Runnable
 
 			try
 			{
+				// try to close the input stream
 				in.close();
 			}
 			catch ( IOException ex )
@@ -56,6 +64,7 @@ public class ServerCommsThread implements Runnable
 		{
 			try
 			{
+				// try to close the inout stream
 				in.close();
 			}
 			catch ( IOException e )

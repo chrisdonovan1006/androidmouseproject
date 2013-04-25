@@ -40,8 +40,8 @@ public class CheckBTDevices extends Activity
 
 	// Class fields
 	private BluetoothAdapter btAdapter;
-	private ArrayAdapter<String> connectedDevicesArrayAdapter;
-	private ArrayAdapter<String> availableDevicesArrayAdapter;
+	private ArrayAdapter<String> connectedDevicesAA;
+	private ArrayAdapter<String> availableDevicesAA;
 
 
 	@Override
@@ -53,9 +53,6 @@ public class CheckBTDevices extends Activity
 		// Setup the window
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.checkbt);
-
-		// Set result CANCELED in case the user backs out
-		setResult(Activity.RESULT_CANCELED);
 
 		// Initialize the button to perform device discovery
 		final Button searchButton = (Button ) findViewById(R.id.bSearch);
@@ -73,19 +70,19 @@ public class CheckBTDevices extends Activity
 
 		// Initialize array adapters. One for already paired devices and
 		// one for newly discovered devices
-		connectedDevicesArrayAdapter = new ArrayAdapter<String>(CheckBTDevices.this,
+		connectedDevicesAA = new ArrayAdapter<String>(CheckBTDevices.this,
 																android.R.layout.simple_list_item_1);
-		availableDevicesArrayAdapter = new ArrayAdapter<String>(CheckBTDevices.this,
+		availableDevicesAA = new ArrayAdapter<String>(CheckBTDevices.this,
 																android.R.layout.simple_list_item_1);
 
 		// Find and set up the ListView for paired devices
 		ListView connectedListView = (ListView ) findViewById(R.id.lvConnected);
-		connectedListView.setAdapter(connectedDevicesArrayAdapter);
+		connectedListView.setAdapter(connectedDevicesAA);
 		connectedListView.setOnItemClickListener(listClick);
 
 		// Find and set up the ListView for newly discovered devices
 		ListView availableListView = (ListView ) findViewById(R.id.lvAvailable);
-		availableListView.setAdapter(availableDevicesArrayAdapter);
+		availableListView.setAdapter(availableDevicesAA);
 		availableListView.setOnItemClickListener(listClick);
 
 		// Register for broadcasts when a device is discovered
@@ -108,7 +105,7 @@ public class CheckBTDevices extends Activity
 			findViewById(R.id.bt_connectedDevices).setVisibility(View.VISIBLE);
 			for ( BluetoothDevice device : pairedDevices )
 			{
-				connectedDevicesArrayAdapter.add(device.getName() + "\n"
+				connectedDevicesAA.add(device.getName() + "\n"
 												 + device.getAddress());
 			}
 		}
@@ -116,7 +113,7 @@ public class CheckBTDevices extends Activity
 		{
 			String noDevices = getResources().getText(R.string.bt_not_found)
 											 .toString();
-			connectedDevicesArrayAdapter.add(noDevices);
+			connectedDevicesAA.add(noDevices);
 		}
 	}
 
@@ -180,7 +177,7 @@ public class CheckBTDevices extends Activity
 				// If it's already paired, skip it, because it's been listed already
 				if ( device.getBondState() != BluetoothDevice.BOND_BONDED )
 				{
-					availableDevicesArrayAdapter.add(device.getName() + "\n"
+					availableDevicesAA.add(device.getName() + "\n"
 													 + device.getAddress());
 				}
 				// When discovery is finished, change the Activity title
@@ -190,11 +187,11 @@ public class CheckBTDevices extends Activity
 				{
 					setProgressBarIndeterminateVisibility(false);
 					setTitle(R.string.bt_choose);
-					if ( availableDevicesArrayAdapter.getCount() == 0 )
+					if ( availableDevicesAA.getCount() == 0 )
 					{
 						String noDevices = getResources().getText(R.string.bt_not_found)
 														 .toString();
-						availableDevicesArrayAdapter.add(noDevices);
+						availableDevicesAA.add(noDevices);
 					}
 				}
 		}
@@ -222,12 +219,12 @@ public class CheckBTDevices extends Activity
 					getDeviceName(v);
 					break;
 			}
-
 		}
 
 
 		/**
 		 * @param v
+		 *        the view that has been clicked
 		 */
 		private void getDeviceName( View v )
 		{

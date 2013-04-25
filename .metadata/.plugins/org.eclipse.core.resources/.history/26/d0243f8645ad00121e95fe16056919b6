@@ -1,0 +1,103 @@
+package itt.t00154755.mouseserver;
+
+import static org.junit.Assert.*;
+
+import java.awt.Robot;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+
+public class CursorRobotTest
+{
+	private CursorRobot testbot;
+	private int xTest;
+	private int yTest;
+	private String testData;
+	private int[] testValues; 
+	
+	
+	public CursorRobotTest()
+	{
+	}
+
+
+	@Before
+	public void setUp() throws Exception
+	{
+		testbot = new CursorRobot();
+		xTest = 0;
+		yTest = 0;
+		testData = "testing";
+	}
+
+
+	@After
+	public void tearDown() throws Exception
+	{
+	}
+
+
+	@Test
+	public final void testSetAcceloData()
+	{
+		this.testData = "test set accelo data";
+
+		assertEquals(this.testData, "test set accelo data");
+		System.out.println("testing the setCurentX method...");
+	}
+
+
+	@Test
+	public final void testGetCurrentX()
+	{
+		xTest = 200;
+		testbot.setCurrentX(xTest);
+		
+		assertEquals(testbot.getCurrentY(), 200);
+		System.out.println("testing the setCurentX method...");
+	}
+
+
+	@Test
+	public final void testSetCurrentX()
+	{
+		xTest = 200;
+		testbot.setCurrentX(xTest);
+		
+		assertEquals(xTest, 200);
+		System.out.println("testing the setCurentX method...");
+		
+	}
+
+
+	@Test
+	public final void testGetCurrentY()
+	{
+		yTest = 200;
+		testbot.setCurrentY(yTest);
+		
+		assertEquals(testbot.getCurrentY(), 200);
+		System.out.println("testing the setCurentY method...");
+	}
+
+
+	@Test
+	public final void testSetCurrentY()
+	{
+		yTest = 200;
+		testbot.setCurrentY(yTest);
+		
+		assertEquals(yTest, 200);
+		System.out.println("testing the setCurentY method...");
+	}
+
+
+	@Test
+	public final void testRun()
+	{
+		fail("Not yet implemented"); // TODO
+	}
+
+}

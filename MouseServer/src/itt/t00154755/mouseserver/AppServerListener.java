@@ -32,9 +32,9 @@ public class AppServerListener extends ServerUtils implements Runnable
 
 	// string name of class
 	private final static String TAG = "App Server";
-	private LocalDevice pcDevice = null;
+	private LocalDevice pcDevice;
 	private int exceptionCode;
-	private final String CONNECTION_STRING = "btspp://localhost:27012f0c68af4fbf8dbe6bbaf7aa432a;" +
+	private final String CONNECTION_STRING = "btspp://localhost:5a17e500ad3a11e29e960800200c9a66;" +
 			"name=Java_Server;authenticate=false;encrypt=false;master=false";
 
 
@@ -131,11 +131,17 @@ public class AppServerListener extends ServerUtils implements Runnable
 			exceptionCode = 6;
 			printOutExceptionDetails(TAG, e, exceptionCode);
 		}
+		
+		startServerCommsThread(in);
+	}
 
+	/**
+	 * @param in
+	 */
+	private void startServerCommsThread( InputStream in )
+	{
 		// start a new Thread that will handle incoming traffic
 		Thread serverThread = new Thread(new ServerCommsThread(in));
 		serverThread.start();
-
 	}
-
 }// end of Class

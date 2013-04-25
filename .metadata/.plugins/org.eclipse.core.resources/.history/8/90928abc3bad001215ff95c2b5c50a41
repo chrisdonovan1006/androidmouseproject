@@ -1,0 +1,14 @@
+/**
+ * 
+ */
+package itt.t00154755.mouseapp;
+
+
+/**
+ * @author Christopher
+ *
+ */
+public interface AppCommunication
+{
+
+}

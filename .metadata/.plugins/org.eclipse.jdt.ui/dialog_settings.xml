@@ -9,10 +9,10 @@
 	<item value="3" key="org.eclipse.jdt.uiformatter_page.white_space.java_view.option"/>
 	<item value="10" key="org.eclipse.jdt.uiformatter_page.modify_dialog_tab_page.last_focus_index"/>
 	<item value="0" key="org.eclipse.jdt.uiformatter_pagemodify_dialog.preferred_x"/>
-	<item value="1920" key="org.eclipse.jdt.uiformatter_pagemodify_dialog.preferred_width"/>
-	<item value="0" key="org.eclipse.jdt.uiformatter_pagemodify_dialog.preferred_y"/>
 	<item value="1" key="org.eclipse.jdt.uiformatter_page.line_wrapping_tab_page.last_category_index"/>
 	<item value="6" key="org.eclipse.jdt.uiformatter_pagemodify_dialog.last_focus"/>
+	<item value="1920" key="org.eclipse.jdt.uiformatter_pagemodify_dialog.preferred_width"/>
+	<item value="0" key="org.eclipse.jdt.uiformatter_pagemodify_dialog.preferred_y"/>
 	<section name="DialogBounds_OverrideMethodDialog">
 		<item value="908" key="DIALOG_WIDTH"/>
 		<item value="217" key="DIALOG_Y_ORIGIN"/>
@@ -31,6 +31,19 @@
 	</section>
 	<section name="BuildPathsPropertyPage">
 		<item value="2" key="pageIndex"/>
+	</section>
+	<section name="FatJarPackageWizard">
+		<item value="C:\Users\Christopher\Documents\GitHub\androidmouseproject\jars\mouseserver.jar" key="FatJarPackageWizardPage.DESTINATION_PATH_SELECTION"/>
+		<item value="AppServer - MouseServer" key="FatJarPackageWizardPage.LAUNCH_CONFIGURATION_SELECTION_NAME"/>
+		<item value="C:\Users\Christopher\Documents\GitHub\androidmouseproject" key="FatJarPackageWizardPage.ANTSCRIPT_LOCATION"/>
+		<item value="false" key="FatJarPackageWizardPage.ANTSCRIPT_SAVE"/>
+		<item value="3" key="FatJarPackageWizardPage.LIBRARY_HANDLING"/>
+		<list key="FatJarPackageWizardPage.DESTINATION_NAMES_ID">
+			<item value="C:\Users\Christopher\Documents\GitHub\androidmouseproject\jars\mouseserver.jar"/>
+		</list>
+		<list key="FatJarPackageWizardPage.ANTSCRIPT_LOCATION_HISTORY">
+			<item value=".xml"/>
+		</list>
 	</section>
 	<section name="RefactoringWizard.preview">
 		<item value="375" key="height"/>
@@ -65,6 +78,12 @@
 	</section>
 	<section name="BreadcrumbItemDropDown">
 	</section>
+	<section name="org.eclipse.jdt.internal.ui.dialogs.PackageSelectionDialog">
+		<item value="438" key="height"/>
+		<item value="398" key="width"/>
+		<item value="107" key="y"/>
+		<item value="655" key="x"/>
+	</section>
 	<section name="NewPackageWizardPage">
 		<item value="false" key="create_package_info_java"/>
 	</section>
@@ -78,7 +97,7 @@
 	<section name="ExtractMethodWizard">
 		<item value="true" key="ThrowRuntimeExceptions"/>
 		<item value="true" key="GenerateJavadoc"/>
-		<item value="2" key="AccessModifier"/>
+		<item value="1" key="AccessModifier"/>
 	</section>
 	<section name="completion_proposal_size">
 		<item value="356" key="size.x"/>
@@ -101,6 +120,7 @@
 		<item value="true" key="create_unimplemented"/>
 	</section>
 	<section name="org.eclipse.ltk.ui.refactoring.settings">
+		<item value="false" key="renameSubpackages"/>
 		<item value="*" key="patterns"/>
 		<item value="true" key="updateQualifiedNames"/>
 		<item value="1" key="updateSimilarElementsMatchStrategy"/>
