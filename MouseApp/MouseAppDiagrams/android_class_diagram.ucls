@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <class-diagram version="1.1.2" icons="true" automaticImage="PNG" always-add-relationships="true" generalizations="true" 
   realizations="true" associations="true" dependencies="true" nesting-relationships="true">  
-  <class id="1" language="java" name="itt.t00154755.mouseapp.AboutCheckBT" project="MouseApp" 
-    file="/MouseApp/src/itt/t00154755/mouseapp/AboutCheckBT.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="1" language="java" name="itt.t00154755.mouseapp.AppAboutBT" project="MouseApp" 
+    file="/MouseApp/src/itt/t00154755/mouseapp/AppAboutBT.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="100" y="81"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" accessors="true" 
       visibility="true">      
@@ -10,8 +10,8 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="2" language="java" name="itt.t00154755.mouseapp.AccelometerService.SendDataThread" project="MouseApp" 
-    file="/MouseApp/src/itt/t00154755/mouseapp/AccelometerService.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="2" language="java" name="itt.t00154755.mouseapp.AppService.SendDataThread" project="MouseApp" 
+    file="/MouseApp/src/itt/t00154755/mouseapp/AppService.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="107" y="661"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" accessors="true" 
       visibility="true">      
@@ -19,8 +19,8 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="3" language="java" name="itt.t00154755.mouseapp.AccelometerService" project="MouseApp" 
-    file="/MouseApp/src/itt/t00154755/mouseapp/AccelometerService.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="3" language="java" name="itt.t00154755.mouseapp.AppService" project="MouseApp" 
+    file="/MouseApp/src/itt/t00154755/mouseapp/AppService.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="361" y="253"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" accessors="true" 
       visibility="true">      
@@ -46,8 +46,8 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <interface id="6" language="java" name="itt.t00154755.mouseapp.AppCommunication" project="MouseApp" 
-    file="/MouseApp/src/itt/t00154755/mouseapp/AppCommunication.java" binary="false" corner="BOTTOM_RIGHT">    
+  <interface id="6" language="java" name="itt.t00154755.mouseapp.AppCommunicator" project="MouseApp" 
+    file="/MouseApp/src/itt/t00154755/mouseapp/AppCommunicator.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="485" y="752"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" accessors="true" 
       visibility="true">      
@@ -55,8 +55,8 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </interface>  
-  <class id="7" language="java" name="itt.t00154755.mouseapp.CheckBTDevices" project="MouseApp" 
-    file="/MouseApp/src/itt/t00154755/mouseapp/CheckBTDevices.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="7" language="java" name="itt.t00154755.mouseapp.AppBTDevices" project="MouseApp" 
+    file="/MouseApp/src/itt/t00154755/mouseapp/AppBTDevices.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1099" y="18"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" accessors="true" 
       visibility="true">      
@@ -64,8 +64,8 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="8" language="java" name="itt.t00154755.mouseapp.MainMouseApp" project="MouseApp" 
-    file="/MouseApp/src/itt/t00154755/mouseapp/MainMouseApp.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="8" language="java" name="itt.t00154755.mouseapp.AppMain" project="MouseApp" 
+    file="/MouseApp/src/itt/t00154755/mouseapp/AppMain.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1405" y="370"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" accessors="true" 
       visibility="true">      
@@ -73,8 +73,8 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="9" language="java" name="itt.t00154755.mouseapp.Prefs" project="MouseApp" 
-    file="/MouseApp/src/itt/t00154755/mouseapp/Prefs.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="9" language="java" name="itt.t00154755.mouseapp.AppPrefs" project="MouseApp" 
+    file="/MouseApp/src/itt/t00154755/mouseapp/AppPrefs.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="985" y="452"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" accessors="true" 
       visibility="true">      
@@ -82,8 +82,8 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="10" language="java" name="itt.t00154755.mouseapp.Prefs.MyPreferenceFragment" project="MouseApp" 
-    file="/MouseApp/src/itt/t00154755/mouseapp/Prefs.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="10" language="java" name="itt.t00154755.mouseapp.AppPrefs.MyPreferenceFragment" project="MouseApp" 
+    file="/MouseApp/src/itt/t00154755/mouseapp/AppPrefs.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1001" y="598"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" accessors="true" 
       visibility="true">      
@@ -91,8 +91,8 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="11" language="java" name="itt.t00154755.mouseapp.WaitToConnectDialog" project="MouseApp" 
-    file="/MouseApp/src/itt/t00154755/mouseapp/WaitToConnectDialog.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="11" language="java" name="itt.t0itt.t00154755.mouseapp.AppWaitingDialog="MouseApp" 
+    file="/MouseApp/src/itt/t00154755/mouseapp/AppWaitingDialog.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="94" y="216"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" accessors="true" 
       visibility="true">      

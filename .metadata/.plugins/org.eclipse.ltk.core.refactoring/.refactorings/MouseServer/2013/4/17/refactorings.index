@@ -22,3 +22,19 @@
 1366855802564	Move compilation unit
 1366855825478	Move compilation unit
 1366856050007	Rename package 'MouseSeverTests'
+1366898550899	Rename type 'AppServerListener'
+1366898569447	Rename type 'CursorRobot'
+1366898588652	Rename type 'RunServerListener'
+1366898669605	Rename type 'ServerCommsThread'
+1366898681416	Rename type 'ServerUtils'
+1366898703774	Rename type 'ServerView'
+1366898833796	Rename type 'AppServerListenerTest'
+1366898845578	Rename type 'CursorRobotTest'
+1366898877617	Delete element
+1366898905447	Rename type 'ServerCommsThreadTest'
+1366898927012	Rename type 'ServerViewTest'
+1366899815142	Rename method 'moveClicked'
+1366900266309	Rename field 'in'
+1366900406472	Rename local variable 'in'
+1366902923919	Delete element
+1366903021546	Move compilation unit

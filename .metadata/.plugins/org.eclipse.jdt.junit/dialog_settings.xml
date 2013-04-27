@@ -3,10 +3,10 @@
 	<section name="JUnitWizards">
 		<item value="false" key="NewTestCaseCreationWizardPage.USE_TEARDOWNCLASS"/>
 		<item value="true" key="NewTestCaseCreationWizardPage.USE_CONSTRUCTOR"/>
-		<item value="true" key="NewTestCaseCreationWizardPage.USE_TEARDOWN"/>
 		<item value="true" key="NewTestCaseCreationWizardPage.USE_SETUP"/>
-		<item value="true" key="NewTestCaseCreationWizardPage2.CREATE_FINAL_METHOD_STUBS"/>
+		<item value="true" key="NewTestCaseCreationWizardPage.USE_TEARDOWN"/>
 		<item value="false" key="NewTestCaseCreationWizardPage.USE_SETUPCLASS"/>
+		<item value="true" key="NewTestCaseCreationWizardPage2.CREATE_FINAL_METHOD_STUBS"/>
 		<item value="true" key="NewTestCaseCreationWizardPage2.USE_TASKMARKER"/>
 	</section>
 </section>

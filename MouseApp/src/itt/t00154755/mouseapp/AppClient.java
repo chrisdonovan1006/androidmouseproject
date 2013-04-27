@@ -21,13 +21,24 @@ import android.util.Log;
  * @since 23/04/2013
  * 
  * @category
- *           This class runs in the background and is used to create the connection
+ *           The AppClient class runs in the background and is used to create the connection
  *           to the server which must be running or a IOException will be thrown.
  *           <p>
  *           The main activity calls the connectToServer(), this class then tries to establish a connect visa the blue-tooth socket using a random UUID, if
  *           successful the socket will be connected using the RFCOMM protocol designed for peer to peer blue-tooth connections.
  *           <p>
- *           Referred to BluetoothChat example in the android SDK.
+ *           Android Developers Web-site
+ *           <p>
+ *           {@link http: //developer.android.com/guide/components/services.html} {@link http: //developer.android.com/guide/topics/sensors/sensors_overview.html}
+ *           <p>
+ *           Professional Android 2 Application Development
+ *           <p>
+ *           Charter 14 - Blue-tooth, Networks, and WiFi {@link http: //www.wrox.com/WileyCDA/WroxTitle/Professional-Android-2-Application-Development.productCd-0470565527.html}
+ *           <p>
+ *           The New Boston Android Video Tutorials
+ *           <p>
+ *           {@link http://thenewboston.org/list.php?cat=6}
+ * 
  * 
  */
 // using the socket.isConnected() - requires minimum API 14
@@ -36,7 +47,7 @@ public class AppClient
 {
 
 	// used for debugging
-	private static final String TAG = "MainMouseApp Client";
+	private static final String TAG = "AppMain Client";
 	private static final boolean D = true;
 
 	// used to keep track of the current state of the client
@@ -153,12 +164,11 @@ public class AppClient
 			{
 				if ( D )
 					Log.d(TAG, "Connected!");
-
+				// if the socket is connected tell the user
 				sendConnectedToastToUIHandler();
-
+				// set the state to connected
 				setState(CONNECTED);
 			}
-
 		}
 
 		try
@@ -176,40 +186,8 @@ public class AppClient
 				Log.e(TAG, "error creating the client comms thread");
 			e.printStackTrace();
 		}
-
 	}
 
-
-	/**
-	 * sends a toast back to the UI Handler once the connection is made
-	 */
-	private void sendConnectedToastToUIHandler()
-	{
-		// message back to UI
-		Message message = appHandler.obtainMessage(MainMouseApp.MESSAGE_TOAST_CLIENT);
-		Bundle bundle = new Bundle();
-		bundle.putString(MainMouseApp.TOAST,
-						 "The device is now connected to the server");
-		message.setData(bundle);
-		appHandler.handleMessage(message);
-	}
-
-
-	/**
-	 * @param name
-	 *        the friendly name of the connected blue-tooth device
-	 */
-	/*
-	 * private void sendDeviceNameToUIHandler( String name )
-	 * {
-	 * // message back to UI
-	 * Message message = appHandler.obtainMessage(MainMouseApp.MESSAGE_DEVICE_NAME);
-	 * Bundle bundle = new Bundle();
-	 * bundle.putString(MainMouseApp.DEVICE_NAME, name);
-	 * message.setData(bundle);
-	 * appHandler.handleMessage(message);
-	 * }
-	 */
 
 	/**
 	 * @return the state
@@ -258,6 +236,8 @@ public class AppClient
 
 
 	/**
+	 * Example taken from the BluetoothChat.java program
+	 * 
 	 * @param acceloData
 	 *        a byte[] representation of the accelerometer data reading
 	 */
@@ -272,11 +252,14 @@ public class AppClient
 		synchronized ( this )
 		{
 			if ( state != CONNECTED )
+			{
 				return;
+			}
+				
 			cct = clientCommThread;
 		}
 		// Perform the write unsynchronized
-		cct.sendDataToUIThread(acceloData);
+		cct.sendDataToOutputStream(acceloData);
 
 	}
 
@@ -296,7 +279,10 @@ public class AppClient
 		synchronized ( this )
 		{
 			if ( state != CONNECTED )
+			{
 				return;
+			}
+				
 			cct = clientCommThread;
 		}
 		// Perform the write unsynchronized
@@ -318,6 +304,37 @@ public class AppClient
 		setState(WAITING);
 	}
 
+
+	/**
+	 * sends a toast back to the UI Handler once the connection is made
+	 */
+	private void sendConnectedToastToUIHandler()
+	{
+		// message back to UI
+		Message message = appHandler.obtainMessage(AppMain.MESSAGE_TOAST_CLIENT);
+		Bundle bundle = new Bundle();
+		bundle.putString(AppMain.TOAST,
+						 "The device is now connected to the server");
+		message.setData(bundle);
+		appHandler.handleMessage(message);
+	}
+
+	/**
+	 * @param name
+	 *        the friendly name of the connected blue-tooth device
+	 */
+	/*
+	 * private void sendDeviceNameToUIHandler( String name )
+	 * {
+	 * // message back to UI
+	 * Message message = appHandler.obtainMessage(AppMain.MESSAGE_DEVICE_NAME);
+	 * Bundle bundle = new Bundle();
+	 * bundle.putString(AppMain.DEVICE_NAME, name);
+	 * message.setData(bundle);
+	 * appHandler.handleMessage(message);
+	 * }
+	 */
+
 	/**
 	 * @author Christopher Donovan
 	 * 
@@ -327,7 +344,7 @@ public class AppClient
 	 *         This class creates an Output Stream using the btSocket
 	 *         and fires the data to the server.
 	 */
-	private class ClientCommsThread extends Thread implements AppCommunication
+	private class ClientCommsThread extends Thread implements AppCommunicator
 	{
 
 		private static final String TAG = "Client Comms Thread";
@@ -354,26 +371,6 @@ public class AppClient
 					Log.e(TAG, "error trying to open the output stream");
 			}
 			outStream = tmpOut;
-		}
-		
-
-		@Override
-		public void sendDataToUIThread( String data, int type )
-		{
-			// TODO Auto-generated method stub
-			
-		}
-
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see java.lang.Thread#run()
-		 */
-		@Override
-		public void run()
-		{
-			// the output stream is added here but i am not using it
 		}
 
 
@@ -407,20 +404,23 @@ public class AppClient
 
 
 		/**
-		 * @param acceloData
-		 *        the byte[] representation of the accelerometer data
+		 * AppCommunicator method to transfer data form this class back to the AppMain class.
+		 * 
+		 * @param data
+		 *        String representation of the pop menu options
 		 */
 		@Override
-		public void sendDataToUIThread( byte[] data )
+		public void sendDataToOutputStream( String data )
 		{
+			DataOutputStream dataOutStream = new DataOutputStream(outStream);
 			try
 			{
-				outStream.write(data);
+				dataOutStream.writeBytes(data);
 			}
 			catch ( IOException e )
 			{
 				if ( D )
-					Log.e(TAG, "error while writing to the server");
+					Log.e(TAG, "error while writing the string to the server");
 				e.printStackTrace();
 				cancel();
 				try
@@ -431,8 +431,8 @@ public class AppClient
 				catch ( IOException e1 )
 				{
 					if ( D )
-						Log.e(TAG, "error trying to close the outstream");
-					e1.printStackTrace();
+						Log.e(TAG,
+							  "error trying to close the string  dataoutstream");
 				}
 			}
 			catch ( Exception e2 )
@@ -440,19 +440,19 @@ public class AppClient
 				if ( D )
 					Log.e(TAG, "error trying to write to the server");
 				cancel();
-				e2.printStackTrace();
 			}
 
 		}
 
 
 		/**
+		 * AppCommunicator method to transfer data form this class back to the AppMain class.
+		 * 
 		 * @param data
 		 *        int representation of the pop menu options
 		 */
-
 		@Override
-		public void sendDataToUIThread( int data )
+		public void sendDataToOutputStream( int data )
 		{
 			DataOutputStream dataOutStream = new DataOutputStream(outStream);
 			try
@@ -475,7 +475,6 @@ public class AppClient
 					if ( D )
 						Log.e(TAG,
 							  "error trying to close the int dataoutstream");
-					e1.printStackTrace();
 				}
 			}
 			catch ( Exception e2 )
@@ -483,30 +482,28 @@ public class AppClient
 				if ( D )
 					Log.e(TAG, "error trying to write to the server int");
 				cancel();
-				e2.printStackTrace();
 			}
 
 		}
 
 
 		/**
-		 * @param data
-		 *        String representation of the pop menu options
+		 * AppCommunicator method to transfer data form this class back to the AppMain class.
+		 * 
+		 * @param acceloData
+		 *        the byte[] representation of the accelerometer data
 		 */
 		@Override
-		public void sendDataToUIThread( String data )
+		public void sendDataToOutputStream( byte[] data )
 		{
-			DataOutputStream dataOutStream = new DataOutputStream(outStream);
-
 			try
 			{
-				dataOutStream.writeBytes(data);
+				outStream.write(data);
 			}
 			catch ( IOException e )
 			{
 				if ( D )
-					Log.e(TAG, "error while writing the string to the server");
-				e.printStackTrace();
+					Log.e(TAG, "error while writing to the server");
 				cancel();
 				try
 				{
@@ -516,21 +513,60 @@ public class AppClient
 				catch ( IOException e1 )
 				{
 					if ( D )
-						Log.e(TAG,
-							  "error trying to close the string  dataoutstream");
-					e1.printStackTrace();
+						Log.e(TAG, "error trying to close the outstream");
 				}
 			}
 			catch ( Exception e2 )
 			{
 				if ( D )
 					Log.e(TAG, "error trying to write to the server");
+				try
+				{
+					outStream.close();
+				}
+				catch ( IOException e )
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				cancel();
-				e2.printStackTrace();
 			}
-
 		}
 
 
+		// ++++++++Inherited Methods Not Used++++++++
+		@Override
+		public void sendDataToUIThread( String data, int type )
+		{
+			// Not implemented
+		}
+
+
+		@Override
+		public void run()
+		{
+			// the output stream is added here but i am not using it
+		}
+
+
+		@Override
+		public void sendDataToUIThread( byte[] data )
+		{
+			// Not implemented
+		}
+
+
+		@Override
+		public void sendDataToUIThread( int data )
+		{
+			// Not implemented
+		}
+
+
+		@Override
+		public void sendDataToUIThread( String data )
+		{
+			// Not implemented
+		}
 	}
-}
+}// end of the class

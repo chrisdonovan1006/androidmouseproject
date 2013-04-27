@@ -19,3 +19,19 @@
 1366836829674	Delete element
 1366836841555	Delete elements
 1366855994857	Move compilation units
+1366898343989	Rename type 'AppCommunication'
+1366898380863	Rename type 'AccelometerService'
+1366898407596	Rename type 'CheckBTDevices'
+1366898439585	Rename type 'AboutCheckBT'
+1366898465457	Rename type 'MainMouseApp'
+1366898490047	Rename type 'Prefs'
+1366898517718	Rename type 'WaitToConnectDialog'
+1366898768967	Rename type 'AccelometerServiceTest'
+1366898794987	Rename type 'CheckBTDevicesTest'
+1366898813858	Rename type 'MainMouseAppTest'
+1366903394708	Rename method 'setUpAccelerometerService'
+1366911069499	Rename method 'setUpApp'
+1366918266257	Extract Class...
+1366918568230	Encapsulate field 'data'
+1366918924740	Delete element
+1366922654613	Rename method 'connectToServer'

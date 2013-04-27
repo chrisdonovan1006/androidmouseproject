@@ -1,0 +1,42 @@
+package itt.t00154755.mouseapp;
+
+import java.io.OutputStream;
+
+import android.bluetooth.BluetoothSocket;
+
+public class ClientCommsThreadData
+{
+
+	private BluetoothSocket btSocket;
+	private OutputStream outStream;
+
+
+	public ClientCommsThreadData( BluetoothSocket btSocket )
+	{
+		this.btSocket = btSocket;
+	}
+
+
+	public BluetoothSocket getBtSocket()
+	{
+		return btSocket;
+	}
+
+
+	public void setBtSocket( BluetoothSocket btSocket )
+	{
+		this.btSocket = btSocket;
+	}
+
+
+	public OutputStream getOutStream()
+	{
+		return outStream;
+	}
+
+
+	public void setOutStream( OutputStream outStream )
+	{
+		this.outStream = outStream;
+	}
+}

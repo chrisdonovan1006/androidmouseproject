@@ -1,0 +1,231 @@
+package itt.t00154755.mouseapp;
+
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+
+import android.bluetooth.BluetoothSocket;
+import android.util.Log;
+
+public class ClientCommsThreadData implements AppCommunicator
+{
+
+	private static final String TAG = "Client Comms Thread";
+	private static final boolean D = true;
+	private BluetoothSocket btSocket;
+	private OutputStream outStream;
+	private String data;
+
+
+	public ClientCommsThreadData()
+	{
+
+		OutputStream tmpOut = null;
+		if ( D )
+			Log.i(TAG, "+++ SET UP THE CLIENT COMM THREAD +++");
+		try
+		{
+			tmpOut = btSocket.getOutputStream();
+		}
+		catch ( IOException e )
+		{
+			if ( D )
+				Log.e(TAG, "error trying to open the output stream");
+		}
+		setOutStream(tmpOut);
+	}
+
+
+	public BluetoothSocket getBtSocket()
+	{
+		return btSocket;
+	}
+
+
+	public void setBtSocket( BluetoothSocket btSocket )
+	{
+		this.btSocket = btSocket;
+	}
+
+
+	public OutputStream getOutStream()
+	{
+		return outStream;
+	}
+
+
+	public void setOutStream( OutputStream outStream )
+	{
+		this.outStream = outStream;
+	}
+
+
+	@Override
+	public void sendDataToUIThread( String data, int type )
+	{
+		// Not Implemented
+
+	}
+
+	/**
+	 * close the btSocket and cancel the thread
+	 */
+	public synchronized void cancel()
+	{
+		try
+		{
+			if ( getBtSocket() != null )
+			{
+				getBtSocket().close();
+				setBtSocket(null);
+			}
+		}
+		catch ( IOException e )
+		{
+			if ( D )
+				Log.e(TAG, "Cancelling the Client Comm Thread");
+			if ( D )
+				Log.e(TAG, "error closing the socket");
+		}
+	}
+
+
+	/**
+	 * @param acceloData
+	 *        the byte[] representation of the accelerometer data
+	 */
+	@Override
+	public void sendDataToUIThread( byte[] data )
+	{
+		try
+		{
+			getOutStream().write(data);
+		}
+		catch ( IOException e )
+		{
+			if ( D )
+				Log.e(TAG, "error while writing to the server");
+			cancel();
+			try
+			{
+				getOutStream().close();
+				cancel();
+			}
+			catch ( IOException e1 )
+			{
+				if ( D )
+					Log.e(TAG, "error trying to close the outstream");
+			}
+		}
+		catch ( Exception e2 )
+		{
+			if ( D )
+				Log.e(TAG, "error trying to write to the server");
+			cancel();
+		}
+
+	}
+
+
+	/**
+	 * @param data
+	 *        int representation of the pop menu options
+	 */
+
+	@Override
+	public void sendDataToUIThread( int data )
+	{
+		DataOutputStream dataOutStream = new DataOutputStream(getOutStream());
+		try
+		{
+			dataOutStream.writeInt(data);
+		}
+		catch ( IOException e )
+		{
+			if ( D )
+				Log.e(TAG, "error while writing int to the server");
+			e.printStackTrace();
+			cancel();
+			try
+			{
+				getOutStream().close();
+				cancel();
+			}
+			catch ( IOException e1 )
+			{
+				if ( D )
+					Log.e(TAG, "error trying to close the int dataoutstream");
+				e1.printStackTrace();
+			}
+		}
+		catch ( Exception e2 )
+		{
+			if ( D )
+				Log.e(TAG, "error trying to write to the server int");
+			cancel();
+			e2.printStackTrace();
+		}
+
+	}
+
+
+	/**
+	 * @param data
+	 *        String representation of the pop menu options
+	 */
+	@Override
+	public void sendDataToUIThread( String data )
+	{
+		DataOutputStream dataOutStream = new DataOutputStream(getOutStream());
+
+		try
+		{
+			dataOutStream.writeBytes(data);
+		}
+		catch ( IOException e )
+		{
+			if ( D )
+				Log.e(TAG, "error while writing the string to the server");
+			e.printStackTrace();
+			cancel();
+			try
+			{
+				getOutStream().close();
+				cancel();
+			}
+			catch ( IOException e1 )
+			{
+				if ( D )
+					Log.e(TAG,
+						  "error trying to close the string  dataoutstream");
+				e1.printStackTrace();
+			}
+		}
+		catch ( Exception e2 )
+		{
+			if ( D )
+				Log.e(TAG, "error trying to write to the server");
+			cancel();
+			e2.printStackTrace();
+		}
+	}
+
+
+	/**
+	 * @return the data
+	 */
+	public String getData()
+	{
+		return data;
+	}
+
+
+	/**
+	 * @param data
+	 *        the data to set
+	 */
+	public void setData( String data )
+	{
+		this.data = data;
+	}
+}
