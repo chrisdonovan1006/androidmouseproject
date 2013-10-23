@@ -21,18 +21,17 @@ import android.view.WindowManager;
  *         This service runs in the background for the life of the application. It contains the Accelerometer sensor which runs returns an event each time the
  *         sensor changes. The event contains an integer array with the values of the x, y, and z axis. the service sends the data back to the main UI thread
  *         through a handler this data is then passed on to the client which in turn forwards it to the server.
- *         
+ * 
  *         Refs:
  *         <p>
  *         Android Developers Web-site
  *         <p>
- *         {@link http://developer.android.com/guide/components/services.html}
- *         {@link http://developer.android.com/guide/topics/sensors/sensors_overview.html}
+ *         {@link http://developer.android.com/guide/components/services.html} {@link http://developer.android.com/guide/topics/sensors/sensors_overview.html}
  *         <p>
  *         Professional Android 2 Application Development
  *         <p>
- *         Charter 14 - Blue-tooth, Networks, and WiFi 
- *         {@link http://www.wrox.com/WileyCDA/WroxTitle/Professional-Android-2-Application-Development.productCd-0470565527.html}
+ *         Charter 14 - Blue-tooth, Networks, and WiFi {@link http
+ *         ://www.wrox.com/WileyCDA/WroxTitle/Professional-Android-2-Application-Development.productCd-0470565527.html}
  *         <p>
  *         The New Boston Android Video Tutorials
  *         <p>
@@ -43,14 +42,12 @@ public class AppService extends Service implements SensorEventListener, AppCommu
 
 	// used for debugging
 	private static final String TAG = "Accelometer Service";
-	private static final boolean D = true;
+	// if true show the logging data on the screen, if false don't
+	private static final boolean D = false;
 
 	// the data string
 	private String accelerometerData;
 
-	// the x, y axis's
-	private int xIntAxis;
-	private int yIntAxis;
 	// sensor movement direction
 	public static final int LEFTDOWN = 4;
 	public static final int RIGHTUP = 3;
@@ -67,18 +64,21 @@ public class AppService extends Service implements SensorEventListener, AppCommu
 
 	// boolean to check if the accelerometer is registered
 	private boolean isRegistered = false;
-	
+
 	// message types
 	private static final int TOAST = 1;
-	//private static final int DATA = 2;
-	
+
+
+	// private static final int DATA = 2;
+
 	/**
 	 * Default AppService Constructor
 	 */
 	public AppService()
 	{
-		// default appService  constructor
+		// default appService constructor
 	}
+
 
 	/**
 	 * AppService Constructor
@@ -91,8 +91,8 @@ public class AppService extends Service implements SensorEventListener, AppCommu
 	 *        the device window
 	 */
 	public AppService( Context context,
-							   Handler appHandler,
-							   WindowManager appWindow )
+					   Handler appHandler,
+					   WindowManager appWindow )
 	{
 		//
 		this.context = context;
@@ -100,8 +100,9 @@ public class AppService extends Service implements SensorEventListener, AppCommu
 		// this.appWindow = appWindow;
 	}
 
+
 	/**
-	 * The onStratCommand() method is used to start a service
+	 * The onStartCommand() method is used to start a service
 	 */
 	@Override
 	public int onStartCommand( Intent intent, int flags, int startId )
@@ -111,9 +112,10 @@ public class AppService extends Service implements SensorEventListener, AppCommu
 		return START_STICKY;
 	}
 
-    /**
-     * Called when the is initiated.
-     */
+
+	/**
+	 * Called when the is initiated.
+	 */
 	@Override
 	public void onCreate()
 	{
@@ -121,6 +123,7 @@ public class AppService extends Service implements SensorEventListener, AppCommu
 		super.onCreate();
 		initAccelometerService();
 	}
+
 
 	@Override
 	public void onDestroy()
@@ -130,12 +133,14 @@ public class AppService extends Service implements SensorEventListener, AppCommu
 		endAccelometerService();
 	}
 
+
 	public void initAccelometerService()
 	{
 		// register the listener
 		sendDataToUIThread("AppService started", TOAST);
 		registerListener();
 	}
+
 
 	public void endAccelometerService()
 	{
@@ -146,6 +151,7 @@ public class AppService extends Service implements SensorEventListener, AppCommu
 		// sendDataToUIThread("AppService stopped", 1);
 	}
 
+
 	/**
 	 * @return the accelerometerData
 	 */
@@ -154,6 +160,7 @@ public class AppService extends Service implements SensorEventListener, AppCommu
 		// return the current data
 		return accelerometerData;
 	}
+
 
 	/**
 	 * @param accelerometerData
@@ -165,6 +172,7 @@ public class AppService extends Service implements SensorEventListener, AppCommu
 		this.accelerometerData = accelerometerData;
 	}
 
+
 	@Override
 	public IBinder onBind( Intent intent )
 	{
@@ -173,6 +181,7 @@ public class AppService extends Service implements SensorEventListener, AppCommu
 		// create and pushed out
 		return null;
 	}
+
 
 	@Override
 	public void onAccuracyChanged( Sensor sensor, int accuracy )
@@ -193,37 +202,39 @@ public class AppService extends Service implements SensorEventListener, AppCommu
 			Log.d(TAG, "+++ SENSOR CHANGE +++");
 		// long timestamp = event.timestamp;
 		// step 3. determine the phones current tilting position
-		
+
 		determinePhonePosition(event.values[0], event.values[1]);
 
 	}
 
+
 	/**
-	 *  AppCommunicator method to transfer data form this class back to the AppMain class.
-	 *  
+	 * AppCommunicator method to transfer data form this class back to the AppMain class.
+	 * 
 	 */
 
 	@Override
 	public void sendDataToUIThread( String data )
 	{
 		// send message back to UI thread
-		
-		
+
 		Message message = appHandler.obtainMessage(AppMain.MESSAGE_DATA_ACCELO);
 		Bundle bundle = new Bundle();
 		bundle.putString(AppMain.DATA, data);
 		message.setData(bundle);
 		appHandler.handleMessage(message);
 	}
+
+
 	/**
-	 *  AppCommunicator method to transfer data form this class back to the AppMain class.
-	 *  <p>
-	 *  <ul>
-	 *  <li> Type:
-	 *  <li> TOAST: A short message displayed on the user screen.
-	 *  <li> DATA: A reading taken from the Accelerometer.
-	 *  </ul>
-	 *  
+	 * AppCommunicator method to transfer data form this class back to the AppMain class.
+	 * <p>
+	 * <ul>
+	 * <li>Type:
+	 * <li>TOAST: A short message displayed on the user screen.
+	 * <li>DATA: A reading taken from the Accelerometer.
+	 * </ul>
+	 * 
 	 */
 	@Override
 	public void sendDataToUIThread( String data, int type )
@@ -238,9 +249,11 @@ public class AppService extends Service implements SensorEventListener, AppCommu
 			appHandler.handleMessage(message);
 		}
 	}
+
+
 	/**
-	 *  AppCommunicator method to transfer data form this class back to the AppMain class.
-	 *  
+	 * AppCommunicator method to transfer data form this class back to the AppMain class.
+	 * 
 	 */
 	@Override
 	public void sendDataToUIThread( int data )
@@ -248,37 +261,42 @@ public class AppService extends Service implements SensorEventListener, AppCommu
 		// not in use
 
 	}
+
+
 	@Override
 	public void sendDataToUIThread( byte[] data )
 	{
 		// not in use
 
 	}
+
+
 	@Override
 	public void sendDataToOutputStream( String data )
 	{
 		// not in use
 	}
 
+
 	@Override
 	public void sendDataToOutputStream( int data )
 	{
-		// not in use	
+		// not in use
 	}
+
 
 	@Override
 	public void sendDataToOutputStream( byte[] data )
 	{
-		// not in use	
+		// not in use
 	}
 
-	
 
 	/**
 	 * 
 	 * @return isRegistered
-	 * returns the current value of isRegistered:
-	 *  true if the sensor manager has been registered, otherwise false
+	 *         returns the current value of isRegistered:
+	 *         true if the sensor manager has been registered, otherwise false
 	 */
 	public boolean isRegistered()
 	{
@@ -316,6 +334,12 @@ public class AppService extends Service implements SensorEventListener, AppCommu
 
 
 	/**
+	 * This method returns the Sensor manager object to the service, the context
+	 * is the main app that has been passed into the constructor of the service.
+	 * As the service runs in the background it needs to refer to the main app context
+	 * this allows the service to runs in the background and access the current position
+	 * of the phone through the accelerometer sensor.
+	 * 
 	 * @return the accelerometerManager
 	 */
 	private SensorManager getAccelerometerManager()
@@ -345,117 +369,6 @@ public class AppService extends Service implements SensorEventListener, AppCommu
 
 
 	/*
-	 * The event is passed to this method
-	 */
-	/*
-	 * private void
-	 * prepareTheData( SensorEvent event ) throws InterruptedException
-	 * {
-	 */
-	// step 1. filter the data using a low and high filter
-	// float[] filteredEvent = applyFilters(event);
-
-	// float xFloatAxis = 0;
-	// float yFloatAxis = 0;
-
-	// @link http://developer.android.com/reference/android/view/Display.html
-	// @link http://www.monkeycoder.co.nz/Community/posts.php?topic=1943
-	// @link http://stackoverflow.com/questions/4757632/screen-rotation-using-display-getrotation
-
-	// best explanation here
-	// @link http://android-developers.blogspot.ie/2010/09/one-screen-turn-deserves-another.html
-
-	// step 2. find the current rotation of the phone
-	/*
-	 * int rotation = appWindow.getDefaultDisplay().getRotation();
-	 * {
-	 * switch ( rotation )
-	 * {
-	 * case Surface.ROTATION_0:
-	 * // the phone natural position is x = short edge across
-	 * // with the screen facing you
-	 * xFloatAxis = event.values[0];
-	 * yFloatAxis = event.values[1];
-	 * break;
-	 * case Surface.ROTATION_90:
-	 * // turn the phone 90 degrees with the screen facing you
-	 * // x = long edge across
-	 * xFloatAxis = event.values[1];
-	 * yFloatAxis = event.values[0];
-	 * break;
-	 * case Surface.ROTATION_180:
-	 * // turn the phone 90 degrees with the screen facing you
-	 * // x = short edge but it is upside down
-	 * xFloatAxis = -event.values[1];
-	 * yFloatAxis = -event.values[0];
-	 * break;
-	 * case Surface.ROTATION_270:
-	 * // turn the phone 90 degrees with the screen facing you
-	 * // x = long edge but it is still upside down
-	 * xFloatAxis = -event.values[0];
-	 * yFloatAxis = -event.values[1];
-	 * break;
-	 * default:
-	 * Log.e(TAG, "Set the rotation to 0 position.");
-	 * xFloatAxis = event.values[0];
-	 * yFloatAxis = event.values[1];
-	 * break;
-	 * }
-	 * }
-	 */
-	/*
-	 * // xFloatAxis = event.values[0];
-	 * // yFloatAxis = event.values[1];
-	 * Log.d(TAG, "filtered values: " + xFloatAxis + ", " + yFloatAxis);
-	 * 
-	 * // step 3. determine the phones current tilting position
-	 * determinePhonePosition(xFloatAxis, yFloatAxis);
-	 * 
-	 * // make this thread sleep for 100th of a second
-	 * // Thread.sleep(100);
-	 * // step 4. send the data back to the main UI thread
-	 * sendCurrentReadingsToUI();
-	 */
-	// }
-
-	/*
-	 * 
-	 * @link http://developer.android.com/guide/topics/sensors/sensors_motion.html#sensors-motion-accel
-	 * 
-	 * @param event
-	 * 
-	 * @return
-	 */
-	/*
-	 * private float[] applyFilters( SensorEvent event )
-	 * {
-	 * // In this example, alpha is calculated as t / (t + dT),
-	 * // where t is the low-pass filter's time-constant and
-	 * // dT is the event delivery rate.
-	 * long eTime = event.timestamp;
-	 * // g = 0.9 * g + 0.1 * v
-	 * // g = 9.80665 m/s2
-	 * 
-	 * // alpha must be: > 0 & < 1
-	 * final float alpha = 0.9f;
-	 * float[] gravity = new float[3];
-	 * 
-	 * // Isolate the force of gravity with the low-pass filter.
-	 * gravity[0] = alpha * gravity[0] + ( 1 - alpha ) * event.values[0];
-	 * gravity[1] = alpha * gravity[1] + ( 1 - alpha ) * event.values[1];
-	 * gravity[2] = alpha * gravity[2] + ( 1 - alpha ) * event.values[2];
-	 * 
-	 * float[] linear_acceleration = new float[3];
-	 * // Remove the gravity contribution with the high-pass filter.
-	 * linear_acceleration[0] = event.values[0] - gravity[0];
-	 * linear_acceleration[1] = event.values[1] - gravity[1];
-	 * linear_acceleration[2] = event.values[2] - gravity[2];
-	 * 
-	 * return gravity;
-	 * }
-	 */
-
-	/*
 	 * Using the filters applied the next task is to determine the
 	 * current position of the sensors values.
 	 * 
@@ -465,28 +378,25 @@ public class AppService extends Service implements SensorEventListener, AppCommu
 	 */
 	private void determinePhonePosition( float xFloatAxis, float yFloatAxis )
 	{
-		xIntAxis = (int ) xFloatAxis;
-		yIntAxis = (int ) yFloatAxis;
-
 		/*
 		 * to move the cursor in the direction
 		 * i am us the position and negative values
 		 * i.e if -x, +y will move the cursor left (-x)
 		 * and down (+y)
 		 */
-		if ( xIntAxis < 0 && yIntAxis > 0 )
+		if ( xFloatAxis < 0.5 && yFloatAxis > 0.5 )
 		{
 			// add only the positive values
 			// a number format exception will be
 			// thrown on the server side if negative
 			// values are passed across.
 			if ( D )
-				Log.d(TAG, "move mouse: " + RIGHTDOWN);
-			setAccelerometerData(" " + RIGHTDOWN
+				Log.d(TAG, "move mouse: " + RIGHTUP);
+			setAccelerometerData(" " + RIGHTUP
 								 + " "
-								 + Math.abs(xIntAxis)
+								 + Math.abs((int ) xFloatAxis)
 								 + " "
-								 + Math.abs(yIntAxis)
+								 + Math.abs((int ) yFloatAxis)
 								 + " ");
 		}
 		/*
@@ -494,48 +404,49 @@ public class AppService extends Service implements SensorEventListener, AppCommu
 		 * and up (-y)
 		 */
 		else
-			if ( xIntAxis < 0 && yIntAxis > 0 )
+			if ( xFloatAxis < 0.5 && yFloatAxis > 0.5 )
 			{
 				// add only the positive values
 				if ( D )
 					Log.d(TAG, "move mouse: " + LEFTUP);
 				setAccelerometerData(" " + LEFTUP
 									 + " "
-									 + Math.abs(xIntAxis)
+									 + Math.abs((int ) xFloatAxis)
 									 + " "
-									 + Math.abs(yIntAxis)
+									 + Math.abs((int ) yFloatAxis)
 									 + " ");
 			}
 			else
-				if ( xIntAxis < 0 && yIntAxis < 0 )
+				if ( xFloatAxis < 0.5 && yFloatAxis < 0.5 )
 				{
 					// add only the positive values
 					if ( D )
-						Log.d(TAG, "move mouse: " + RIGHTUP);
-					setAccelerometerData(" " + RIGHTUP
+						Log.d(TAG, "move mouse: " + RIGHTDOWN);
+					setAccelerometerData(" " + RIGHTDOWN
 										 + " "
-										 + Math.abs(xIntAxis)
+										 + Math.abs((int ) xFloatAxis)
 										 + " "
-										 + Math.abs(yIntAxis)
+										 + Math.abs((int ) yFloatAxis)
 										 + " ");
 				}
 				else
-					if ( xIntAxis > 0 && yIntAxis > 0 )
+					if ( xFloatAxis > 0.5 && yFloatAxis > 0.5 )
 					{
 						// add only the positive values
 						if ( D )
 							Log.d(TAG, "move mouse: " + LEFTDOWN);
 						setAccelerometerData(" " + LEFTDOWN
 											 + " "
-											 + Math.abs(xIntAxis)
+											 + Math.abs((int ) xFloatAxis)
 											 + " "
-											 + Math.abs(yIntAxis)
+											 + Math.abs((int ) yFloatAxis)
 											 + " ");
 					}
 		// send the data back to the AppMain
 		sendCurrentReadingsToUI(getAccelerometerData());
 
 	}
+
 
 	/*
 	 * Create a new Thread that begin passing the data to the main UI
@@ -554,15 +465,21 @@ public class AppService extends Service implements SensorEventListener, AppCommu
 	 */
 	private class SendDataThread implements Runnable
 	{
+
 		String data;
+
+
 		public SendDataThread( String data )
 		{
 			this.data = data;
 		}
+
+
 		// send the data
 		public void run()
 		{
-			if (data == null) return;
+			if ( data == null )
+				return;
 			sendDataToUIThread(data);
 		}
 	}

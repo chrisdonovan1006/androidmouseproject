@@ -22,8 +22,6 @@ import android.widget.TextView;
 
 /**
  * @author Christopher Donovan
- * 
- *         This is almost a carbon copy of an example from a Blue-tooth example in the SDK.
  *         
  *         This Activity appears as a dialog. It lists any paired devices and
  *         devices detected in the area after discovery. When a device is chosen

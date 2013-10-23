@@ -21,16 +21,14 @@ public abstract class AppServerUtils
 	 *        the name of the class calling this method
 	 * @param e
 	 *        the exception being thrown
-	 * @param errorNum
-	 *        the user defined error number
 	 */
 	public void
-			printOutExceptionDetails( String TAG, Exception e, int errorNum )
+			printOutExceptionDetails( String TAG, Exception e )
 	{
 		// print the error stack
 		e.printStackTrace();
 		e.getCause();
-		System.out.println(TAG + " ...Shutting down the server " + errorNum);
+		System.out.println(TAG + " ...Shutting down the server " + e);
 		System.exit(-1);
 	}
 }

@@ -9,10 +9,10 @@
 	<item value="3" key="org.eclipse.jdt.uiformatter_page.white_space.java_view.option"/>
 	<item value="10" key="org.eclipse.jdt.uiformatter_page.modify_dialog_tab_page.last_focus_index"/>
 	<item value="0" key="org.eclipse.jdt.uiformatter_pagemodify_dialog.preferred_x"/>
-	<item value="1920" key="org.eclipse.jdt.uiformatter_pagemodify_dialog.preferred_width"/>
 	<item value="0" key="org.eclipse.jdt.uiformatter_pagemodify_dialog.preferred_y"/>
 	<item value="1" key="org.eclipse.jdt.uiformatter_page.line_wrapping_tab_page.last_category_index"/>
 	<item value="6" key="org.eclipse.jdt.uiformatter_pagemodify_dialog.last_focus"/>
+	<item value="1920" key="org.eclipse.jdt.uiformatter_pagemodify_dialog.preferred_width"/>
 	<section name="OptionalMessageDialog.hide.">
 		<item value="true" key="org.eclipse.jdt.ui.typecomment.deprecated"/>
 	</section>
@@ -23,8 +23,8 @@
 		<item value="2" key="pageIndex"/>
 	</section>
 	<section name="SourceActionDialog.methods">
-		<item value="true" key="Comments"/>
 		<item value="1" key="VisibilityModifier"/>
+		<item value="true" key="Comments"/>
 		<item value="2" key="InsertPosition.v2"/>
 		<item value="true" key="SynchronizedModifier"/>
 		<item value="false" key="FinalModifier"/>
@@ -52,13 +52,13 @@
 		<section name="projects">
 			<section name="MouseApp">
 				<item value="C:\Users\Christopher\Documents\GitHub\androidmouseproject\MouseApp\docs" key="destdir"/>
-				<item value="C:\Users\Christopher\Documents\GitHub\androidmouseproject\MouseApp\javadoc.xml" key="antpath"/>
 				<item value="" key="href"/>
+				<item value="C:\Users\Christopher\Documents\GitHub\androidmouseproject\MouseApp\javadoc.xml" key="antpath"/>
 			</section>
 			<section name="MouseServer">
 				<item value="C:\Users\Christopher\Documents\GitHub\androidmouseproject\MouseApp\docs" key="destdir"/>
-				<item value="C:\Users\Christopher\Documents\GitHub\androidmouseproject\MouseApp\javadoc.xml" key="antpath"/>
 				<item value="" key="href"/>
+				<item value="C:\Users\Christopher\Documents\GitHub\androidmouseproject\MouseApp\javadoc.xml" key="antpath"/>
 			</section>
 		</section>
 	</section>
@@ -80,8 +80,8 @@
 	<section name="DialogBounds_GetterSetterTreeSelectionDialog">
 		<item value="529" key="DIALOG_WIDTH"/>
 		<item value="64" key="DIALOG_Y_ORIGIN"/>
-		<item value="696" key="DIALOG_HEIGHT"/>
 		<item value="704" key="DIALOG_X_ORIGIN"/>
+		<item value="696" key="DIALOG_HEIGHT"/>
 		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
 	</section>
 	<section name="RenameInformationPopup">
@@ -100,15 +100,15 @@
 	<section name="DialogBounds_OverrideMethodDialog">
 		<item value="908" key="DIALOG_WIDTH"/>
 		<item value="217" key="DIALOG_Y_ORIGIN"/>
-		<item value="705" key="DIALOG_X_ORIGIN"/>
 		<item value="706" key="DIALOG_HEIGHT"/>
+		<item value="705" key="DIALOG_X_ORIGIN"/>
 		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
 	</section>
 	<section name="SelfEncapsulateFieldWizard">
 		<item value="true" key="GenerateJavadoc"/>
 	</section>
 	<section name="RefactoringWizard.preview">
-		<item value="375" key="height"/>
+		<item value="377" key="height"/>
 		<item value="540" key="width"/>
 	</section>
 	<section name="FatJarPackageWizard">
@@ -130,8 +130,8 @@
 	<section name="org.eclipse.jdt.internal.ui.preferences.EditTemplateDialog_dialogBounds">
 		<item value="611" key="DIALOG_WIDTH"/>
 		<item value="77" key="DIALOG_Y_ORIGIN"/>
-		<item value="300" key="DIALOG_HEIGHT"/>
 		<item value="95" key="DIALOG_X_ORIGIN"/>
+		<item value="300" key="DIALOG_HEIGHT"/>
 		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
 	</section>
 	<section name="BreadcrumbItemDropDown">
@@ -142,8 +142,8 @@
 		<section name="DialogBoundsSettings">
 			<item value="600" key="DIALOG_WIDTH"/>
 			<item value="195" key="DIALOG_Y_ORIGIN"/>
-			<item value="668" key="DIALOG_X_ORIGIN"/>
 			<item value="500" key="DIALOG_HEIGHT"/>
+			<item value="668" key="DIALOG_X_ORIGIN"/>
 			<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
 		</section>
 	</section>
@@ -156,8 +156,8 @@
 		<section name="DialogBoundsSettings">
 			<item value="600" key="DIALOG_WIDTH"/>
 			<item value="195" key="DIALOG_Y_ORIGIN"/>
-			<item value="500" key="DIALOG_HEIGHT"/>
 			<item value="668" key="DIALOG_X_ORIGIN"/>
+			<item value="500" key="DIALOG_HEIGHT"/>
 			<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
 		</section>
 	</section>
@@ -170,24 +170,24 @@
 		<item value="436" key="size.x"/>
 		<item value="271" key="size.y"/>
 	</section>
+	<section name="NewClassWizardPage">
+		<item value="false" key="create_constructor"/>
+		<item value="true" key="create_unimplemented"/>
+		<item value="false" key="create_main"/>
+	</section>
 	<section name="org.eclipse.ltk.ui.refactoring.settings">
-		<item value="false" key="renameSubpackages"/>
-		<item value="*" key="patterns"/>
 		<item value="true" key="updateQualifiedNames"/>
+		<item value="*" key="patterns"/>
+		<item value="false" key="renameSubpackages"/>
 		<item value="1" key="updateSimilarElementsMatchStrategy"/>
 		<item value="true" key="updateTextualMatches"/>
 		<item value="true" key="updateSimilarElements"/>
 	</section>
-	<section name="NewClassWizardPage">
-		<item value="false" key="create_constructor"/>
-		<item value="false" key="create_main"/>
-		<item value="true" key="create_unimplemented"/>
-	</section>
 	<section name="JavadocWizardDialog">
 		<item value="616" key="DIALOG_WIDTH"/>
 		<item value="118" key="DIALOG_Y_ORIGIN"/>
-		<item value="660" key="DIALOG_X_ORIGIN"/>
 		<item value="616" key="DIALOG_HEIGHT"/>
+		<item value="660" key="DIALOG_X_ORIGIN"/>
 		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
 	</section>
 </section>

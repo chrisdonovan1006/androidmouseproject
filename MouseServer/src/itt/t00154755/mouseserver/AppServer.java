@@ -39,7 +39,6 @@ public class AppServer extends AppServerUtils implements Runnable
 	// string name of class
 	private final static String TAG = "App Server";
 	private LocalDevice pcDevice;
-	private int exceptionCode;
 
 	/*
 	 * This sting is used to create a listening connection stream in order for the remote device to connect
@@ -54,7 +53,11 @@ public class AppServer extends AppServerUtils implements Runnable
 	 * http://bluecove.org/bluecove/apidocs/index.html?javax/bluetooth/L2CAPConnectionNotifier.html
 	 */
 
-	private final String CONNECTION_STRING = "btspp://localhost:5a17e500ad3a11e29e960800200c9a66;" + "name=Java_Server;authenticate=false;encrypt=false;master=false";
+	private final String CONNECTION_STRING = "btspp://localhost:5a17e500ad3a11e29e960800200c9a66;" +
+			"name=Java_Mouse_Server;" +
+			"authenticate=false;" +
+			"encrypt=false;" +
+			"master=false";
 
 
 	public AppServer()
@@ -68,10 +71,9 @@ public class AppServer extends AppServerUtils implements Runnable
 		}
 		catch ( BluetoothStateException e )
 		{
-
-			exceptionCode = 1;
-			printOutExceptionDetails(TAG, e, exceptionCode);
+			printOutExceptionDetails(TAG, e);
 		}
+		
 		System.out.println("\napp server constructor");
 	}
 
@@ -85,13 +87,44 @@ public class AppServer extends AppServerUtils implements Runnable
 
 
 	/*
-	 * Creates a
+	 * Creates a listener on the server side by opening a port and waiting for a
+	 * connection. It does this by using the MAC address of the bluetooth device
+	 * on the host machine, this ensures that only paired devices can access the
+	 * bluetooth port this is a security measure.
+	 * 
+	 * Part 1 : create a StreamConnection object to listen for the RfComm connection
+	 * 			if the connection is made return the connection object.
+	 * 
+	 * Part 2 : pass the connection object to the acceptedConnection method and 
+	 * 			return the inputStream object.
+	 * 
+	 * Part 3 : create a comms Thread, pass the input stream object and pass the data
+	 * 			to the data to the reader class.
+	 * 
 	 */
 	private void createServerSideListener()
 	{
 		StreamConnectionNotifier connNotifier = null;
 		StreamConnection connection = null;
+		InputStream inStream = null;
 
+		connection = openConnectionListener(connNotifier, connection);
+		// if a client is accepted
+		inStream = acceptedConnection(connection, inStream);
+		// pass the inputStream
+		startServerCommsThread(inStream);
+	}
+
+
+	/**
+	 * @param connNotifier
+	 * @param connection
+	 * @return
+	 */
+	public StreamConnection
+			openConnectionListener( StreamConnectionNotifier connNotifier,
+									StreamConnection connection )
+	{
 		try
 		{
 			// open a Connector using the CONNECTION_STRING
@@ -103,29 +136,34 @@ public class AppServer extends AppServerUtils implements Runnable
 		}
 		catch ( BluetoothStateException e )
 		{
-			exceptionCode = 2;
-			printOutExceptionDetails(TAG, e, exceptionCode);
+			printOutExceptionDetails(TAG, e);
 		}
 		catch ( IOException e )
 		{
-			exceptionCode = 3;
-			printOutExceptionDetails(TAG, e, exceptionCode);
+			printOutExceptionDetails(TAG, e);
 		}
 
 		try
 		{
 			System.out.println("\n...waiting for the client...");
 			connection = connNotifier.acceptAndOpen();
-
 		}
 		catch ( IOException e )
 		{
-			exceptionCode = 4;
-			printOutExceptionDetails(TAG, e, exceptionCode);
+			printOutExceptionDetails(TAG, e);
 		}
-		// if a client is accepted
-		InputStream inStream = null;
+		return connection;
+	}
 
+
+	/**
+	 * @param connection
+	 * @param inStream
+	 * @return
+	 */
+	public InputStream acceptedConnection( StreamConnection connection,
+										   InputStream inStream )
+	{
 		try
 		{
 			inStream = connection.openInputStream();
@@ -147,11 +185,9 @@ public class AppServer extends AppServerUtils implements Runnable
 		}
 		catch ( IOException e )
 		{
-			exceptionCode = 6;
-			printOutExceptionDetails(TAG, e, exceptionCode);
+			printOutExceptionDetails(TAG, e);
 		}
-		// pass the inputStream
-		startServerCommsThread(inStream);
+		return inStream;
 	}
 
 

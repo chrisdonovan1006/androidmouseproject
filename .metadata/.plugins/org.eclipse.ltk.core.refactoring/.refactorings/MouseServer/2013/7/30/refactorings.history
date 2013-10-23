@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring accessors="true" comment="Delete 6 elements from project &apos;MouseServer&apos;&#x0D;&#x0A;- Original project: &apos;MouseServer&apos;&#x0D;&#x0A;- Original elements:&#x0D;&#x0A;     AppServerListener.ucls&#x0D;&#x0A;     CursorRobot.ucls&#x0D;&#x0A;     final_class_diagram_java.ucls&#x0D;&#x0A;     Java_Package.ucls&#x0D;&#x0A;     RunServerListener.ucls&#x0D;&#x0A;     ServerCommsThread.ucls" description="Delete elements" element1="JavaClassDiagrams/CursorRobot.ucls" element2="JavaClassDiagrams/RunServerListener.ucls" element3="JavaClassDiagrams/AppServerListener.ucls" element4="JavaClassDiagrams/final_class_diagram_java.ucls" element5="JavaClassDiagrams/ServerCommsThread.ucls" element6="JavaClassDiagrams/Java_Package.ucls" elements="0" flags="589830" id="org.eclipse.jdt.ui.delete" resources="6" stamp="1374487473276" subPackages="false" version="1.0"/>
+</session>

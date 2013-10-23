@@ -41,11 +41,11 @@ import android.util.Log;
  * 
  * 
  */
+
 // using the socket.isConnected() - requires minimum API 14
 @SuppressLint ( "NewApi" )
 public class AppClient
 {
-
 	// used for debugging
 	private static final String TAG = "AppMain Client";
 	private static final boolean D = true;

@@ -28,10 +28,10 @@ public class AppRobot extends AppServerUtils implements Runnable
 {
 
 	// sensor movement direction
-	public static final int LEFTDOWN = 4;
-	public static final int RIGHTUP = 3;
-	public static final int LEFTUP = 2;
 	public static final int RIGHTDOWN = 1;
+	public static final int LEFTUP = 2;
+	public static final int RIGHTUP = 3;
+	public static final int LEFTDOWN = 4;
 
 	// used to signal which mouse option is selected
 	// started an 6 - 9 because the direction value
@@ -55,7 +55,7 @@ public class AppRobot extends AppServerUtils implements Runnable
 													   .getScreenSize();
 
 	// string and converted integer array
-	private String acceloData;
+	// private String acceloData;
 	private int[] convertedValues;
 
 	// set and get the current x and y values
@@ -82,7 +82,7 @@ public class AppRobot extends AppServerUtils implements Runnable
 	 */
 	public void setAcceloData( String acceloData )
 	{
-		this.acceloData = acceloData;
+		//this.acceloData = acceloData;
 		convertedValues = convertStringToIntArray(acceloData);
 	}
 
@@ -197,25 +197,72 @@ public class AppRobot extends AppServerUtils implements Runnable
 	}
 
 
+	/*
+	 * When the mouse is clicked, the direction is passed in
+	 * depending on the direction the timer is started when
+	 * ================  
+	 */
 	private synchronized void mouseClicked( int direction )
 	{
+		// variables needed to work of the delay
+		long startTime;
+		long endTime;
+		long diff;
 		switch ( direction )
 		{
-			case SEND_TEXT_CLICK:
+			case SEND_TEXT_CLICK:		
+				robot.keyPress(KeyEvent.VK_ENTER);
+				startTime = System.currentTimeMillis();
+				robot.keyRelease(KeyEvent.VK_ENTER);
+				endTime = System.currentTimeMillis();
+				
+				diff = endTime - startTime;
+				try
+				{
+					Thread.sleep(diff);
+				}
+				catch (InterruptedException e)
+				{
+					
+				}
 				robot.keyPress(KeyEvent.VK_ENTER);
 				robot.keyRelease(KeyEvent.VK_ENTER);
-				System.out.println(acceloData.subSequence(1,
-														  acceloData.length() - 1));
 				break;
 			case LEFT_BUTTON_CLICK:
 				robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
+				startTime = System.currentTimeMillis();
 				robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
-				System.out.println("left click");
+				endTime = System.currentTimeMillis();
+				
+				diff = endTime - startTime;
+				try 
+				{
+					Thread.sleep(diff);
+				}
+				catch(InterruptedException e)
+				{
+					
+				}
+				robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
+				robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
 				break;
 			case RIGHT_BUTTON_CLICK:
 				robot.mousePress(InputEvent.BUTTON3_DOWN_MASK);
+				startTime = System.currentTimeMillis();
 				robot.mouseRelease(InputEvent.BUTTON3_DOWN_MASK);
-				System.out.println("right click");
+				endTime = System.currentTimeMillis();
+				
+				diff = endTime - startTime;
+				try 
+				{
+					Thread.sleep(diff);
+				}
+				catch (InterruptedException e)
+				{
+					
+				}
+				robot.mousePress(InputEvent.BUTTON3_DOWN_MASK);
+				robot.mouseRelease(InputEvent.BUTTON3_DOWN_MASK);
 				break;
 		}
 	}
@@ -324,7 +371,7 @@ public class AppRobot extends AppServerUtils implements Runnable
 	 */
 	private synchronized int[] convertStringToIntArray( String acceloData )
 	{
-		// convert the incoming String to an integer[] that will,
+		// convert the incoming String to an integer[],
 		// that will store the direction, x movement, y movement values
 		StringTokenizer st = new StringTokenizer(acceloData);
 		int[] data = new int[acceloData.length()];

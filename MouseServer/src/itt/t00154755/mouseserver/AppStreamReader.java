@@ -17,7 +17,7 @@ import java.io.InputStream;
 public class AppStreamReader implements Runnable
 {
 
-	private final String TAG = "Server Communication Thread";
+	// private final String TAG = "Server Communication Thread";
 	private InputStream inStream = null;
 
 
@@ -54,7 +54,7 @@ public class AppStreamReader implements Runnable
 			{
 				// read the data inStream from the client
 				String acceloData = ( new String(bytes, 0, r) );
-				System.out.println(TAG + acceloData);
+				// System.out.println(TAG + acceloData);
 
 				// pass the data to the robot class
 				appRobot.setAcceloData(acceloData);
@@ -73,25 +73,11 @@ public class AppStreamReader implements Runnable
 			}
 			catch ( IOException ex )
 			{
-				System.out.println("error closing the input stream");
+				// System.out.println("error closing the input stream");
 			}
-			System.out.println(TAG + " - shutting down the server 1");
+			// System.out.println(TAG + " - shutting down the server 1");
 			System.exit(-1);
 		}
-/*		finally
-		{
-			try
-			{
-				// try to close the inout stream
-				inStream.close();
-			}
-			catch ( IOException e )
-			{
-				System.out.println("error closing the input stream");
-			}
-			System.out.println(TAG + " - shutting down the server - finally");
-			System.exit(-1);
-		}*/
 	}
 
 }// end of Class
