@@ -1958,3 +1958,15 @@ Command-line arguments:  -os win32 -ws win32 -arch x86 -product com.android.ide.
 !MESSAGE Warnings while parsing the action sets from the 'org.eclipse.ui.actionSets' extension point
 !SUBENTRY 1 org.eclipse.ui 2 0 2013-10-08 20:55:26.348
 !MESSAGE Actions require an id: plug-in='org.fastcode'
+!SESSION 2013-11-12 20:11:54.870 -----------------------------------------------
+eclipse.buildId=v21.0.1-543035
+java.version=1.7.0_45
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=en_IE
+Framework arguments:  -product com.android.ide.eclipse.adt.package.product -product com.android.ide.eclipse.adt.package.product
+Command-line arguments:  -os win32 -ws win32 -arch x86 -product com.android.ide.eclipse.adt.package.product -data C:\Users\Christopher\Documents\GitHub\androidmouseproject -product com.android.ide.eclipse.adt.package.product
+
+!ENTRY org.eclipse.ui 2 0 2013-11-12 20:11:58.184
+!MESSAGE Warnings while parsing the action sets from the 'org.eclipse.ui.actionSets' extension point
+!SUBENTRY 1 org.eclipse.ui 2 0 2013-11-12 20:11:58.184
+!MESSAGE Actions require an id: plug-in='org.fastcode'
