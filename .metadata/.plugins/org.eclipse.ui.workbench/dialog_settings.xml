@@ -1,20 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
+	<section name="WorkbenchPreferenceDialogSettings">
+		<item value="130" key="DIALOG_Y_ORIGIN"/>
+		<item value="473" key="DIALOG_X_ORIGIN"/>
+	</section>
+	<section name="org.eclipse.ui.preferences.keysPreferencePage">
+	</section>
+	<section name="EditorSelectionDialog">
+		<item value="false" key="EditorSelectionDialog.STORE_ID_INTERNAL_EXTERNAL"/>
+	</section>
 	<section name="org.eclipse.ui.internal.QuickAccess">
-		<item value="1440" key="dialogWidth"/>
-		<item value="759" key="dialogHeight"/>
+		<item value="525" key="dialogHeight"/>
+		<item value="1025" key="dialogWidth"/>
+		<list key="textEntries">
+		</list>
+		<list key="orderedElements">
+		</list>
 		<list key="orderedProviders">
 		</list>
 		<list key="textArray">
 		</list>
-		<list key="orderedElements">
-		</list>
-		<list key="textEntries">
-		</list>
-	</section>
-	<section name="WorkbenchPreferenceDialogSettings">
-		<item value="130" key="DIALOG_Y_ORIGIN"/>
-		<item value="473" key="DIALOG_X_ORIGIN"/>
 	</section>
 	<section name="NewWizardAction">
 		<item value="com.objectaid.uml.new.classdiagram" key="NewWizardSelectionPage.STORE_SELECTED_ID"/>
@@ -28,19 +33,14 @@
 	</section>
 	<section name="ShowViewDialog">
 		<item value="311" key="DIALOG_WIDTH"/>
+		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
 		<item value="com.android.ide.eclipse.ddms.views.DeviceView" key="ShowViewDialog.STORE_SELECTED_VIEW_ID"/>
+		<item value="439" key="DIALOG_HEIGHT"/>
 		<item value="236" key="DIALOG_Y_ORIGIN"/>
 		<item value="813" key="DIALOG_X_ORIGIN"/>
-		<item value="439" key="DIALOG_HEIGHT"/>
-		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
 		<list key="ShowViewDialog.STORE_EXPANDED_CATEGORIES_ID">
 			<item value="com.android.ide.eclipse.ddms.views.category"/>
 		</list>
-	</section>
-	<section name="EditorSelectionDialog">
-		<item value="false" key="EditorSelectionDialog.STORE_ID_INTERNAL_EXTERNAL"/>
-	</section>
-	<section name="org.eclipse.ui.preferences.keysPreferencePage">
 	</section>
 	<section name="ImportExportAction">
 		<item value="org.eclipse.jdt.internal.ui.fatjarpackager.JarPackageWizard" key="ImportExportPage.STORE_SELECTED_EXPORT_WIZARD_ID"/>
