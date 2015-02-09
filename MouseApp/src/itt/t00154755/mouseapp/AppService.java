@@ -67,7 +67,7 @@ public class AppService extends Service implements SensorEventListener, AppCommu
 
 	// message types
 	private static final int TOAST = 1;
-
+	private static final double GTHRESHOLD = 0.5;
 
 	// private static final int DATA = 2;
 
@@ -178,7 +178,7 @@ public class AppService extends Service implements SensorEventListener, AppCommu
 	{
 		// this service is not bound to the main
 		// because it is running on the main UI and the thread is
-		// create and pushed out
+		// created and pushed out
 		return null;
 	}
 
@@ -202,9 +202,7 @@ public class AppService extends Service implements SensorEventListener, AppCommu
 			Log.d(TAG, "+++ SENSOR CHANGE +++");
 		// long timestamp = event.timestamp;
 		// step 3. determine the phones current tilting position
-
 		determinePhonePosition(event.values[0], event.values[1]);
-
 	}
 
 
@@ -384,7 +382,7 @@ public class AppService extends Service implements SensorEventListener, AppCommu
 		 * i.e if -x, +y will move the cursor left (-x)
 		 * and down (+y)
 		 */
-		if ( xFloatAxis < 0.5 && yFloatAxis > 0.5 )
+		if ( xFloatAxis < GTHRESHOLD && yFloatAxis > GTHRESHOLD )
 		{
 			// add only the positive values
 			// a number format exception will be
@@ -404,7 +402,7 @@ public class AppService extends Service implements SensorEventListener, AppCommu
 		 * and up (-y)
 		 */
 		else
-			if ( xFloatAxis < 0.5 && yFloatAxis > 0.5 )
+			if ( xFloatAxis < GTHRESHOLD && yFloatAxis > GTHRESHOLD )
 			{
 				// add only the positive values
 				if ( D )
@@ -417,7 +415,7 @@ public class AppService extends Service implements SensorEventListener, AppCommu
 									 + " ");
 			}
 			else
-				if ( xFloatAxis < 0.5 && yFloatAxis < 0.5 )
+				if ( xFloatAxis < GTHRESHOLD && yFloatAxis < GTHRESHOLD )
 				{
 					// add only the positive values
 					if ( D )
@@ -430,7 +428,7 @@ public class AppService extends Service implements SensorEventListener, AppCommu
 										 + " ");
 				}
 				else
-					if ( xFloatAxis > 0.5 && yFloatAxis > 0.5 )
+					if ( xFloatAxis > GTHRESHOLD && yFloatAxis > GTHRESHOLD )
 					{
 						// add only the positive values
 						if ( D )

@@ -12,16 +12,14 @@ package itt.t00154755.mouseserver;
 public abstract class AppServerUtils
 {
 
-	/**
-	 * This method will print the error message thrown by
-	 * the exception to the screen, and then exit the server
-	 * application.
-	 * 
-	 * @param Tag
-	 *        the name of the class calling this method
-	 * @param e
-	 *        the exception being thrown
-	 */
+    /**
+     * This method will print the error message thrown by
+     * the exception to the screen, and then exit the server
+     * application.
+     *
+     * @param TAG
+     * @param e
+     */
 	public void
 			printOutExceptionDetails( String TAG, Exception e )
 	{

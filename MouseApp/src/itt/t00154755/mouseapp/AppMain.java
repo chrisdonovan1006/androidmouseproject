@@ -68,13 +68,14 @@ public class AppMain extends Activity
 
 	// used to signal which mouse option is selected
 	// started an 6 - 9 because the direction value
-	// is add to the same type of string that counts 1-4
+	// is added to the same type of string that counts
+	// 1-5 that are used for messaging
 	public static final int MOUSE_MOVE = 6;
 	public static final int RIGHT_BUTTON_CLICK = 7;
 	public static final int LEFT_BUTTON_CLICK = 8;
 	public static final int SEND_DATA_CLICK = 9;
 
-	// mouse colors
+	// application colors
 	public static final int WHITE = 11;
 	public static final int GREEN = 12;
 	public static final int RED = 13;
@@ -279,19 +280,16 @@ public class AppMain extends Activity
 		if ( btAdapter.getScanMode() != BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE )
 		{
 			Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
-			discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION,
-										300);
+			discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300);
 			startActivity(discoverableIntent);
 		}
 	}
-
 
 	// utility method to make a short toast
 	public void makeShortToast( String toast )
 	{
 		Toast.makeText(this, toast, Toast.LENGTH_SHORT).show();
 	}
-
 
 	/**
 	 * 
@@ -375,20 +373,19 @@ public class AppMain extends Activity
 		{
 			mouseColor = GREEN;
 		}
+		else if ( colours.contains("3") )
+		{
+			mouseColor = RED;
+		}
+		else if ( colours.contains("4") )
+		{
+			mouseColor = BLUE;
+		}
 		else
-			if ( colours.contains("3") )
-			{
-				mouseColor = RED;
-			}
-			else
-				if ( colours.contains("4") )
-				{
-					mouseColor = BLUE;
-				}
-				else
-				{
-					mouseColor = WHITE;
-				}
+		{
+			// default colour
+			mouseColor = WHITE;
+		}
 		return mouseColor;
 	}
 
@@ -404,10 +401,7 @@ public class AppMain extends Activity
 		if ( btAdapter == null )
 		{
 			// toast are short pop-up messages
-			Toast.makeText(this,
-						   "bluetooth not available on you btDevice....exiting",
-						   Toast.LENGTH_SHORT)
-				 .show();
+			Toast.makeText(this, "Bluetooth not available!!!", Toast.LENGTH_SHORT).show();
 			finish();
 			return;
 		}
@@ -452,7 +446,6 @@ public class AppMain extends Activity
 				write("" + RIGHT_BUTTON_CLICK);
 
 				makeShortToast("right click");
-
 			}
 		});
 
@@ -526,7 +519,7 @@ public class AppMain extends Activity
 				}
 				else
 				{
-					makeShortToast("bluetooth not available");
+					makeShortToast("Bluetooth not available!!!");
 					onDestroy();
 					finish();
 				}
@@ -564,17 +557,14 @@ public class AppMain extends Activity
 		// remote MAC:
 		if ( D )
 			Log.i(TAG, "+++ CONNECT TO SERVER - USING THE REMOTE ADDRESS +++");
-		// String remoteDeviceMacAddress = data.getExtras()
-		// .getString(AppBTDevices.EXTRA_DEVICE_ADDRESS);
+		String remoteDeviceMacAddress = data.getExtras().getString(AppBTDevices.EXTRA_DEVICE_ADDRESS);
 		// String remoteDeviceMacAddress = "00:15:83:3D:0A:57";
-
-		// BluetoothDevice btDevice = btAdapter.getRemoteDevice(remoteDeviceMacAddress);
-		BluetoothDevice btDevice = btAdapter.getRemoteDevice("00:15:83:3D:0A:57");
+		BluetoothDevice btDevice = btAdapter.getRemoteDevice(remoteDeviceMacAddress);
+		// BluetoothDevice btDevice = btAdapter.getRemoteDevice("00:15:83:3D:0A:57");
 		if ( btDevice != null )
 		{
 			appClient.start();
 		}
-
 	}
 
 	/*
@@ -595,11 +585,9 @@ public class AppMain extends Activity
 					break;
 				// reads in the device name from the AppDevice class
 				case MESSAGE_DEVICE_NAME:
-					String connectDeviceName = message.getData()
-													  .getString(DEVICE_NAME);
+					String connectDeviceName = message.getData().getString(DEVICE_NAME);
 					title.setText(connectDeviceName);
-					Toast.makeText(getApplicationContext(),
-								   "Connected to: " + connectDeviceName,
+					Toast.makeText(getApplicationContext(), "Connected to: " + connectDeviceName,
 								   Toast.LENGTH_SHORT).show();
 					break;
 				// toast message sent from the service

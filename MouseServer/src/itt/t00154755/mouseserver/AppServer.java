@@ -21,12 +21,7 @@ import javax.microedition.io.StreamConnectionNotifier;
  * side.
  * <p>
  * http://bluecove.org/bluecove/apidocs/index.html?javax/bluetooth/L2CAPConnectionNotifier.html
- * <p>
- * {@link http://docs.oracle.com/javase/tutorial/networking/index.html}
- * <p>
- * {@link http://docs.oracle.com/javase/tutorial/essential/exceptions/index.html}
- * <p>
- * {@link http://www.miniware.net/mobile/articles/viewarticle.php?id=22}
+ * </p>
  * 
  * @author Christopher Donovan
  * @since 26/04/2013
@@ -191,10 +186,10 @@ public class AppServer extends AppServerUtils implements Runnable
 	}
 
 
-	/**
-	 * @param in
-	 *        the incoming input stream
-	 */
+    /**
+     *
+     * @param inStream
+     */
 	private void startServerCommsThread( InputStream inStream )
 	{
 		// create the class reference

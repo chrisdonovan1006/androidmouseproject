@@ -13,6 +13,8 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.util.StringTokenizer;
 
+import static java.lang.Thread.*;
+
 /**
  * 
  * This is the class that controls the mapping of the accelerometer readings
@@ -140,7 +142,7 @@ public class AppRobot extends AppServerUtils implements Runnable
 		{
 			try
 			{
-				Thread.sleep(50);
+				sleep(50);
 			}
 			catch ( InterruptedException e )
 			{
@@ -219,7 +221,7 @@ public class AppRobot extends AppServerUtils implements Runnable
 				diff = endTime - startTime;
 				try
 				{
-					Thread.sleep(diff);
+					sleep(diff);
 				}
 				catch (InterruptedException e)
 				{
@@ -237,7 +239,7 @@ public class AppRobot extends AppServerUtils implements Runnable
 				diff = endTime - startTime;
 				try 
 				{
-					Thread.sleep(diff);
+					sleep(diff);
 				}
 				catch(InterruptedException e)
 				{
@@ -255,7 +257,7 @@ public class AppRobot extends AppServerUtils implements Runnable
 				diff = endTime - startTime;
 				try 
 				{
-					Thread.sleep(diff);
+					sleep(diff);
 				}
 				catch (InterruptedException e)
 				{

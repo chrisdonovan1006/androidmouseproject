@@ -24,16 +24,19 @@ import android.util.Log;
  *           The AppClient class runs in the background and is used to create the connection
  *           to the server which must be running or a IOException will be thrown.
  *           <p>
- *           The main activity calls the connectToServer(), this class then tries to establish a connect visa the blue-tooth socket using a random UUID, if
- *           successful the socket will be connected using the RFCOMM protocol designed for peer to peer blue-tooth connections.
+ *           The main activity calls the connectToServer(), this class then tries to establish 
+ *           a connect visa the blue-tooth socket using a random UUID, if successful the socket 
+ *           will be connected using the RFCOMM protocol designed for peer to peer blue-tooth connections.
  *           <p>
  *           Android Developers Web-site
  *           <p>
- *           {@link http: //developer.android.com/guide/components/services.html} {@link http: //developer.android.com/guide/topics/sensors/sensors_overview.html}
+ *           {@link http: //developer.android.com/guide/components/services.html} {@link http:
+ *           //developer.android.com/guide/topics/sensors/sensors_overview.html}
  *           <p>
  *           Professional Android 2 Application Development
  *           <p>
- *           Charter 14 - Blue-tooth, Networks, and WiFi {@link http: //www.wrox.com/WileyCDA/WroxTitle/Professional-Android-2-Application-Development.productCd-0470565527.html}
+ *           Charter 14 - Blue-tooth, Networks, and WiFi {@link http:
+ *           //www.wrox.com/WileyCDA/WroxTitle/Professional-Android-2-Application-Development.productCd-0470565527.html}
  *           <p>
  *           The New Boston Android Video Tutorials
  *           <p>
@@ -46,6 +49,7 @@ import android.util.Log;
 @SuppressLint ( "NewApi" )
 public class AppClient
 {
+
 	// used for debugging
 	private static final String TAG = "AppMain Client";
 	private static final boolean D = true;
@@ -101,21 +105,27 @@ public class AppClient
 		if ( D )
 			Log.d(TAG, "getting local device");
 
-		// returns the device on which the app is running
-		btDevice = btAdapter.getRemoteDevice("00:15:83:3D:0A:57");
-		// check to ensure that the bluetooth is turned on
+		// returns the btAddress of the device on which the app is running
+		// btDevice = btAdapter.getRemoteDevice("00:07:AB:33:2F:2E");
+		// btDevice = btAdapter.getRemoteDevice("SH:3B:VW:E0:12:17");
+		// btDevice = btAdapter.getRemoteDevice("50:2E:5C:0F:41:E7");
+		if (btAdapter.isEnabled())
+		{
+			String btAddress = btAdapter.getAddress();
+			btDevice = btAdapter.getRemoteDevice(btAddress);
 
-		// must cancel the discovery process before trying to connect
-		// as the discovery process is resource heavy
-		btAdapter.cancelDiscovery();
-
+    		// check to ensure that the bluetooth is turned on
+    		// must cancel the discovery process before trying to connect
+    		// as the discovery process is resource heavy
+			btAdapter.cancelDiscovery();
+		}
 		if ( D )
 			Log.d(TAG, "connecting to server");
 		try
 		{
 			/*
 			 * This method create an RFComm connection with the server,
-			 * because i am using the createRfcommSocketToServiceRecord and not
+			 * because I am using the createRfcommSocketToServiceRecord and not
 			 * the createInscureRfcommSocketToServiceRecord it means that the user
 			 * phone must be bonded/paired with the server host machine. I choose
 			 * implement it this way because the device will be accessing the Robot
@@ -173,9 +183,6 @@ public class AppClient
 
 		try
 		{
-			// String name = btDevice.getName();
-			// sendDeviceNameToUIHandler(name);
-
 			// once the connection is established
 			// send the socket which should be connected
 			createClientCommThread(btSocket);
@@ -255,7 +262,7 @@ public class AppClient
 			{
 				return;
 			}
-				
+
 			cct = clientCommThread;
 		}
 		// Perform the write unsynchronized
@@ -282,7 +289,7 @@ public class AppClient
 			{
 				return;
 			}
-				
+
 			cct = clientCommThread;
 		}
 		// Perform the write unsynchronized

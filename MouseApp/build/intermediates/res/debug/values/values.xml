@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- From: file:/C:/Users/Christopher/Documents/GitHub/androidmouseproject/MouseApp/res/values/array.xml -->
+    <eat-comment />
+
+    <string-array name="colorlist">
+        <item>White</item>
+        <item>Green</item>
+        <item>Red</item>
+        <item>Blue</item>
+    </string-array>
+    <string-array name="lValues">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+    <!-- From: file:/C:/Users/Christopher/Documents/GitHub/androidmouseproject/MouseApp/res/values/dimens.xml -->
+    <eat-comment />
+
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <!-- From: file:/C:/Users/Christopher/Documents/GitHub/androidmouseproject/MouseApp/res/values/strings.xml -->
+    <eat-comment />
+
+    <string name="app_name">Mouse App</string>
+    <string name="bt_available">Available Devices</string>
+    <string name="bt_bSearch">Search for devices</string>
+    <string name="bt_choose">Choose a device</string>
+    <string name="bt_connectedDevices">Connected to</string>
+    <string name="bt_not_found">No devices found</string>
+    <string name="bt_searching">Searching for devices</string>
+    <string name="connect">Connect</string>
+    <string name="discoverable">Discoverable</string>
+    <string name="exit">Exit</string>
+    <string name="infoaboutbt">This is information about bluetooth</string>
+    <string name="left">left button</string>
+    <string name="prefs">Preferences</string>
+    <string name="right">right button</string>
+    <string name="sendtexttoserver">Send Text</string>
+    <string name="title">Waiting to connect</string>
+    <string name="waiting">Waiting for connection</string>
+    <string name="xaxis">X Axis: </string>
+    <string name="xreading">0.0</string>
+    <string name="yaxis">Y Axis:</string>
+    <string name="yreading">0.0</string>
+    <!-- From: file:/C:/Users/Christopher/Documents/GitHub/androidmouseproject/MouseApp/res/values/styles.xml -->
+    <eat-comment />
+
+    <style name="AppBaseTheme" parent="android:Theme.Light">
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        -->
+    </style>
+
+    <style name="AppTheme" parent="AppBaseTheme">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    </style>
+
+</resources>
