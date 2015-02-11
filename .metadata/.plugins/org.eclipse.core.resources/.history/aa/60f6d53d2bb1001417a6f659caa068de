@@ -1,0 +1,203 @@
+// package
+
+package itt.t00154755.mouseserver;
+
+// imports
+import java.io.IOException;
+import java.io.InputStream;
+
+import javax.bluetooth.*;
+import javax.microedition.io.*;
+
+/**
+ * 
+ * This class creates a stream connection using the Bluecove API. The stream listens for a RFComm client once a client is found the stream connection is
+ * closed, to ensure that only one client is connected. The value passed form the connection string are used to created the service record on the client
+ * side.
+ * <p>
+ * http://bluecove.org/bluecove/apidocs/index.html?javax/bluetooth/L2CAPConnectionNotifier.html
+ * </p>
+ * 
+ * @author Christopher Donovan
+ * @since 26/04/2013
+ * @version 4.06
+ * 
+ */
+public class AppServer extends AppServerUtils implements Runnable
+{
+
+	// string name of class
+	private final static String TAG = "App Server";
+	private LocalDevice pcDevice;
+	private StreamConnectionNotifier connNotifier;
+	StreamConnection connection;
+
+	/*
+	 * This sting is used to create a listening connection stream in order for the remote device to connect
+	 * it must use the same UUID.
+	 * this is the UUID that listen for the connection
+	 * btspp://localhost:5a17e500ad3a11e29e960800200c9a66;
+	 * 00001101-0000-1000-8000-00805F9B34FB
+	 * 
+	 * this string is used to create the service record
+	 * i have turned all of the values to false as the data is not critical
+	 * name=BluetoothMouseServer;authenticate=false;encrypt=false;master=false
+	 * 
+	 * http://bluecove.org/bluecove/apidocs/index.html?javax/bluetooth/L2CAPConnectionNotifier.html
+	 */
+	
+	UUID uuid = new UUID("1101", true);
+	String connectionString = "btspp://localhost:" + uuid +";name=BluetoothMouseServer";
+
+	public AppServer()
+	{
+		System.out.println("app server constructor");
+		
+		try
+		{
+			// the local device will be the PC / Laptop on
+			// which the server is running
+			pcDevice = LocalDevice.getLocalDevice();
+			pcDevice.setDiscoverable(DiscoveryAgent.GIAC);
+			connNotifier = null;
+			connection = null;
+		}
+		catch ( BluetoothStateException e )
+		{
+			printOutExceptionDetails(TAG, e);
+		}
+	}
+
+
+	@Override
+	public void run()
+	{
+		// call to create a listening server
+		createServerSideListener();
+	}
+
+
+	/*
+	 * Creates a listener on the server side by opening a port and waiting for a
+	 * connection. It does this by using the MAC address of the bluetooth device
+	 * on the host machine, this ensures that only paired devices can access the
+	 * bluetooth port this is a security measure.
+	 * 
+	 * Part 1 : create a StreamConnection object to listen for the RfComm connection
+	 * 			if the connection is made return the connection object.
+	 * 
+	 * Part 2 : pass the connection object to the acceptedConnection method and 
+	 * 			return the inputStream object.
+	 * 
+	 * Part 3 : create a comms Thread, pass the input stream object and pass the data
+	 * 			to the data to the reader class.
+	 * 
+	 */
+	private void createServerSideListener()
+	{
+		InputStream inStream = null;
+
+		try
+		{
+			connection = openConnectionListener();
+		}
+		catch ( IOException e )
+		{
+			// TODO Auto-generated catch block
+			System.out.println("Error creating the connection socket!!!");
+			e.printStackTrace();
+		}
+		// if a client is accepted
+		inStream = acceptedConnection();
+		// pass the inputStream
+		startServerCommsThread(inStream);
+	}
+
+
+	/**
+	 * @param connNotifier
+	 * @param connection
+	 * @return
+	 */
+	public StreamConnection
+			openConnectionListener() throws IOException
+	{
+		try
+		{
+			// open a Connector using the CONNECTION_STRING
+			connNotifier = (StreamConnectionNotifier ) Connector.open(connectionString);
+			// display the details of the local device
+			System.out.println(TAG + "...Server Running on : \n ");
+			System.out.println("Local Device Name: " + pcDevice.getFriendlyName());
+			System.out.println("Local Device MAC: " + pcDevice.getBluetoothAddress());
+		}
+		catch ( BluetoothStateException e )
+		{
+			printOutExceptionDetails(TAG, e);
+		}
+		catch ( IOException e )
+		{
+			printOutExceptionDetails(TAG, e);
+		}
+
+		System.out.println("\n...waiting for the client...");
+		// connection = connNotifier.acceptAndOpen();
+		return connNotifier.acceptAndOpen();
+	}
+
+
+	/**
+	 * @param connection
+	 * @param inStream
+	 * @return
+	 */
+	public InputStream acceptedConnection( )
+	{
+		InputStream inStreamTemp = null;
+		
+		try
+		{
+			inStreamTemp = connection.openInputStream();
+		}
+		catch ( IOException e )
+		{
+			System.out.println("Error creating the Input stream");
+		}
+		// display the details
+		RemoteDevice reDevice = null;
+		try
+		{
+			reDevice = RemoteDevice.getRemoteDevice(connection);
+
+			System.out.println(TAG + "...Server is Connected to: \n"
+							   + reDevice.getBluetoothAddress()
+							   + "\n"
+							   + reDevice.getFriendlyName(false));
+		}
+		catch ( IOException e )
+		{
+			printOutExceptionDetails(TAG, e);
+		}
+		return inStreamTemp;
+	}
+
+
+    /**
+     *
+     * @param inStream
+     */
+	private void startServerCommsThread( InputStream inStream )
+	{
+		// create the class reference
+		AppStreamReader appStreamReader = new AppStreamReader();
+		// create a new Thread that will handle incoming traffic
+		Thread serverThread = new Thread(appStreamReader);
+		// start the thread
+		serverThread.start();
+
+		while ( true )
+		{
+			appStreamReader.setStream(inStream);
+		}
+	}
+}// end of Class

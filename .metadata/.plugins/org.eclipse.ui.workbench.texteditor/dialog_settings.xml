@@ -2,20 +2,24 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="findConnectedDevice" key="selection"/>
+		<item value="ERROR" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
+			<item value="direction"/>
+			<item value="error"/>
+			<item value="if ( D )"/>
 			<item value="findConnectedDevice"/>
 			<item value="Preference"/>
 			<item value="float"/>
 			<item value="accelObj"/>
 			<item value="streamConnection"/>
-			<item value="dataIn"/>
 		</list>
 		<list key="replacehistory">
+			<item value="robotType"/>
+			<item value="ERROR"/>
 			<item value="int"/>
 			<item value="accelData"/>
 			<item value="socket"/>

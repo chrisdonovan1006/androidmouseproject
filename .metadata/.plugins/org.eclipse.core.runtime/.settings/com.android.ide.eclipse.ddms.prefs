@@ -11,6 +11,7 @@ com.android.ide.eclipse.ddms.explorer.name=100
 com.android.ide.eclipse.ddms.explorer.permissions=76
 com.android.ide.eclipse.ddms.explorer.size=51
 com.android.ide.eclipse.ddms.explorer.time=42
+com.android.ide.eclipse.ddms.timeOut=10000
 ddms.logcat.automonitor.userprompt=true
 devicePanel.Col0=117
 devicePanel.Col1=51

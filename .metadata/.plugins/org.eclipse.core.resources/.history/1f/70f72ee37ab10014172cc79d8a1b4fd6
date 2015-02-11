@@ -1,0 +1,409 @@
+package itt.t00154755.mouseapp;
+
+import android.app.Service;
+import android.content.Context;
+import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Message;
+import android.util.Log;
+
+/**
+ * @author Christopher Donovan
+ * @author AppService.java, extends Service implements SensorEventListener, AppCommunicator
+ * @since 10/02/2015
+ * @version 2.0
+ *         <p>
+ *         This service runs in the background for the life of the application. It contains the 
+ *         Accelerometer sensor which returns an event each time the sensor changes (i.e. phone 
+ *         tilted to left, right, up or down). The event contains an integer array with the values
+ *         of the x, y, and z axis. The service sends the data back to the main UI thread through 
+ *         a handler this data is then passed on to the client which in turn forwards it to the server.
+ * 
+ *         Refs:
+ *         <p>
+ *         Android Developers Web-site
+ *         <p>
+ *         {@link http://developer.android.com/guide/components/services.html} 
+ *         {@link http://developer.android.com/guide/topics/sensors/sensors_overview.html}
+ *         <p>
+ *         Professional Android 2 Application Development
+ *         <p>
+ *         Charter 14 - Blue-tooth, Networks, and WiFi
+ *         {@link http://www.wrox.com/WileyCDA/WroxTitle/Professional-Android-2-Application-Development.productCd-0470565527.html}
+ *         <p>
+ *         The New Boston Android Video Tutorials
+ *         <p>
+ *         {@link http://thenewboston.org/list.php?cat=6}
+ */
+
+public class AppService extends Service implements SensorEventListener, AppCommunicator
+{
+	private static final String TAG = "Accelometer Service";
+	private static final boolean D = false;
+	private String accelerometerData;
+
+	// sensor movement direction
+	public static final int LEFTDOWN = 4;
+	public static final int RIGHTUP = 3;
+	public static final int LEFTUP = 2;
+	public static final int RIGHTDOWN = 1;
+
+	private Context context;
+	private Handler appHandler;
+
+	private SensorManager accelerometerManager;
+	private Sensor accelerometerSensor;
+
+	private boolean isRegistered = false;
+
+	private static final int TOAST = 1;
+	
+	private long lastUpdate = 0;
+	private float last_x, last_y;
+	private static final double GTHRESHOLD = 0.6;
+	private static final float THRESHOLD = 100;
+	
+	/**
+	 * Default AppService Constructor
+	 */
+	public AppService() { }
+
+
+	/**
+	 * AppService Constructor
+	 * 
+	 * @param context
+	 *        the global application interface
+	 * @param appHandler
+	 *        allow data transfer to the main UI
+	 * @param appWindow
+	 *        the device window
+	 */
+	public AppService( Context context, Handler appHandler )
+	{
+		this.context = context;
+		this.appHandler = appHandler;
+	}
+
+	@Override
+	public int onStartCommand( Intent intent, int flags, int startId )
+	{
+		// return start_not_sticky
+		return START_NOT_STICKY;
+	}
+	
+	@Override
+	public void onCreate()
+	{
+		// initiate the service
+		super.onCreate();
+		initAccelometerService();
+	}
+
+	@Override
+	public void onDestroy()
+	{
+		super.onDestroy();
+		endAccelometerService();
+	}
+
+
+	public void initAccelometerService()
+	{
+		sendDataToUIThread("AppService started", TOAST);
+		registerListener();
+	}
+
+	public void endAccelometerService()
+	{
+		unregisterListener();
+		stopSelf();
+	}
+
+	/**
+	 * @return the accelerometerData
+	 */
+	public String getAccelerometerData()
+	{
+		return accelerometerData;
+	}
+
+	/**
+	 * @param accelerometerData
+	 *        the accelerometerData to set
+	 */
+	public void setAccelerometerData( String accelerometerData )
+	{
+		this.accelerometerData = accelerometerData;
+	}
+
+	@Override
+	public IBinder onBind( Intent intent )
+	{
+		return null;
+	}
+
+	@Override
+	public void onAccuracyChanged( Sensor sensor, int accuracy ) { }
+
+	/**
+	 * This method receives receives an update of the current sensor event.
+	 */
+	@Override
+	public void onSensorChanged( SensorEvent event )
+	{
+		if ( D )
+		{
+			Log.d(TAG, "+++ SENSOR CHANGE +++");
+		}
+		
+		determinePhonePosition(event.values[0], event.values[1]);
+	}
+	
+	/**
+	 * AppCommunicator method to transfer data form this class back to the AppMain class.
+	 */
+	@Override
+	public void sendDataToUIThread( String data )
+	{
+		Message message = appHandler.obtainMessage(AppMain.MESSAGE_DATA_ACCELO);
+		Bundle bundle = new Bundle();
+		bundle.putString(AppMain.DATA, data);
+		message.setData(bundle);
+		appHandler.handleMessage(message);
+	}
+
+
+	/**
+	 * AppCommunicator method to transfer data form this class back to the AppMain class.
+	 * <p>
+	 * <ul>
+	 * <li>Type:
+	 * <li>TOAST: A short message displayed on the user screen.
+	 * <li>DATA: A reading taken from the Accelerometer.
+	 * </ul>
+	 * 
+	 */
+	@Override
+	public void sendDataToUIThread( String data, int type )
+	{
+		if ( type == 1 )
+		{
+			Message message = appHandler.obtainMessage(AppMain.MESSAGE_TOAST_ACCELO);
+			Bundle bundle = new Bundle();
+			bundle.putString(AppMain.TOAST, data);
+			message.setData(bundle);
+			appHandler.handleMessage(message);
+		}
+	}
+
+	/**
+	 * 
+	 * This method is used by the calling class to determine if the service has being registered
+	 * already. 
+	 * 
+	 * @return isRegistered
+	 *         returns the current value of isRegistered:
+	 *         true if the sensor manager has been registered, otherwise false
+	 */
+	public boolean isRegistered()
+	{
+		return isRegistered;
+	}
+	
+	/**
+	 * AppCommunicator method to transfer data form this class back to the AppMain class.
+	 */
+	@Override
+	public void sendDataToUIThread( int data ) { }
+	@Override
+	public void sendDataToUIThread( byte[] data ) { }
+	@Override
+	public void sendDataToOutputStream( String data ) { }
+	@Override
+	public void sendDataToOutputStream( int data ) { }
+	@Override
+	public void sendDataToOutputStream( byte[] data ) { }
+	
+	/*
+	 * In order for the service to listen for changes to the sensor data, the sensor must first be
+	 * registered to the service.  The sensors are accessed through the final static type using
+	 * the sensor name. 
+	 */
+	private void registerListener()
+	{
+		// register the listener
+		if ( D )
+		{
+			Log.d(TAG, "+++ REGISTER-LISTENER FOR SENSOR +++");
+		}
+		
+		accelerometerManager = getAccelerometerManager();
+		// check to make sure that the SensorList is not empty
+		if ( accelerometerManager.getSensorList(Sensor.TYPE_ACCELEROMETER).size() != 0 )
+		{
+			// set service as registered
+			isRegistered = true;
+			// get the Accelerometer Sensor
+			accelerometerSensor = accelerometerManager.getSensorList(Sensor.TYPE_ACCELEROMETER).get(0);
+			// register the listener to the Sensor
+			accelerometerManager.registerListener(this, accelerometerSensor, SensorManager.SENSOR_DELAY_NORMAL);
+		}
+		else
+			Log.e(TAG, "Sensor could not be registered!!!");
+	}
+
+
+	/**
+	 * This method returns the Sensor manager object to the service, the context
+	 * is the main class that has been passed into the constructor of the service.
+	 * As the service runs in the background it needs to refer to the main class context
+	 * this allows the service to runs in the background and access the current position
+	 * of the phone through the accelerometer sensor.
+	 * 
+	 * @return the accelerometerManager
+	 */
+	private SensorManager getAccelerometerManager()
+	{
+		// get the system service using the main class reference, return the manager object
+		return (SensorManager ) context.getSystemService(Context.SENSOR_SERVICE);
+	}
+
+	/*
+	 * Method that unregisters the Listener for
+	 * the Accelerometer sensor.
+	 */
+	private void unregisterListener()
+	{
+		// check if the manager is registered
+		// if it is then unregister it
+		if ( D )
+		{
+			Log.d(TAG, "+++ UNREGISTER-LISTENER FOR SENSOR +++");
+		}
+		if ( isRegistered )
+		{
+			accelerometerManager.unregisterListener(this, accelerometerSensor);
+		}
+	}
+
+	/*
+	 * Using the filters applied the next task is to determine the
+	 * current position of the sensors values.
+	 * 
+	 * @param xFloatAxis
+	 * 
+	 * @param yFloatAxis
+	 */
+	private void determinePhonePosition( float xFloatAxis, float yFloatAxis )
+	{
+		if ( xFloatAxis < GTHRESHOLD && yFloatAxis > GTHRESHOLD )
+		{
+			if ( D )
+			{
+				Log.d(TAG, "move mouse: " + RIGHTUP);
+			}
+			setAccelerometerData(" " + RIGHTUP
+								 + " "
+								 + Math.abs((int ) xFloatAxis)
+								 + " "
+								 + Math.abs((int ) yFloatAxis)
+								 + " ");
+		}
+		else if ( xFloatAxis < GTHRESHOLD && yFloatAxis > GTHRESHOLD )
+		{
+			if ( D )
+			{
+				Log.d(TAG, "move mouse: " + LEFTUP);
+			}
+			setAccelerometerData(" " + LEFTUP
+								 + " "
+								 + Math.abs((int ) xFloatAxis)
+								 + " "
+								 + Math.abs((int ) yFloatAxis)
+								 + " ");
+		}
+		else if ( xFloatAxis < GTHRESHOLD && yFloatAxis < GTHRESHOLD )
+		{
+			if ( D )
+			{
+				Log.d(TAG, "move mouse: " + RIGHTDOWN);
+			}
+			
+			setAccelerometerData(" " + RIGHTDOWN
+								 + " "
+								 + Math.abs((int ) xFloatAxis)
+								 + " "
+								 + Math.abs((int ) yFloatAxis)
+								 + " ");
+		}
+		else if ( xFloatAxis > GTHRESHOLD && yFloatAxis > GTHRESHOLD )
+		{
+			if ( D )
+			{
+				Log.d(TAG, "move mouse: " + LEFTDOWN);
+			}
+			setAccelerometerData(" " + LEFTDOWN
+								 + " "
+								 + Math.abs((int ) xFloatAxis)
+								 + " "
+								 + Math.abs((int ) yFloatAxis)
+								 + " ");
+		}
+		
+		long curTime = System.currentTimeMillis();
+		 
+        if ((curTime - lastUpdate) > 100) {
+            long diffTime = (curTime - lastUpdate);
+            lastUpdate = curTime;
+            
+            float speed = Math.abs(xFloatAxis + yFloatAxis - last_x - last_y)/ diffTime * 10000;
+            
+            if (speed > THRESHOLD) {
+            	sendCurrentReadingsToUI(getAccelerometerData());
+            }
+        }
+	}
+
+	/*
+	 * Create a new Thread that begin passing the data to the main UI
+	 * Thread.
+	 */
+	private void sendCurrentReadingsToUI( String data )
+	{
+		SendDataThread sendDataThread = new SendDataThread(data);
+		// create a new thread and start sending the data to the main UI thread
+		Thread sendData = new Thread(sendDataThread); // Thread created
+		sendData.start(); // Thread started
+	}
+
+	/*
+	 * private inner class that implements the Runnable interface.
+	 */
+	private class SendDataThread implements Runnable
+	{
+
+		String data;
+
+
+		public SendDataThread( String data )
+		{
+			this.data = data;
+		}
+
+
+		// send the data
+		public void run()
+		{
+			if ( data == null )
+				return;
+			sendDataToUIThread(data);
+		}
+	}
+}// end class

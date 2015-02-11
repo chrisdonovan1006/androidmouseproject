@@ -28,7 +28,7 @@
         to enable the blue-tooth
         -->
         <activity
-            android:name="itt.t00154755.mouseapp.AppMain"
+            android:name="itt.t00154755.mouseapp.MainClientActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
@@ -44,7 +44,7 @@
          option is selected from the menu.
         -->
         <activity
-            android:name="itt.t00154755.mouseapp.AppBTDevices"
+            android:name="itt.t00154755.mouseapp.PairedBluetoothDevices"
             android:configChanges="orientation|keyboardHidden"
             android:enabled="true"
             android:label="@string/app_name"
@@ -55,7 +55,7 @@
          option is selected from the menu.
         -->
         <activity
-            android:name="itt.t00154755.mouseapp.AppPrefs"
+            android:name="itt.t00154755.mouseapp.ClientPrefs"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
@@ -71,7 +71,7 @@
          option is selected from the menu.
         -->
         <activity
-            android:name="itt.t00154755.mouseapp.AppAboutBT"
+            android:name="itt.t00154755.mouseapp.AboutBluetooth"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
@@ -83,14 +83,14 @@
          option is selected from the menu.
         -->
         <activity
-            android:name="itt.t00154755.mouseapp.AppWaitingDialog"
+            android:name="itt.t00154755.mouseapp.ClientWaitingDialog"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Dialog" >
         </activity>
 
-        <service android:name="itt.t00154755.mouseapp.AppService" />
+        <service android:name="itt.t00154755.mouseapp.AccelerometerService" />
     </application>
 
 </manifest>

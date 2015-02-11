@@ -1,0 +1,115 @@
+// package
+
+package itt.t00154755.mouseserver;
+
+// imports
+import java.io.IOException;
+import java.io.InputStream;
+
+import javax.bluetooth.BluetoothStateException;
+import javax.bluetooth.DiscoveryAgent;
+import javax.bluetooth.LocalDevice;
+import javax.bluetooth.RemoteDevice;
+import javax.microedition.io.Connector;
+import javax.microedition.io.StreamConnection;
+import javax.microedition.io.StreamConnectionNotifier;
+
+/**
+ * 
+ * This class creates a stream connection using the Bluecove API. The stream listens for a RFComm client once a client is found the stream connection is
+ * closed, to ensure that only one client is connected. The value passed form the connection string are used to created the service record on the client
+ * side.
+ * <p>
+ * http://bluecove.org/bluecove/apidocs/index.html?javax/bluetooth/L2CAPConnectionNotifier.html
+ * </p>
+ * 
+ * @author Christopher Donovan
+ * @since 26/04/2013
+ * @version 4.06
+ * 
+ */
+public class AppServer extends AppServerUtils implements Runnable
+{
+
+	// string name of class
+	private final static String TAG = "App Server";
+	private LocalDevice loDevice;
+
+	public AppServer()
+	{
+		System.out.println("app server constructor");
+		try
+		{
+			// the local device will be the PC / Laptop on
+			// which the server is running
+			loDevice = LocalDevice.getLocalDevice();
+			loDevice.setDiscoverable(DiscoveryAgent.GIAC);
+		}
+		catch ( BluetoothStateException e )
+		{
+			printOutExceptionDetails(TAG, e);
+		}
+	}
+
+	@Override
+	public void run()
+	{
+		// call to create a listening server
+		// createServerSideListener();
+		
+		try
+		{
+			startServer();
+		}
+		catch ( IOException e )
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+
+	private void startServer() throws IOException
+	{
+        //Create the servicve url
+        String connectionString = "btspp://localhost:5a17e500ad3a11e29e960800200c9a66;" +
+        		"name=Java_Server;authenticate=false;encrypt=false;master=false";
+        
+        //open server url
+        StreamConnectionNotifier streamConnNotifier = (StreamConnectionNotifier)Connector.open( connectionString );
+        
+        System.out.println("Local Device Bluetooth Address: " + loDevice.getBluetoothAddress());
+        System.out.println("Local Device Name: " + loDevice.getFriendlyName());
+        
+        //Wait for client connection
+        System.out.println("\nServer Started. Waiting for clients to connect...");
+        StreamConnection connection=streamConnNotifier.acceptAndOpen();
+  
+        RemoteDevice dev = RemoteDevice.getRemoteDevice(connection);
+        System.out.println("Remote device address: "+dev.getBluetoothAddress());
+        System.out.println("Remote device name: "+dev.getFriendlyName(true));
+        
+        //read string from spp client
+        InputStream inStream=connection.openInputStream();
+        startServerCommsThread( inStream );
+	}
+
+    /**
+     *
+     * @param inStream
+     */
+	private void startServerCommsThread( InputStream inStream )
+	{
+		// create the class reference
+		AppStreamReader appStreamReader = new AppStreamReader();
+		// create a new Thread that will handle incoming traffic
+		Thread serverThread = new Thread(appStreamReader);
+		// start the thread
+		serverThread.start();
+
+		while ( true )
+		{
+			appStreamReader.setStream(inStream);
+		}
+	}
+}// end of Class
