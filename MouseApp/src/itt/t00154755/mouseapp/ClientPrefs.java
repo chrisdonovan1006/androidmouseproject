@@ -7,47 +7,42 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 
 /**
- * 
  * @author Christopher Donovan
  * @author ClientPrefs.java
- * @since 10/02/2015
  * @version 2.0
- * 
- *         This is the ClientPrefs class that appears as a dialog box when the options
- *         menu is selected on the phone. The user can choose to edit different
- *         elements of the app in order to customize it to their style.
- * 
- *         The New Boston Android Video Tutorials
- *         <p>
- *         {@link http://thenewboston.org/list.php?cat=6}
+ *          <p/>
+ *          This is the ClientPrefs class that appears as a dialog box when the options
+ *          menu is selected on the phone. The user can choose to edit different
+ *          elements of the app in order to customize it to their style.
+ *          <p/>
+ *          The New Boston Android Video Tutorials
+ *          <p/>
+ *          {@link http://thenewboston.org/list.php?cat=6}
+ * @since 10/02/2015
  */
-@TargetApi ( Build.VERSION_CODES.HONEYCOMB )
-public class ClientPrefs extends PreferenceActivity
-{
+@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+public class ClientPrefs extends PreferenceActivity {
 
-	// the onCreate method
-	@Override
-	protected void onCreate( Bundle savedInstanceState )
-	{
-		// this create the fragment slider for the dialog.
-		super.onCreate(savedInstanceState);
-		getFragmentManager().beginTransaction()
-							.replace(android.R.id.content,
-									 new AppPreferenceFragment())
-							.commit();
-	}
+    // the onCreate method
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        // this create the fragment slider for the dialog.
+        super.onCreate(savedInstanceState);
+        getFragmentManager().beginTransaction()
+                .replace(android.R.id.content,
+                        new AppPreferenceFragment())
+                .commit();
+    }
 
-	public static class AppPreferenceFragment extends PreferenceFragment
-	{
+    public static class AppPreferenceFragment extends PreferenceFragment {
 
-		// this method displays the customizable elements of the app.
-		@Override
-		public void onCreate( final Bundle savedInstanceState )
-		{
-			super.onCreate(savedInstanceState);
-			addPreferencesFromResource(R.xml.prefs);
+        // this method displays the customizable elements of the app.
+        @Override
+        public void onCreate(final Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            addPreferencesFromResource(R.xml.prefs);
 
-		}
-	}
+        }
+    }
 
 }// end of class

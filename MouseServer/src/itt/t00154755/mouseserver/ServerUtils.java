@@ -1,16 +1,13 @@
 package itt.t00154755.mouseserver;
 
 /**
- * 
  * This is the utilities class for the server.
- * 
- * @author Christopher Donovan
- * @since 26/04/2013
- * @version 4.06
  *
+ * @author Christopher Donovan
+ * @version 4.06
+ * @since 26/04/2013
  */
-public abstract class ServerUtils
-{
+public abstract class ServerUtils {
 
     /**
      * This method will print the error message thrown by
@@ -20,13 +17,12 @@ public abstract class ServerUtils
      * @param TAG
      * @param e
      */
-	public void
-			printOutExceptionDetails( String TAG, Exception e )
-	{
-		// print the error stack
-		e.printStackTrace();
-		e.getCause();
-		System.out.println(TAG + " ...Shutting down the server " + e);
-		System.exit(-1);
-	}
+    public void
+    printOutExceptionDetails(String TAG, Exception e) {
+        // print the error stack
+        e.printStackTrace();
+        e.getCause();
+        System.out.println(TAG + " ...Shutting down the server " + e);
+        System.exit(-1);
+    }
 }

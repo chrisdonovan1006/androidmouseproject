@@ -1,7 +1,5 @@
-// package
 package itt.t00154755.mouseserver;
 
-// imports
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -16,98 +14,83 @@ import javax.microedition.io.StreamConnectionNotifier;
 /**
  * @author Christopher Donovan
  * @author Server.java
- * @since 10/02/2015
  * @version 2.0
- * 
- * The app client is used to create a (TCP-over-SPP) stream connection using the Bluecove API (incl. bluecove-2.1.0.jar).
- * The stream listens for a RFComm client with the same UUID, once a client is found the stream connection is closed,
- * to ensure that only one client is connected. The data can then be passed form the client to the server
- * over the SPP-RFComm-TCP stack.
- * 
- * <p>
- * http://bluecove.org/bluecove/apidocs/index.html?javax/bluetooth/L2CAPConnectionNotifier.html
- * </p>
- * 
+ *          <p/>
+ *          The app client is used to create a (TCP-over-SPP) stream connection using the Bluecove API (incl. bluecove-2.1.0.jar).
+ *          The stream listens for a RFComm client with the same UUID, once a client is found the stream connection is closed,
+ *          to ensure that only one client is connected. The data can then be passed form the client to the server
+ *          over the SPP-RFComm-TCP stack.
+ * @since 10/02/2015
  */
-public class Server extends ServerUtils implements Runnable
-{
-	// string name of class
-	private final static String TAG = "App Server";
-	private LocalDevice localDev;
+public class Server extends ServerUtils implements Runnable {
+    // string name of class
+    private final static String TAG = "App Server";
+    private LocalDevice localDev;
 
-	public Server()
-	{
-		System.out.println("app server constructor");
-		try
-		{
-			// the local device will be the PC / Laptop on
-			// which the server is running
-			localDev = LocalDevice.getLocalDevice();
-			localDev.setDiscoverable(DiscoveryAgent.GIAC);
-		}
-		catch ( BluetoothStateException e )
-		{
-			printOutExceptionDetails(TAG, e);
-		}
-	}
+    public Server() {
+        System.out.println("app server constructor");
+        try {
+            // the local device will be the PC / Laptop on
+            // which the server is running
+            localDev = LocalDevice.getLocalDevice();
+            localDev.setDiscoverable(DiscoveryAgent.GIAC);
+        } catch (BluetoothStateException e) {
+            printOutExceptionDetails(TAG, e);
+        }
+    }
 
-	@Override
-	public void run()
-	{
-		try
-		{
-			startServer();
-		}
-		catch ( IOException e )
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+    @Override
+    public void run() {
+        try {
+            startServer();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
 
 
-	private void startServer() throws IOException
-	{
-		// String that is used to create the connection url
-		String connectionString = "btspp://localhost:5a17e500ad3a11e29e960800200c9a66;" + "name=AndroidBluetoothServer;authenticate=false;encrypt=false;master=false";
+    private void startServer() throws IOException {
+        // String that is used to create the connection url
+        String connectionString = "btspp://localhost:5a17e500ad3a11e29e960800200c9a66;" +
+                "name=AndroidBluetoothServer;authenticate=false;encrypt=false;master=false";
 
-		// open the connection url
-		StreamConnectionNotifier streamConnNotifier = (StreamConnectionNotifier ) Connector.open(connectionString);
+        // open the connection url
+        StreamConnectionNotifier streamConnNotifier = (StreamConnectionNotifier) Connector.open(connectionString);
 
-		// Local (Server) Device
-		System.out.println("Local Device Bluetooth Address: " + localDev.getBluetoothAddress());
-		System.out.println("Local Device Name: " + localDev.getFriendlyName());
+        // Local (Server) Device
+        System.out.println("Local Device Bluetooth Address: " + localDev.getBluetoothAddress());
+        System.out.println("Local Device Name: " + localDev.getFriendlyName());
 
-		// Wait for client connection
-		System.out.println("\nServer Started. Waiting for client to connect...");
-		StreamConnection clientConn = streamConnNotifier.acceptAndOpen();
+        // Wait for client connection
+        System.out.println("\nServer Started. Waiting for client to connect...");
+        StreamConnection clientConn = streamConnNotifier.acceptAndOpen();
 
-		RemoteDevice remoteDev = RemoteDevice.getRemoteDevice(clientConn);
-		System.out.println("Remote device address: " + remoteDev.getBluetoothAddress());
-		System.out.println("Remote device name: " + remoteDev.getFriendlyName(true));
+        RemoteDevice remoteDev = RemoteDevice.getRemoteDevice(clientConn);
+        System.out.println("Remote device address: " + remoteDev.getBluetoothAddress());
+        System.out.println("Remote device name: " + remoteDev.getFriendlyName(true));
 
-		// read string from SPP client
-		InputStream inStream = clientConn.openInputStream();
-		startServerCommsThread(inStream);
-	}
+        // read string from SPP client
+        InputStream inStream = clientConn.openInputStream();
+        startServerCommsThread(inStream);
+    }
 
 
-	/*
-	 * Create a app steam reader object that will open the input and output streams,
-	 * and run it as a thread. 
-	 * 
-	 * @param inStream inputStream object that will be used to read and write the data.
-	 */
-	private void startServerCommsThread( InputStream inStream )
-	{
-		
-		ServerStreamReader serverStreamReader = new ServerStreamReader();
-		Thread serverThread = new Thread(serverStreamReader);
-		serverThread.start();
+    /*
+     * Create a app steam reader object that will open the input and output streams,
+     * and run it as a thread.
+     *
+     * @param inStream inputStream object that will be used to read and write the data.
+     */
+    private void startServerCommsThread(InputStream inStream) {
 
-		while ( true ) // loop forever
-		{
-			serverStreamReader.setStream(inStream);
-		}
-	}
+        ServerStreamReader serverStreamReader = new ServerStreamReader();
+        Thread serverThread = new Thread(serverStreamReader);
+        serverThread.start();
+
+        while (true) // loop forever
+        {
+            serverStreamReader.setStream(inStream);
+        }
+    }
 }// end of Class
