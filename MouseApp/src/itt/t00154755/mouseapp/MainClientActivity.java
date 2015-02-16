@@ -57,12 +57,23 @@ import android.widget.Toast;
  */
 public class MainClientActivity extends Activity {
 
+<<<<<<< HEAD
+=======
+    // used for debugging
+    private static final String TAG = "App Main";
+    private static final boolean D = true;
+
+>>>>>>> origin/master
     // used to handle messages from the service and the client
     public static final int MESSAGE_STATE_CHANGED = 1;
     public static final int MESSAGE_DEVICE_NAME = 2;
     public static final int MESSAGE_TOAST_ACCELO = 3;
     public static final int MESSAGE_TOAST_CLIENT = 4;
     public static final int MESSAGE_DATA_ACCELO = 5;
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
     // used to signal which mouse option is selected
     // started an 6 - 9 because the direction value
     // is added to the same type of string that counts
@@ -71,15 +82,24 @@ public class MainClientActivity extends Activity {
     public static final int RIGHT_BUTTON_CLICK = 7;
     public static final int LEFT_BUTTON_CLICK = 8;
     public static final int SEND_DATA_CLICK = 9;
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
     // application colors
     public static final int WHITE = 11;
     public static final int GREEN = 12;
     public static final int RED = 13;
     public static final int BLUE = 14;
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
     // message types
     public static final String DEVICE_NAME = "btDevice";
     public static final String TOAST = "toast";
     public static final String DATA = "data";
+<<<<<<< HEAD
     /*
      * this method handles incoming messages from the service
      * these message include the current state of the service,
@@ -122,17 +142,37 @@ public class MainClientActivity extends Activity {
     private static final boolean D = true;
     public WindowManager appWindow;
     public Display appDisplay;
+=======
+
+    // request types
+    public static final int REQUEST_CONNECT_DEVICE = 1;
+    public static final int REQUEST_ENABLE_BT = 2;
+
+    // class variables
+    private BluetoothAdapter btAdapter;
+    private Client client;
+
+    // service variables
+    private AccelerometerService accelerometerService;
+    public WindowManager appWindow;
+    public Display appDisplay;
+
+>>>>>>> origin/master
     // UI display variables
     public TextView title;
     public TextView xAxis;
     public TextView yAxis;
     public TextView xReadings;
     public TextView yReadings;
+<<<<<<< HEAD
     // class variables
     private BluetoothAdapter btAdapter;
     private Client client;
     // service variables
     private AccelerometerService accelerometerService;
+=======
+
+>>>>>>> origin/master
 
     /*
      * use the onCreate() to instantiate the Objects that will be needed
@@ -160,6 +200,10 @@ public class MainClientActivity extends Activity {
 
     }// end of onCreate() method
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
     // executes immediately after the onCreate()
     @Override
     public void onStart() {
@@ -184,6 +228,10 @@ public class MainClientActivity extends Activity {
         }
     }// end of onStart() method
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
     // this method is called after the app has been paused
     // if the blue-tooth setup is slow and the app is paused
     // this method will be called
@@ -201,7 +249,11 @@ public class MainClientActivity extends Activity {
         // before starting the service
         if (client.getState() == Client.CONNECTED) {
             if (accelerometerService.isRegistered()) {
+<<<<<<< HEAD
                 accelerometerService.endAccelerometerService();
+=======
+                accelerometerService.endAccelometerService();
+>>>>>>> origin/master
             }
             setUpAppService();
         }
@@ -211,6 +263,10 @@ public class MainClientActivity extends Activity {
         }
     }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
     /**
      * Method used to display the Options Menu
      */
@@ -221,6 +277,10 @@ public class MainClientActivity extends Activity {
         return true;
     }// end of onCreateOptionsMenu() method
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
     /**
      * Method used to handle which menu item is selected.
      */
@@ -248,7 +308,11 @@ public class MainClientActivity extends Activity {
                 if (D)
                     Log.e(TAG, "+++ EXIT OPTION +++");
                 if (accelerometerService != null) {
+<<<<<<< HEAD
                     accelerometerService.endAccelerometerService();
+=======
+                    accelerometerService.endAccelometerService();
+>>>>>>> origin/master
                 }
                 finish();
                 return true;
@@ -257,6 +321,10 @@ public class MainClientActivity extends Activity {
         }
     }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
     /**
      * Gets the user entered name and displays it on the screen.
      */
@@ -272,6 +340,10 @@ public class MainClientActivity extends Activity {
         return username;
     }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
     /**
      * This method is used to ensure that the current btDevice is discoverable to
      * others blue-tooth btDevice.
@@ -285,14 +357,21 @@ public class MainClientActivity extends Activity {
         }
     }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
     // utility method to make a short toast
     public void makeShortToast(String toast) {
         Toast.makeText(this, toast, Toast.LENGTH_SHORT).show();
     }
 
 
+<<<<<<< HEAD
     // ++++++++++++++++++++++++++++ When the program ends - Clean up here +++++++++++++++++++++++++++++++++++++++
 
+=======
+>>>>>>> origin/master
     /**
      * @param acceloData
      */
@@ -311,6 +390,12 @@ public class MainClientActivity extends Activity {
         }
     }
 
+<<<<<<< HEAD
+=======
+
+    // ++++++++++++++++++++++++++++ When the program ends - Clean up here +++++++++++++++++++++++++++++++++++++++
+
+>>>>>>> origin/master
     @Override
     public synchronized void onPause() {
         super.onPause();
@@ -322,6 +407,10 @@ public class MainClientActivity extends Activity {
 
     }// end of onPause() method
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
     // if the user stops the app cancel the timer
     // to free up resources and battery life
     @Override
@@ -332,6 +421,10 @@ public class MainClientActivity extends Activity {
         finish();
     }// end of onStop() method
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
     // destroy the service
     // called after onStop()
     @Override
@@ -340,11 +433,19 @@ public class MainClientActivity extends Activity {
         if (D)
             Log.i(TAG, "+++ ON DESTROY +++");
         // stop the Service
+<<<<<<< HEAD
         accelerometerService.endAccelerometerService();
+=======
+        accelerometerService.endAccelometerService();
+>>>>>>> origin/master
         accelerometerService = null;
         client.closeClient();
     }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
     /**
      * Get the users chosen color and send to the AppRobot class,
      * so that the cursor color can be changed.
@@ -367,6 +468,10 @@ public class MainClientActivity extends Activity {
         return mouseColor;
     }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
     /*
      * This method ensures that blue-tooth isEnabled on the btDevice
      */
@@ -385,6 +490,10 @@ public class MainClientActivity extends Activity {
         return btEnabled;
     }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
     /*
      * This method places the buttons and text box on the screen
      * also registers the button click listeners
@@ -453,6 +562,10 @@ public class MainClientActivity extends Activity {
         });
     }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
     /**
      * This method determines the current activity request and processes
      * the request.
@@ -483,6 +596,10 @@ public class MainClientActivity extends Activity {
         }
     }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
     /*
      * This method is used to set up the accelerometerService, that runs in the background.
      *
@@ -496,9 +613,16 @@ public class MainClientActivity extends Activity {
         // set up a new service
         accelerometerService = new AccelerometerService(this.getApplicationContext(), appHandler);
         // start the service
+<<<<<<< HEAD
         accelerometerService.initAccelerometerService();
     }
 
+=======
+        accelerometerService.initAccelometerService();
+    }
+
+
+>>>>>>> origin/master
     /*
      * This method is called by the onActivtyRequest() method when the
      * user want to connect to a Bonded Device
@@ -515,5 +639,43 @@ public class MainClientActivity extends Activity {
             client.start();
         }
     }
+<<<<<<< HEAD
+=======
+
+    /*
+     * this method handles incoming messages from the service
+     * these message include the current state of the service,
+     * or any error messages.
+     */
+    private final Handler appHandler = new Handler(Looper.getMainLooper()) {
+
+        @Override
+        public void handleMessage(Message message) {
+            switch (message.what) {
+                // read in the string from the service and write out
+                case MESSAGE_DATA_ACCELO:
+                    write(message.getData().getString(DATA));
+                    break;
+                // reads in the device name from the AppDevice class
+                case MESSAGE_DEVICE_NAME:
+                    String connectDeviceName = message.getData()
+                            .getString(DEVICE_NAME);
+                    title.setText(connectDeviceName);
+                    Toast.makeText(getApplicationContext(),
+                            "Connected to: " + connectDeviceName,
+                            Toast.LENGTH_SHORT).show();
+                    break;
+                // toast message sent from the service
+                case MESSAGE_TOAST_ACCELO:
+                    makeShortToast(message.getData().getString(TOAST));
+                    break;
+                // toast message sent from the client
+                case MESSAGE_TOAST_CLIENT:
+                    makeShortToast(message.getData().getString(TOAST));
+                    break;
+            }// end switch
+        }// end handle messages
+    };// end handler
+>>>>>>> origin/master
 
 }// end of the class

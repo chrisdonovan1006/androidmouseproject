@@ -13,7 +13,11 @@ public class ClientWaitingDialog extends DialogFragment {
 
     public void onCreate(Bundle savedInstanceState) {
         /* The activity that creates an instance of this dialog fragment must
+<<<<<<< HEAD
          * implement this interface in order to receive event callbacks.
+=======
+	     * implement this interface in order to receive event callbacks.
+>>>>>>> origin/master
 	     * Each method passes the DialogFragment in case the host needs to query it. 
 	    public interface ClientWaitingDialog {
 	        public void onDialogPositiveClick(DialogFragment dialog);

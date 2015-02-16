@@ -39,6 +39,7 @@ public class PairedBluetoothDevices extends Activity {
 
     // Return Intent extra
     public static String EXTRA_DEVICE_ADDRESS = "";
+<<<<<<< HEAD
     private OnItemClickListener listClick = new OnItemClickListener() {
 
         public void onItemClick(AdapterView<?> arg0,
@@ -106,11 +107,18 @@ public class PairedBluetoothDevices extends Activity {
             }
         }
     };
+=======
+
+>>>>>>> origin/master
     // Class fields
     private BluetoothAdapter btAdapter;
     private ArrayAdapter<String> connectedDevicesAA;
     private ArrayAdapter<String> availableDevicesAA;
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -177,6 +185,10 @@ public class PairedBluetoothDevices extends Activity {
         }
     }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -190,6 +202,10 @@ public class PairedBluetoothDevices extends Activity {
         this.unregisterReceiver(btReceiver);
     }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
     /**
      * Start device discover with the BluetoothAdapter
      */
@@ -212,5 +228,77 @@ public class PairedBluetoothDevices extends Activity {
         // Request discover from BluetoothAdapter
         btAdapter.startDiscovery();
     }
+<<<<<<< HEAD
+=======
+
+    // The BroadcastReceiver that listens for discovered devices and
+    // changes the title when discovery is finished
+    private final BroadcastReceiver btReceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+
+            // When discovery finds a device
+            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
+                // Get the BluetoothDevice object from the Intent
+                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                // If it's already paired, skip it, because it's been listed already
+                if (device.getBondState() != BluetoothDevice.BOND_BONDED) {
+                    availableDevicesAA.add(device.getName() + "\n"
+                            + device.getAddress());
+                }
+                // When discovery is finished, change the Activity title
+            } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
+                setProgressBarIndeterminateVisibility(false);
+                setTitle(R.string.bt_choose);
+                if (availableDevicesAA.getCount() == 0) {
+                    String noDevices = getResources().getText(R.string.bt_not_found)
+                            .toString();
+                    availableDevicesAA.add(noDevices);
+                }
+            }
+        }
+    };
+
+    private OnItemClickListener listClick = new OnItemClickListener() {
+
+        public void onItemClick(AdapterView<?> arg0,
+                                View v,
+                                int arg2,
+                                long arg3) {
+            // Cancel discovery because it's costly and we're about to connect
+            btAdapter.cancelDiscovery();
+
+            //
+            switch (v.getId()) {
+                case R.id.lvAvailable:
+                    getDeviceName(v);
+                    break;
+
+                case R.id.lvConnected:
+                    getDeviceName(v);
+                    break;
+            }
+        }
+
+
+        /**
+         * @param v
+         *        the view that has been clicked
+         */
+        private void getDeviceName(View v) {
+            String info = ((TextView) v).getText().toString();
+            String address = info.substring(info.length() - 17);
+
+            // Create the result Intent and include the MAC address
+            Intent intent = new Intent();
+            intent.putExtra(EXTRA_DEVICE_ADDRESS, address);
+
+            // Set result and finish this Activity
+            setResult(Activity.RESULT_OK, intent);
+        }
+    };
+>>>>>>> origin/master
 
 }
