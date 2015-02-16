@@ -4,19 +4,15 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 
 /**
- * 
  * @author Christopher Donovan
  * @author ClientWaitingDialog.java
- * @since 10/02/2015
  * @version 2.0
- *
+ * @since 10/02/2015
  */
-public class ClientWaitingDialog extends DialogFragment 
-{
+public class ClientWaitingDialog extends DialogFragment {
 
-	public void onCreate( Bundle savedInstanceState )
-	{
-		/* The activity that creates an instance of this dialog fragment must
+    public void onCreate(Bundle savedInstanceState) {
+        /* The activity that creates an instance of this dialog fragment must
 	     * implement this interface in order to receive event callbacks.
 	     * Each method passes the DialogFragment in case the host needs to query it. 
 	    public interface ClientWaitingDialog {
@@ -41,6 +37,6 @@ public class ClientWaitingDialog extends DialogFragment
 	                    + " must implement ClientWaitingDialog");
 	        }
 	    }*/
-	}
+    }
 
 }
