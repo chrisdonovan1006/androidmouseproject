@@ -25,35 +25,12 @@ import android.widget.Toast;
  * @author Christopher Donovan
  * @author MainClientActivity.java
  * @version 2.0
- *          <p/>
- *          <p/>
- *          This is the main activity and the point at which the user interacts with the application.
- *          <p/>
- *          The Accelerometer data is read from here and passed on to the client and from the client
- *          to the server. This is also handled incoming data
- *          <p/>
- *          from the Client, AppBTDevice and AccelerometerService classes. It is the main UI app to the user
- *          interacts all of the preferences link back to this class.
- *          <p/>
- *          Refs:
- *          <p/>
- *          Android Developers Web-site
- *          <p/>
- *          {@link http://developer.android.com/guide/topics/connectivity/bluetooth.html}
- *          <p/>
- *          Professional Android 2 Application Development - (I have e-book, didn't know how to refercne that)
- *          <p/>
- *          Charter 13 - Blue-tooth, Networks, and WiFi {@link http
- *          ://www.wrox.com/WileyCDA/WroxTitle/Professional-Android-2-Application-Development.productCd-0470565527.html}
- *          <p/>
- *          BluetoothChat application in the SDK examples
- *          <p/>
- *          {@link http://developer.android.com/tools/samples/index.html}
- *          <p/>
- *          The New Boston Android Video Tutorials
- *          <p/>
- *          {@link http://thenewboston.org/list.php?cat=6}
  * @since 10/02/2015
+ *
+ * This is the main client activity class that allows the user to connect to the
+ * client side services.  From the accelerometer service is started and runs in the
+ * background the client connection process is also started here and the message
+ * passing from the client to the server is check here.
  */
 public class MainClientActivity extends Activity {
 
@@ -64,9 +41,9 @@ public class MainClientActivity extends Activity {
     // used to handle messages from the service and the client
     public static final int MESSAGE_STATE_CHANGED = 1;
     public static final int MESSAGE_DEVICE_NAME = 2;
-    public static final int MESSAGE_TOAST_ACCELO = 3;
+    public static final int MESSAGE_TOAST_ACCELEROMETER = 3;
     public static final int MESSAGE_TOAST_CLIENT = 4;
-    public static final int MESSAGE_DATA_ACCELO = 5;
+    public static final int MESSAGE_DATA_ACCELEROMETER = 5;
 
     // used to signal which mouse option is selected
     // started an 6 - 9 because the direction value
@@ -78,10 +55,10 @@ public class MainClientActivity extends Activity {
     public static final int SEND_DATA_CLICK = 9;
 
     // application colors
-    public static final int WHITE = 11;
-    public static final int GREEN = 12;
-    public static final int RED = 13;
-    public static final int BLUE = 14;
+    public static final int WHITE = 0;
+    public static final int GREEN = 1;
+    public static final int RED = 3;
+    public static final int BLUE = 4;
 
     // message types
     public static final String DEVICE_NAME = "btDevice";
@@ -154,7 +131,7 @@ public class MainClientActivity extends Activity {
             if (client == null) {
                 if (D)
                     Log.i(TAG, "+++ ON START - SET UP THE APPCLIENT +++");
-                client = new Client(this, appHandler);
+                client = new Client(appHandler);
                 client.start();
             }
         }
@@ -184,7 +161,7 @@ public class MainClientActivity extends Activity {
         }
 
         if (getMouseColor() != WHITE) {
-            // client.write(getMouseColor());
+            client.write(getMouseColor());
         }
     }
 
@@ -208,24 +185,32 @@ public class MainClientActivity extends Activity {
         switch (item.getItemId()) {
             case R.id.connect:
                 if (D)
-                    Log.e(TAG, "+++ CONNECT OPTION +++");
+                {
+                	Log.d(TAG, "+++ CONNECT OPTION +++");
+                }
                 Intent btSearchIntent = new Intent(this, PairedBluetoothDevices.class);
                 startActivityForResult(btSearchIntent, REQUEST_CONNECT_DEVICE);
                 return true;
             case R.id.discoverable:
                 if (D)
-                    Log.e(TAG, "+++ DISCOVERABLE OPTION +++");
+                {
+                	Log.d(TAG, "+++ DISCOVERABLE OPTION +++");
+                }
                 ensureDiscoverable();
                 return true;
             case R.id.prefs:
                 if (D)
-                    Log.e(TAG, "+++ PREFS OPTION +++");
+                {
+                	Log.d(TAG, "+++ PREFS OPTION +++");
+                }
                 Intent btPrefsIntent = new Intent(this, ClientPrefs.class);
                 startActivity(btPrefsIntent);
                 return true;
             case R.id.exit:
                 if (D)
-                    Log.e(TAG, "+++ EXIT OPTION +++");
+                {
+                	Log.d(TAG, "+++ EXIT OPTION +++");
+                }
                 if (accelerometerService != null) {
                     accelerometerService.endAccelometerService();
                 }
@@ -244,7 +229,7 @@ public class MainClientActivity extends Activity {
         // Android internal Data Storage interface.
         SharedPreferences getPrefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         // the user name entered in the Prefs dialog text box will be store using the key, value
-        String username = getPrefs.getString("username", "name not set");
+        String username = getPrefs.getString("username", "");
 
         // return null if the name has not yet being entered
         if (username == null)
@@ -518,7 +503,7 @@ public class MainClientActivity extends Activity {
         public void handleMessage(Message message) {
             switch (message.what) {
                 // read in the string from the service and write out
-                case MESSAGE_DATA_ACCELO:
+                case MESSAGE_DATA_ACCELEROMETER:
                     write(message.getData().getString(DATA));
                     break;
                 // reads in the device name from the AppDevice class
@@ -531,7 +516,7 @@ public class MainClientActivity extends Activity {
                             Toast.LENGTH_SHORT).show();
                     break;
                 // toast message sent from the service
-                case MESSAGE_TOAST_ACCELO:
+                case MESSAGE_TOAST_ACCELEROMETER:
                     makeShortToast(message.getData().getString(TOAST));
                     break;
                 // toast message sent from the client

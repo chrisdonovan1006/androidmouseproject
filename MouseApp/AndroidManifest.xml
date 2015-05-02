@@ -18,8 +18,7 @@
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:label="@string/app_name" >
 
         <!--
         This is the main Activity here the user will check to
@@ -31,8 +30,7 @@
             android:name=".MainClientActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme" >
+            android:screenOrientation="portrait" >
             <intent-filter>                
                 <action android:name="android.intent.action.MAIN" />
 

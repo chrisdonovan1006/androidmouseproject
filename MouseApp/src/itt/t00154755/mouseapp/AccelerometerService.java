@@ -155,7 +155,7 @@ public class AccelerometerService extends Service implements SensorEventListener
      */
     @Override
     public void sendDataToUIThread(String data) {
-        Message message = appHandler.obtainMessage(MainClientActivity.MESSAGE_DATA_ACCELO);
+        Message message = appHandler.obtainMessage(MainClientActivity.MESSAGE_DATA_ACCELEROMETER);
         Bundle bundle = new Bundle();
         bundle.putString(MainClientActivity.DATA, data);
         message.setData(bundle);
@@ -175,7 +175,7 @@ public class AccelerometerService extends Service implements SensorEventListener
     @Override
     public void sendDataToUIThread(String data, int type) {
         if (type == 1) {
-            Message message = appHandler.obtainMessage(MainClientActivity.MESSAGE_TOAST_ACCELO);
+            Message message = appHandler.obtainMessage(MainClientActivity.MESSAGE_TOAST_ACCELEROMETER);
             Bundle bundle = new Bundle();
             bundle.putString(MainClientActivity.TOAST, data);
             message.setData(bundle);
