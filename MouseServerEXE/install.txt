@@ -1,6 +1,0 @@
-In order to install the bluetooth android mouse application:
-
-First open the Eclipse and run the server configuration.
-Select the start server option.
-Wait for message from server.
-

@@ -1,1 +1,0 @@
-start mouseserver.jar

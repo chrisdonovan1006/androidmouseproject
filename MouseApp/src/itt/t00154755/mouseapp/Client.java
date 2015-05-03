@@ -20,55 +20,25 @@ import java.util.UUID;
  * @version 2.0
  * @category The Client class runs in the background and is used to create the connection
  * to the server which must be running or a IOException will be thrown.
-<<<<<<< HEAD
- * The main activity calls the connectToServer(), this class then tries to establish a
- * connect visa the blue-tooth socket using a random UUID, if successful the socket
- * will be connected using the RFCOMM protocol designed for peer to peer blue-tooth connections.
-=======
- * <p/>
  * The main activity calls the connectToServer(), this class then tries to establish a
  * connect visa the blue-tooth socket using a random UUID, if successful the socket
  * will be connected using the RFCOMM protocol designed for peer to peer blue-tooth connections.
  * <p/>
  * Android Developers Web-site
- * <p/>
- * {@link http://developer.android.com/guide/components/services.html}
- * {@link http://developer.android.com/guide/topics/sensors/sensors_overview.html}
- * Professional Android 2 Application Development
- * <p/>
- * Charter 14 - Blue-tooth, Networks, and WiFi {@link http:
- * //www.wrox.com/WileyCDA/WroxTitle/Professional-Android-2-Application-Development.productCd-0470565527.html}
- * <p/>
- * The New Boston Android Video Tutorials
- * <p/>
- * {@link http://thenewboston.org/list.php?cat=6}
->>>>>>> origin/master
  * @since 10/02/2015
  */
 
 public class Client {
 
-<<<<<<< HEAD
     // used to keep track of the current state of the client
     public static final int WAITING = 0;
     public static final int CONNECTED = 1;
-    public static final int FAILED = -1;
-    // used for debugging
-    private static final String TAG = "App Client";
-    private static final boolean D = true;
     // private final int RUNNING = 2;
-=======
     // used for debugging
     private static final String TAG = "App Client";
     private static final boolean D = true;
-
-    // used to keep track of the current state of the client
-    public static final int WAITING = 0;
-    public static final int CONNECTED = 1;
     // public static final int FAILED = -1;
     // private final int RUNNING = 2;
-
->>>>>>> origin/master
     // class fields
     private BluetoothAdapter btAdapter;
     private ClientCommsThread clientCommThread;
@@ -78,11 +48,7 @@ public class Client {
     /**
      * @param appHandler the main UI threads handler
      */
-<<<<<<< HEAD
     public Client(Context context, Handler appHandler) {
-=======
-    public Client(Handler appHandler) {
->>>>>>> origin/master
         if (D) {
             Log.d(TAG, "getting default adapter");
         }
@@ -106,20 +72,12 @@ public class Client {
      * over TCP this ensure that the data
      */
     private void connectToSever() {
-<<<<<<< HEAD
-        BluetoothDevice btDevice = null;
-        BluetoothSocket btSocket = null;
-
-        if (D)
-            Log.d(TAG, "getting local device");
-=======
         BluetoothDevice btDevice;
         BluetoothSocket btSocket = null;
 
         if (D) {
             Log.d(TAG, "getting local device");
         }
->>>>>>> origin/master
         // find the bluetooth address of the current device
         //String btAddress = "EC:A8:6B:6E:40:91";
         String btAddress = "00:15:83:3D:0A:57";
@@ -136,11 +94,7 @@ public class Client {
         }
         try {
             /*
-<<<<<<< HEAD
              * This method creates an RFComm connection with the server,
-=======
-			 * This method creates an RFComm connection with the server,
->>>>>>> origin/master
 			 * because I am using the createRfcommSocketToServiceRecord and not
 			 * the createInscureRfcommSocketToServiceRecord it means that the users
 			 * phone must be bonded/paired with the server host machine. I have implemented
@@ -164,11 +118,11 @@ public class Client {
             btSocket = btDevice.createRfcommSocketToServiceRecord(UUID.fromString("5a17e500-ad3a-11e2-9e96-0800200c9a66"));
         } catch (IOException e) {
             if (D) {
-<<<<<<< HEAD
+
                 Log.e(TAG, "ERROR: creating the RFCOMM connection");
-=======
+
                 Log.e(TAG, "ERROR creating the RFCOMM connection");
->>>>>>> origin/master
+
             }
             e.printStackTrace();
         }
@@ -316,12 +270,8 @@ public class Client {
      * @param name
      *        the friendly name of the connected blue-tooth device
      */
-<<<<<<< HEAD
     /*
-=======
-	/*
->>>>>>> origin/master
-	 * private void sendDeviceNameToUIHandler( String name )
+     * private void sendDeviceNameToUIHandler( String name )
 	 * {
 	 * // message back to UI
 	 * Message message = appHandler.obtainMessage(MainClientActivity.MESSAGE_DEVICE_NAME);
@@ -343,16 +293,10 @@ public class Client {
      */
     private class ClientCommsThread extends Thread implements ClientCommsInterface {
         private static final String TAG = "Client Comms Thread";
-<<<<<<< HEAD
         private static final String EXIT_SERVER_CODE = "0";
-        private final OutputStream outStream;
-        private BluetoothSocket btSocket = null;
-=======
-        private BluetoothSocket btSocket = null;
-        private final OutputStream outStream;
-
         private static final String EXITSERVERCODE = "0";
->>>>>>> origin/master
+        private final OutputStream outStream;
+        private BluetoothSocket btSocket = null;
 
         /*
          * Class constructor takes a BluetoothSocket as parameter.
@@ -367,11 +311,7 @@ public class Client {
                 tmpOut = btSocket.getOutputStream();
             } catch (IOException e) {
                 if (D) {
-<<<<<<< HEAD
                     Log.e(TAG, "ERROR: trying to open the output stream");
-=======
-                    Log.e(TAG, "ERROR trying to open the output stream");
->>>>>>> origin/master
                 }
             }
             outStream = tmpOut;
@@ -381,11 +321,7 @@ public class Client {
          * close the btSocket and cancel the thread
          */
         public synchronized void cancel() {
-<<<<<<< HEAD
             sendDataToOutputStream(EXIT_SERVER_CODE);
-=======
-            sendDataToOutputStream(EXITSERVERCODE);
->>>>>>> origin/master
             try {
                 if (btSocket != null) {
                     btSocket.close();
@@ -402,6 +338,57 @@ public class Client {
                     Log.e(TAG, "ERROR: closing the socket");
                 e.printStackTrace();
             }
+        }
+
+        @Override
+        public void sendDataToUIThread(String data) {
+
+        }
+
+        @Override
+        public void sendDataToUIThread(int data) {
+
+        }
+
+        @Override
+        public void sendDataToUIThread(byte[] data) {
+
+
+            /**
+             * ClientCommsInterface Interface method transfers data to the calling class.
+             *
+             * @param data the byte[] representation of the accelerometer data
+             */
+            try {
+                outStream.write(data);
+            } catch (IOException e) {
+                if (D) {
+                    Log.e(TAG, "ERROR: writing to the server!");
+                }
+                cancel();
+                try {
+                    outStream.close();
+                    cancel();
+                } catch (IOException e1) {
+                    if (D)
+                        Log.e(TAG, "ERROR: closing outstream!");
+                }
+            } catch (Exception e2) {
+                if (D) {
+                    Log.e(TAG, "ERROR: writing to the server!");
+                }
+                try {
+                    outStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                cancel();
+            }
+        }
+
+        @Override
+        public void sendDataToUIThread(String data, int type) {
+
         }
 
         /**
@@ -425,11 +412,8 @@ public class Client {
                     cancel();
                 } catch (IOException e1) {
                     if (D) {
-<<<<<<< HEAD
                         Log.e(TAG, "ERROR: trying to close the string data output stream");
-=======
-                        Log.e(TAG, "ERROR: trying to close the string dataoutstream");
->>>>>>> origin/master
+
                     }
                 }
             } catch (Exception e2) {
@@ -461,78 +445,20 @@ public class Client {
                     cancel();
                 } catch (IOException e1) {
                     if (D) {
-<<<<<<< HEAD
                         Log.e(TAG, "ERROR: trying to close the int data output stream");
-=======
-                        Log.e(TAG, "ERROR: trying to close the int dataoutstream");
->>>>>>> origin/master
                     }
+                } catch (Exception e2) {
+                    if (D) {
+                        Log.e(TAG, "ERROR: trying to write to the server int");
+                    }
+                    cancel();
                 }
-            } catch (Exception e2) {
-                if (D) {
-                    Log.e(TAG, "ERROR: trying to write to the server int");
-                }
-                cancel();
             }
         }
 
-        /**
-         * ClientCommsInterface Interface method transfers data to the calling class.
-         *
-<<<<<<< HEAD
-         * @param data the byte[] representation of the accelerometer data
-=======
-         * @param acceloData the byte[] representation of the accelerometer data
->>>>>>> origin/master
-         */
         @Override
         public void sendDataToOutputStream(byte[] data) {
-            try {
-                outStream.write(data);
-            } catch (IOException e) {
-                if (D) {
-                    Log.e(TAG, "ERROR: writing to the server!");
-                }
-                cancel();
-                try {
-                    outStream.close();
-                    cancel();
-                } catch (IOException e1) {
-                    if (D)
-                        Log.e(TAG, "ERROR: closing outstream!");
-                }
-            } catch (Exception e2) {
-                if (D) {
-                    Log.e(TAG, "ERROR: writing to the server!");
-                }
-                try {
-                    outStream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                cancel();
-            }
-        }
 
-        // ++++++++Inherited Methods Currently Not Implemented++++++++
-        @Override
-        public void sendDataToUIThread(String data, int type) {
-        }
-
-        @Override
-        public void run() {
-        }
-
-        @Override
-        public void sendDataToUIThread(byte[] data) {
-        }
-
-        @Override
-        public void sendDataToUIThread(int data) {
-        }
-
-        @Override
-        public void sendDataToUIThread(String data) {
         }
     }
 }// end of the class
