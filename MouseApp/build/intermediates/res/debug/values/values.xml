@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <!-- From: file:/C:/Users/Christopher/Documents/GitHub/androidmouseproject/MouseApp/res/values/array.xml -->
-    <eat-comment />
-
+    <eat-comment/>
     <string-array name="colorlist">
         <item>White</item>
         <item>Green</item>
@@ -17,13 +15,11 @@
         <item>4</item>
     </string-array>
     <!-- From: file:/C:/Users/Christopher/Documents/GitHub/androidmouseproject/MouseApp/res/values/dimens.xml -->
-    <eat-comment />
-
+    <eat-comment/>
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <!-- From: file:/C:/Users/Christopher/Documents/GitHub/androidmouseproject/MouseApp/res/values/strings.xml -->
-    <eat-comment />
-
+    <eat-comment/>
     <string name="app_name">Mouse App</string>
     <string name="bt_available">Available Devices</string>
     <string name="bt_bSearch">Search for devices</string>
@@ -34,7 +30,8 @@
     <string name="connect">Connect</string>
     <string name="discoverable">Discoverable</string>
     <string name="exit">Exit</string>
-    <string name="infoaboutbt">This is information about bluetooth</string>
+    <string name="infoaboutbt">In order for this app to work correctly it first most be paired with the server device.
+    Once the client and server are paired they can now be connected.</string>
     <string name="left">left button</string>
     <string name="prefs">Preferences</string>
     <string name="right">right button</string>
@@ -46,8 +43,7 @@
     <string name="yaxis">Y Axis:</string>
     <string name="yreading">0.0</string>
     <!-- From: file:/C:/Users/Christopher/Documents/GitHub/androidmouseproject/MouseApp/res/values/styles.xml -->
-    <eat-comment />
-
+    <eat-comment/>
     <style name="AppBaseTheme" parent="android:Theme.Light">
         <!--
             Theme customizations available in newer API levels can go in
@@ -55,9 +51,7 @@
             backward-compatibility can go here.
         -->
     </style>
-
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
-
 </resources>

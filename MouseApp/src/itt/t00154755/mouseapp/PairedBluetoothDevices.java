@@ -22,7 +22,7 @@ import java.util.Set;
 
 /**
  * @author Christopher Donovan
- * @author PairedBluetoothDevices.java
+ * @class PairedBluetoothDevices.java
  * @version 2.0
  *          <p/>
  *          This Activity appears as a dialog. It lists any paired devices and
@@ -61,7 +61,6 @@ public class PairedBluetoothDevices extends Activity {
             }
         }
 
-
         /**
          * @param v
          *        the view that has been clicked
@@ -78,6 +77,7 @@ public class PairedBluetoothDevices extends Activity {
             setResult(Activity.RESULT_OK, intent);
         }
     };
+
     // The BroadcastReceiver that listens for discovered devices and
     // changes the title when discovery is finished
     private final BroadcastReceiver btReceiver = new BroadcastReceiver() {
@@ -112,9 +112,13 @@ public class PairedBluetoothDevices extends Activity {
     private ArrayAdapter<String> connectedDevicesAA;
     private ArrayAdapter<String> availableDevicesAA;
 
-    public PairedBluetoothDevices() {/**/
+    public PairedBluetoothDevices() {
     }
 
+    /**
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
