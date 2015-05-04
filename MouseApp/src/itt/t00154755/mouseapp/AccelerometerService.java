@@ -23,48 +23,29 @@ import android.util.Log;
  *          tilted to left, right, up or down). The event contains an integer array with the values
  *          of the x, y, and z axis. The service sends the data back to the main UI thread through
  *          a handler this data is then passed on to the client which in turn forwards it to the server.
- *          <p/>
- *          Refs:
- *          <p/>
- *          Android Developers Web-site
- *          <p/>
- *          {@link http://developer.android.com/guide/components/services.html}
- *          {@link http://developer.android.com/guide/topics/sensors/sensors_overview.html}
- *          <p/>
- *          Professional Android 2 Application Development
- *          <p/>
- *          Charter 14 - Blue-tooth, Networks, and WiFi
- *          {@link http://www.wrox.com/WileyCDA/WroxTitle/Professional-Android-2-Application-Development.productCd-0470565527.html}
- *          <p/>
- *          The New Boston Android Video Tutorials
- *          <p/>
- *          {@link http://thenewboston.org/list.php?cat=6}
  * @since 10/02/2015
  */
 
 public class AccelerometerService extends Service implements SensorEventListener, ClientCommsInterface {
-    private static final String TAG = "Accelometer Service";
-    private static final boolean D = false;
-    private String accelerometerData;
-
     // sensor movement direction
-    public static final int LEFTDOWN = 4;
-    public static final int RIGHTUP = 3;
-    public static final int LEFTUP = 2;
-    public static final int RIGHTDOWN = 1;
+    public static final int LEFT_DOWN = 4;
+    public static final int RIGHT_UP = 3;
+    public static final int LEFT_UP = 2;
+    public static final int RIGHT_DOWN = 1;
 
+    private static final String TAG = "Accelerometer Service";
+    private static final boolean D = false;
+
+    private static final double G_THRESHOLD = 0.6;
+    private static final int TOAST = 1;
+    private String accelerometerData;
     private Context context;
     private Handler appHandler;
-
     private SensorManager accelerometerManager;
     private Sensor accelerometerSensor;
-
     private boolean isRegistered = false;
-
-    private static final int TOAST = 1;
-
     private long lastUpdate = 0;
-    private static final double GTHRESHOLD = 0.6;
+
 
     /**
      * Default AccelerometerService Constructor
@@ -72,13 +53,11 @@ public class AccelerometerService extends Service implements SensorEventListener
     public AccelerometerService() {
     }
 
-
     /**
      * AccelerometerService Constructor
      *
      * @param context    the global application interface
      * @param appHandler allow data transfer to the main UI
-     * @param appWindow  the device window
      */
     public AccelerometerService(Context context, Handler appHandler) {
         this.context = context;
@@ -95,22 +74,21 @@ public class AccelerometerService extends Service implements SensorEventListener
     public void onCreate() {
         // initiate the service
         super.onCreate();
-        initAccelometerService();
+        initAccelerometerService();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        endAccelometerService();
+        endAccelerometerService();
     }
 
-
-    public void initAccelometerService() {
+    public void initAccelerometerService() {
         sendDataToUIThread("AccelerometerService started", TOAST);
         registerListener();
     }
 
-    public void endAccelometerService() {
+    public void endAccelerometerService() {
         unregisterListener();
         stopSelf();
     }
@@ -242,7 +220,6 @@ public class AccelerometerService extends Service implements SensorEventListener
             Log.e(TAG, "Sensor could not be registered!!!");
     }
 
-
     /**
      * This method returns the Sensor manager object to the service, the context
      * is the main class that has been passed into the constructor of the service.
@@ -258,12 +235,10 @@ public class AccelerometerService extends Service implements SensorEventListener
     }
 
     /*
-     * Method that unregisters the Listener for
+     * Method that will unregister the Listener from
      * the Accelerometer sensor.
      */
     private void unregisterListener() {
-        // check if the manager is registered
-        // if it is then unregister it
         if (D) {
             Log.d(TAG, "+++ UNREGISTER-LISTENER FOR SENSOR +++");
         }
@@ -281,54 +256,33 @@ public class AccelerometerService extends Service implements SensorEventListener
      * @param yFloatAxis
      */
     private void determinePhonePosition(float xFloatAxis, float yFloatAxis) {
-        if (xFloatAxis < GTHRESHOLD && yFloatAxis > GTHRESHOLD) {
+        if (xFloatAxis < G_THRESHOLD && yFloatAxis > G_THRESHOLD) {
             if (D) {
-                Log.d(TAG, "move mouse: " + RIGHTUP);
+                Log.d(TAG, "move mouse: " + RIGHT_UP);
             }
-            setAccelerometerData(" " + RIGHTUP
-                    + " "
-                    + Math.abs((int) xFloatAxis)
-                    + " "
-                    + Math.abs((int) yFloatAxis)
-                    + " ");
-        } else if (xFloatAxis < GTHRESHOLD && yFloatAxis > GTHRESHOLD) {
+            setAccelerometerData(" " + RIGHT_UP + " " + Math.abs((int) xFloatAxis) + " " + Math.abs((int) yFloatAxis) + " ");
+        } else if (xFloatAxis < G_THRESHOLD && yFloatAxis > G_THRESHOLD) {
             if (D) {
-                Log.d(TAG, "move mouse: " + LEFTUP);
+                Log.d(TAG, "move mouse: " + LEFT_UP);
             }
-            setAccelerometerData(" " + LEFTUP
-                    + " "
-                    + Math.abs((int) xFloatAxis)
-                    + " "
-                    + Math.abs((int) yFloatAxis)
-                    + " ");
-        } else if (xFloatAxis < GTHRESHOLD && yFloatAxis < GTHRESHOLD) {
+            setAccelerometerData(" " + LEFT_UP + " " + Math.abs((int) xFloatAxis) + " " + Math.abs((int) yFloatAxis) + " ");
+        } else if (xFloatAxis < G_THRESHOLD && yFloatAxis < G_THRESHOLD) {
             if (D) {
-                Log.d(TAG, "move mouse: " + RIGHTDOWN);
+                Log.d(TAG, "move mouse: " + RIGHT_DOWN);
             }
+            setAccelerometerData(" " + RIGHT_DOWN + " " + Math.abs((int) xFloatAxis) + " " + Math.abs((int) yFloatAxis) + " ");
+        } else if (xFloatAxis > G_THRESHOLD && yFloatAxis > G_THRESHOLD) {
+            if (D) {
+                Log.d(TAG, "move mouse: " + LEFT_DOWN);
+            }
+            setAccelerometerData(" " + LEFT_DOWN + " " + Math.abs((int) xFloatAxis) + " " + Math.abs((int) yFloatAxis) + " ");
 
-            setAccelerometerData(" " + RIGHTDOWN
-                    + " "
-                    + Math.abs((int) xFloatAxis)
-                    + " "
-                    + Math.abs((int) yFloatAxis)
-                    + " ");
-        } else if (xFloatAxis > GTHRESHOLD && yFloatAxis > GTHRESHOLD) {
-            if (D) {
-                Log.d(TAG, "move mouse: " + LEFTDOWN);
+            long curTime = System.currentTimeMillis();
+
+            if ((curTime - lastUpdate) > 100) {
+                lastUpdate = curTime;
+                sendCurrentReadingsToUI(getAccelerometerData());
             }
-            setAccelerometerData(" " + LEFTDOWN
-                    + " "
-                    + Math.abs((int) xFloatAxis)
-                    + " "
-                    + Math.abs((int) yFloatAxis)
-                    + " ");
-        }
-
-        long curTime = System.currentTimeMillis();
-
-        if ((curTime - lastUpdate) > 100) {
-            lastUpdate = curTime;
-            sendCurrentReadingsToUI(getAccelerometerData());
         }
     }
 
@@ -350,11 +304,9 @@ public class AccelerometerService extends Service implements SensorEventListener
 
         String data;
 
-
         public SendDataThread(String data) {
             this.data = data;
         }
-
 
         // send the data
         public void run() {

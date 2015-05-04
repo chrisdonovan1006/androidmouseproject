@@ -7,7 +7,191 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d8e5aa57-1499-4231-bdd7-5652f0eda891" name="Default" comment="">
+<<<<<<< HEAD
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseApp/src/itt/t00154755/mouseapp/Client.java" afterPath="$PROJECT_DIR$/MouseApp/src/itt/t00154755/mouseapp/Client.java" />
+=======
+      <change type="DELETED" beforePath="C:\Users\Christopher\Documents\GitHub\androidmouseproject\.metadata\.plugins\org.eclipse.core.resources\.root\116.tree" afterPath="" />
+<<<<<<< HEAD
+      <change type="DELETED" beforePath="C:\Users\Christopher\Documents\GitHub\androidmouseproject\.metadata\.plugins\org.eclipse.jdt.core\2548126886.index" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Christopher\Documents\GitHub\androidmouseproject\.metadata\.plugins\org.eclipse.jdt.core\682530419.index" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Christopher\Documents\GitHub\androidmouseproject\MouseApp\MouseApp.iml" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Christopher\Documents\GitHub\androidmouseproject\MouseApp\bin\MouseApp.apk" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Christopher\Documents\GitHub\androidmouseproject\MouseApp\bin\classes.dex" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Christopher\Documents\GitHub\androidmouseproject\MouseApp\bin\dexedLibs\android-support-v4-7011373f126b206aba1d2dc1448be526.jar" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Christopher\Documents\GitHub\androidmouseproject\MouseApp\bin\res\crunch\drawable-hdpi\ic_launcher.png" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Christopher\Documents\GitHub\androidmouseproject\MouseApp\bin\res\crunch\drawable-mdpi\ic_launcher.png" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Christopher\Documents\GitHub\androidmouseproject\MouseApp\bin\res\crunch\drawable-xhdpi\ic_launcher.png" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Christopher\Documents\GitHub\androidmouseproject\MouseApp\bin\res\crunch\drawable-xxhdpi\ic_launcher.png" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Christopher\Documents\GitHub\androidmouseproject\MouseApp\bin\resources.ap_" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Christopher\Documents\GitHub\androidmouseproject\MouseServer\MouseServer.iml" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.core.resources/.projects/MouseApp/.markers" afterPath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.core.resources/.projects/MouseApp/.markers" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.core.resources/.projects/MouseServer/.markers" afterPath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.core.resources/.projects/MouseServer/.markers" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.jdt.core/1075156909.index" afterPath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.jdt.core/1075156909.index" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.jdt.core/1510908829.index" afterPath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.jdt.core/1510908829.index" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.jdt.core/1820024274.index" afterPath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.jdt.core/1820024274.index" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.jdt.core/2706502329.index" afterPath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.jdt.core/2706502329.index" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.jdt.core/3256372620.index" afterPath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.jdt.core/3256372620.index" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.jdt.core/3521617142.index" afterPath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.jdt.core/3521617142.index" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.jdt.core/3539130431.index" afterPath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.jdt.core/3539130431.index" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.jdt.core/3626931047.index" afterPath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.jdt.core/3626931047.index" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.jdt.core/384216248.index" afterPath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.jdt.core/384216248.index" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.jdt.core/4018706093.index" afterPath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.jdt.core/4018706093.index" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseApp/bin/classes/itt/t00154755/mouseapp/AboutBluetooth.class" afterPath="$PROJECT_DIR$/MouseApp/bin/classes/itt/t00154755/mouseapp/AboutBluetooth.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseApp/bin/classes/itt/t00154755/mouseapp/AccelerometerService$SendDataThread.class" afterPath="$PROJECT_DIR$/MouseApp/bin/classes/itt/t00154755/mouseapp/AccelerometerService$SendDataThread.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseApp/bin/classes/itt/t00154755/mouseapp/AccelerometerService.class" afterPath="$PROJECT_DIR$/MouseApp/bin/classes/itt/t00154755/mouseapp/AccelerometerService.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseApp/bin/classes/itt/t00154755/mouseapp/Client$ClientCommsThread.class" afterPath="$PROJECT_DIR$/MouseApp/bin/classes/itt/t00154755/mouseapp/Client$ClientCommsThread.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseApp/bin/classes/itt/t00154755/mouseapp/Client.class" afterPath="$PROJECT_DIR$/MouseApp/bin/classes/itt/t00154755/mouseapp/Client.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseApp/bin/classes/itt/t00154755/mouseapp/ClientPrefs$AppPreferenceFragment.class" afterPath="$PROJECT_DIR$/MouseApp/bin/classes/itt/t00154755/mouseapp/ClientPrefs$AppPreferenceFragment.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseApp/bin/classes/itt/t00154755/mouseapp/ClientPrefs.class" afterPath="$PROJECT_DIR$/MouseApp/bin/classes/itt/t00154755/mouseapp/ClientPrefs.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseApp/bin/classes/itt/t00154755/mouseapp/ClientWaitingDialog.class" afterPath="$PROJECT_DIR$/MouseApp/bin/classes/itt/t00154755/mouseapp/ClientWaitingDialog.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseApp/bin/classes/itt/t00154755/mouseapp/MainClientActivity$1.class" afterPath="$PROJECT_DIR$/MouseApp/bin/classes/itt/t00154755/mouseapp/MainClientActivity$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseApp/bin/classes/itt/t00154755/mouseapp/MainClientActivity$2.class" afterPath="$PROJECT_DIR$/MouseApp/bin/classes/itt/t00154755/mouseapp/MainClientActivity$2.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseApp/bin/classes/itt/t00154755/mouseapp/MainClientActivity$3.class" afterPath="$PROJECT_DIR$/MouseApp/bin/classes/itt/t00154755/mouseapp/MainClientActivity$3.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseApp/bin/classes/itt/t00154755/mouseapp/MainClientActivity$4.class" afterPath="$PROJECT_DIR$/MouseApp/bin/classes/itt/t00154755/mouseapp/MainClientActivity$4.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseApp/bin/classes/itt/t00154755/mouseapp/MainClientActivity.class" afterPath="$PROJECT_DIR$/MouseApp/bin/classes/itt/t00154755/mouseapp/MainClientActivity.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseApp/bin/classes/itt/t00154755/mouseapp/PairedBluetoothDevices$1.class" afterPath="$PROJECT_DIR$/MouseApp/bin/classes/itt/t00154755/mouseapp/PairedBluetoothDevices$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseApp/bin/classes/itt/t00154755/mouseapp/PairedBluetoothDevices$2.class" afterPath="$PROJECT_DIR$/MouseApp/bin/classes/itt/t00154755/mouseapp/PairedBluetoothDevices$2.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseApp/bin/classes/itt/t00154755/mouseapp/PairedBluetoothDevices$3.class" afterPath="$PROJECT_DIR$/MouseApp/bin/classes/itt/t00154755/mouseapp/PairedBluetoothDevices$3.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseApp/bin/classes/itt/t00154755/mouseapp/PairedBluetoothDevices.class" afterPath="$PROJECT_DIR$/MouseApp/bin/classes/itt/t00154755/mouseapp/PairedBluetoothDevices.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseServer/bin/itt/t00154755/mouseserver/RobotController.class" afterPath="$PROJECT_DIR$/MouseServer/bin/itt/t00154755/mouseserver/RobotController.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseServer/bin/itt/t00154755/mouseserver/RunServer.class" afterPath="$PROJECT_DIR$/MouseServer/bin/itt/t00154755/mouseserver/RunServer.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseServer/bin/itt/t00154755/mouseserver/Server.class" afterPath="$PROJECT_DIR$/MouseServer/bin/itt/t00154755/mouseserver/Server.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseServer/bin/itt/t00154755/mouseserver/ServerGUI$1.class" afterPath="$PROJECT_DIR$/MouseServer/bin/itt/t00154755/mouseserver/ServerGUI$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseServer/bin/itt/t00154755/mouseserver/ServerGUI$2.class" afterPath="$PROJECT_DIR$/MouseServer/bin/itt/t00154755/mouseserver/ServerGUI$2.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseServer/bin/itt/t00154755/mouseserver/ServerGUI$3.class" afterPath="$PROJECT_DIR$/MouseServer/bin/itt/t00154755/mouseserver/ServerGUI$3.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseServer/bin/itt/t00154755/mouseserver/ServerGUI.class" afterPath="$PROJECT_DIR$/MouseServer/bin/itt/t00154755/mouseserver/ServerGUI.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseServer/bin/itt/t00154755/mouseserver/ServerStreamReader.class" afterPath="$PROJECT_DIR$/MouseServer/bin/itt/t00154755/mouseserver/ServerStreamReader.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseServer/bin/itt/t00154755/mouseserver/ServerUtils.class" afterPath="$PROJECT_DIR$/MouseServer/bin/itt/t00154755/mouseserver/ServerUtils.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseAppExe/Year 3 Computing Project.docx" afterPath="$PROJECT_DIR$/MouseAppExe/Year 3 Computing Project.docx" />
+=======
+      <change type="DELETED" beforePath="C:\Users\Christopher\Documents\GitHub\androidmouseproject\.metadata\.plugins\org.eclipse.jdt.core\4022092425.index" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.jdt.core/1510908829.index" afterPath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.jdt.core/1510908829.index" />
+>>>>>>> origin/master
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.jdt.core/externalLibsTimeStamps" afterPath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.jdt.core/externalLibsTimeStamps" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.core.resources/.projects/MouseApp/.indexes/e4/a9/5/a4/history.index" afterPath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.core.resources/.projects/MouseApp/.indexes/e4/a9/5/a4/history.index" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.core.resources/.projects/MouseServer/.indexes/e4/a9/5/28/history.index" afterPath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.core.resources/.projects/MouseServer/.indexes/e4/a9/5/28/history.index" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/intermediates/model_data.bin" afterPath="$PROJECT_DIR$/build/intermediates/model_data.bin" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseServerEXE/mouseserver.jar" afterPath="$PROJECT_DIR$/MouseServerEXE/mouseserver.jar" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jars/mouseserver.jar" afterPath="$PROJECT_DIR$/jars/mouseserver.jar" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.core.resources/.safetable/org.eclipse.core.resources" afterPath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.core.resources/.safetable/org.eclipse.core.resources" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.core.resources/.projects/MouseApp/org.eclipse.jdt.core/state.dat" afterPath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.core.resources/.projects/MouseApp/org.eclipse.jdt.core/state.dat" />
+<<<<<<< HEAD
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.core.resources/.projects/MouseServer/org.eclipse.jdt.core/state.dat" afterPath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.core.resources/.projects/MouseServer/org.eclipse.jdt.core/state.dat" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.jdt.core/variablesAndContainers.dat" afterPath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.jdt.core/variablesAndContainers.dat" />
+=======
+>>>>>>> origin/master
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.jdt.launching/.install.xml" afterPath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.jdt.launching/.install.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.metadata/.log" afterPath="$PROJECT_DIR$/.metadata/.log" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.cdt.core/.log" afterPath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.cdt.core/.log" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseApp/src/itt/t00154755/mouseapp/AboutBluetooth.java" afterPath="$PROJECT_DIR$/MouseApp/src/itt/t00154755/mouseapp/AboutBluetooth.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseApp/src/itt/t00154755/mouseapp/AccelerometerService.java" afterPath="$PROJECT_DIR$/MouseApp/src/itt/t00154755/mouseapp/AccelerometerService.java" />
+<<<<<<< HEAD
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseServer/doc/itt/t00154755/mouseserver/AppRobot.html" afterPath="$PROJECT_DIR$/MouseServer/doc/itt/t00154755/mouseserver/AppRobot.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseServer/doc/itt/t00154755/mouseserver/class-use/AppRobot.html" afterPath="$PROJECT_DIR$/MouseServer/doc/itt/t00154755/mouseserver/class-use/AppRobot.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseServer/doc/itt/t00154755/mouseserver/AppRunServer.html" afterPath="$PROJECT_DIR$/MouseServer/doc/itt/t00154755/mouseserver/AppRunServer.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseServer/doc/itt/t00154755/mouseserver/class-use/AppRunServer.html" afterPath="$PROJECT_DIR$/MouseServer/doc/itt/t00154755/mouseserver/class-use/AppRunServer.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseServer/doc/itt/t00154755/mouseserver/AppServer.html" afterPath="$PROJECT_DIR$/MouseServer/doc/itt/t00154755/mouseserver/AppServer.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseServer/doc/itt/t00154755/mouseserver/class-use/AppServer.html" afterPath="$PROJECT_DIR$/MouseServer/doc/itt/t00154755/mouseserver/class-use/AppServer.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseServer/doc/itt/t00154755/mouseserver/AppServerGUI.html" afterPath="$PROJECT_DIR$/MouseServer/doc/itt/t00154755/mouseserver/AppServerGUI.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseServer/doc/itt/t00154755/mouseserver/class-use/AppServerGUI.html" afterPath="$PROJECT_DIR$/MouseServer/doc/itt/t00154755/mouseserver/class-use/AppServerGUI.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseServer/doc/itt/t00154755/mouseserver/AppServerUtils.html" afterPath="$PROJECT_DIR$/MouseServer/doc/itt/t00154755/mouseserver/AppServerUtils.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseServer/doc/itt/t00154755/mouseserver/class-use/AppServerUtils.html" afterPath="$PROJECT_DIR$/MouseServer/doc/itt/t00154755/mouseserver/class-use/AppServerUtils.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseServer/doc/itt/t00154755/mouseserver/AppStreamReader.html" afterPath="$PROJECT_DIR$/MouseServer/doc/itt/t00154755/mouseserver/AppStreamReader.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseServer/doc/itt/t00154755/mouseserver/class-use/AppStreamReader.html" afterPath="$PROJECT_DIR$/MouseServer/doc/itt/t00154755/mouseserver/class-use/AppStreamReader.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseApp/build/generated/source/buildConfig/debug/itt/t00154755/mouseapp/BuildConfig.java" afterPath="$PROJECT_DIR$/MouseApp/build/generated/source/buildConfig/debug/itt/t00154755/mouseapp/BuildConfig.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseApp/build/generated/source/buildConfig/test/debug/itt/t00154755/mouseapp/test/BuildConfig.java" afterPath="$PROJECT_DIR$/MouseApp/build/generated/source/buildConfig/test/debug/itt/t00154755/mouseapp/test/BuildConfig.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseApp/gen/itt/t00154755/mouseapp/BuildConfig.java" afterPath="$PROJECT_DIR$/MouseApp/gen/itt/t00154755/mouseapp/BuildConfig.java" />
+=======
+>>>>>>> origin/master
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseApp/src/itt/t00154755/mouseapp/Client.java" afterPath="$PROJECT_DIR$/MouseApp/src/itt/t00154755/mouseapp/Client.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseApp/src/itt/t00154755/mouseapp/ClientCommsInterface.java" afterPath="$PROJECT_DIR$/MouseApp/src/itt/t00154755/mouseapp/ClientCommsInterface.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseApp/src/itt/t00154755/mouseapp/ClientPrefs.java" afterPath="$PROJECT_DIR$/MouseApp/src/itt/t00154755/mouseapp/ClientPrefs.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseApp/src/itt/t00154755/mouseapp/ClientWaitingDialog.java" afterPath="$PROJECT_DIR$/MouseApp/src/itt/t00154755/mouseapp/ClientWaitingDialog.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseApp/src/itt/t00154755/mouseapp/MainClientActivity.java" afterPath="$PROJECT_DIR$/MouseApp/src/itt/t00154755/mouseapp/MainClientActivity.java" />
+<<<<<<< HEAD
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseApp/src/itt/t00154755/mouseapp/PairedBluetoothDevices.java" afterPath="$PROJECT_DIR$/MouseApp/src/itt/t00154755/mouseapp/PairedBluetoothDevices.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseServer/src/itt/t00154755/mouseserver/RobotController.java" afterPath="$PROJECT_DIR$/MouseServer/src/itt/t00154755/mouseserver/RobotController.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseServer/src/itt/t00154755/mouseserver/RunServer.java" afterPath="$PROJECT_DIR$/MouseServer/src/itt/t00154755/mouseserver/RunServer.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseServer/src/itt/t00154755/mouseserver/Server.java" afterPath="$PROJECT_DIR$/MouseServer/src/itt/t00154755/mouseserver/Server.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseServer/src/itt/t00154755/mouseserver/ServerGUI.java" afterPath="$PROJECT_DIR$/MouseServer/src/itt/t00154755/mouseserver/ServerGUI.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseServer/src/itt/t00154755/mouseserver/ServerStreamReader.java" afterPath="$PROJECT_DIR$/MouseServer/src/itt/t00154755/mouseserver/ServerStreamReader.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseServer/src/itt/t00154755/mouseserver/ServerUtils.java" afterPath="$PROJECT_DIR$/MouseServer/src/itt/t00154755/mouseserver/ServerUtils.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseApp/docs/allclasses-frame.html" afterPath="$PROJECT_DIR$/MouseApp/docs/allclasses-frame.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseServer/doc/allclasses-frame.html" afterPath="$PROJECT_DIR$/MouseServer/doc/allclasses-frame.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseApp/docs/allclasses-noframe.html" afterPath="$PROJECT_DIR$/MouseApp/docs/allclasses-noframe.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseServer/doc/allclasses-noframe.html" afterPath="$PROJECT_DIR$/MouseServer/doc/allclasses-noframe.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseApp/docs/constant-values.html" afterPath="$PROJECT_DIR$/MouseApp/docs/constant-values.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseServer/doc/constant-values.html" afterPath="$PROJECT_DIR$/MouseServer/doc/constant-values.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseApp/docs/deprecated-list.html" afterPath="$PROJECT_DIR$/MouseApp/docs/deprecated-list.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseServer/doc/deprecated-list.html" afterPath="$PROJECT_DIR$/MouseServer/doc/deprecated-list.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.jdt.ui/dialog_settings.xml" afterPath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.jdt.ui/dialog_settings.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.ui.ide/dialog_settings.xml" afterPath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.ui.ide/dialog_settings.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.ui.workbench/dialog_settings.xml" afterPath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.ui.workbench/dialog_settings.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseApp/docs/help-doc.html" afterPath="$PROJECT_DIR$/MouseApp/docs/help-doc.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseServer/doc/help-doc.html" afterPath="$PROJECT_DIR$/MouseServer/doc/help-doc.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseApp/docs/index-files/index-1.html" afterPath="$PROJECT_DIR$/MouseApp/docs/index-files/index-1.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseServer/doc/index-files/index-1.html" afterPath="$PROJECT_DIR$/MouseServer/doc/index-files/index-1.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseApp/docs/index-files/index-10.html" afterPath="$PROJECT_DIR$/MouseApp/docs/index-files/index-10.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseApp/docs/index-files/index-11.html" afterPath="$PROJECT_DIR$/MouseApp/docs/index-files/index-11.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseApp/docs/index-files/index-12.html" afterPath="$PROJECT_DIR$/MouseApp/docs/index-files/index-12.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseApp/docs/index-files/index-2.html" afterPath="$PROJECT_DIR$/MouseApp/docs/index-files/index-2.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseServer/doc/index-files/index-2.html" afterPath="$PROJECT_DIR$/MouseServer/doc/index-files/index-2.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseApp/docs/index-files/index-3.html" afterPath="$PROJECT_DIR$/MouseApp/docs/index-files/index-3.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseServer/doc/index-files/index-3.html" afterPath="$PROJECT_DIR$/MouseServer/doc/index-files/index-3.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseApp/docs/index-files/index-4.html" afterPath="$PROJECT_DIR$/MouseApp/docs/index-files/index-4.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseServer/doc/index-files/index-4.html" afterPath="$PROJECT_DIR$/MouseServer/doc/index-files/index-4.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseApp/docs/index-files/index-5.html" afterPath="$PROJECT_DIR$/MouseApp/docs/index-files/index-5.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseServer/doc/index-files/index-5.html" afterPath="$PROJECT_DIR$/MouseServer/doc/index-files/index-5.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseApp/docs/index-files/index-6.html" afterPath="$PROJECT_DIR$/MouseApp/docs/index-files/index-6.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseServer/doc/index-files/index-6.html" afterPath="$PROJECT_DIR$/MouseServer/doc/index-files/index-6.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseApp/docs/index-files/index-7.html" afterPath="$PROJECT_DIR$/MouseApp/docs/index-files/index-7.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseServer/doc/index-files/index-7.html" afterPath="$PROJECT_DIR$/MouseServer/doc/index-files/index-7.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseApp/docs/index-files/index-8.html" afterPath="$PROJECT_DIR$/MouseApp/docs/index-files/index-8.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseServer/doc/index-files/index-8.html" afterPath="$PROJECT_DIR$/MouseServer/doc/index-files/index-8.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseApp/docs/index-files/index-9.html" afterPath="$PROJECT_DIR$/MouseApp/docs/index-files/index-9.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseServer/doc/index-files/index-9.html" afterPath="$PROJECT_DIR$/MouseServer/doc/index-files/index-9.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseApp/docs/index.html" afterPath="$PROJECT_DIR$/MouseApp/docs/index.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseServer/doc/index.html" afterPath="$PROJECT_DIR$/MouseServer/doc/index.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseApp/bin/jarlist.cache" afterPath="$PROJECT_DIR$/MouseApp/bin/jarlist.cache" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.debug.ui/launchConfigurationHistory.xml" afterPath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.debug.ui/launchConfigurationHistory.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.jdt.launching/libraryInfos.xml" afterPath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.jdt.launching/libraryInfos.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/local.properties" afterPath="$PROJECT_DIR$/local.properties" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.jdt.ui.prefs" afterPath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.jdt.ui.prefs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.ui.ide.prefs" afterPath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.ui.ide.prefs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseApp/docs/overview-tree.html" afterPath="$PROJECT_DIR$/MouseApp/docs/overview-tree.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseServer/doc/overview-tree.html" afterPath="$PROJECT_DIR$/MouseServer/doc/overview-tree.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseApp/docs/itt/t00154755/mouseserver/package-frame.html" afterPath="$PROJECT_DIR$/MouseApp/docs/itt/t00154755/mouseserver/package-frame.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseServer/doc/itt/t00154755/mouseserver/package-frame.html" afterPath="$PROJECT_DIR$/MouseServer/doc/itt/t00154755/mouseserver/package-frame.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseApp/docs/package-list" afterPath="$PROJECT_DIR$/MouseApp/docs/package-list" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseApp/docs/itt/t00154755/mouseserver/package-summary.html" afterPath="$PROJECT_DIR$/MouseApp/docs/itt/t00154755/mouseserver/package-summary.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseServer/doc/itt/t00154755/mouseserver/package-summary.html" afterPath="$PROJECT_DIR$/MouseServer/doc/itt/t00154755/mouseserver/package-summary.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseApp/docs/itt/t00154755/mouseserver/package-tree.html" afterPath="$PROJECT_DIR$/MouseApp/docs/itt/t00154755/mouseserver/package-tree.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseServer/doc/itt/t00154755/mouseserver/package-tree.html" afterPath="$PROJECT_DIR$/MouseServer/doc/itt/t00154755/mouseserver/package-tree.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseApp/docs/itt/t00154755/mouseserver/package-use.html" afterPath="$PROJECT_DIR$/MouseApp/docs/itt/t00154755/mouseserver/package-use.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseServer/doc/itt/t00154755/mouseserver/package-use.html" afterPath="$PROJECT_DIR$/MouseServer/doc/itt/t00154755/mouseserver/package-use.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.core.resources/.root/.indexes/properties.index" afterPath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.core.resources/.root/.indexes/properties.index" />
+=======
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseApp/MouseApp.iml" afterPath="$PROJECT_DIR$/MouseApp/MouseApp.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseServer/MouseServer.iml" afterPath="$PROJECT_DIR$/MouseServer/MouseServer.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.jdt.ui/OpenTypeHistory.xml" afterPath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.jdt.ui/OpenTypeHistory.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseApp/src/itt/t00154755/mouseapp/PairedBluetoothDevices.java" afterPath="$PROJECT_DIR$/MouseApp/src/itt/t00154755/mouseapp/PairedBluetoothDevices.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.jdt.ui/QualifiedTypeNameHistory.xml" afterPath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.jdt.ui/QualifiedTypeNameHistory.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseApp/build/generated/source/r/debug/itt/t00154755/mouseapp/R.java" afterPath="$PROJECT_DIR$/MouseApp/build/generated/source/r/debug/itt/t00154755/mouseapp/R.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MouseApp/gen/itt/t00154755/mouseapp/R.java" afterPath="$PROJECT_DIR$/MouseApp/gen/itt/t00154755/mouseapp/R.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/android_support_v4.xml" afterPath="$PROJECT_DIR$/.idea/libraries/android_support_v4.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/androidmouseproject.iml" afterPath="$PROJECT_DIR$/androidmouseproject.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.jdt.ui/dialog_settings.xml" afterPath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.jdt.ui/dialog_settings.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.ui.ide/dialog_settings.xml" afterPath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.ui.ide/dialog_settings.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.ui.workbench/dialog_settings.xml" afterPath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.ui.workbench/dialog_settings.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.debug.ui/launchConfigurationHistory.xml" afterPath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.debug.ui/launchConfigurationHistory.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
+>>>>>>> origin/master
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.jdt.core/savedIndexNames.txt" afterPath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.jdt.core/savedIndexNames.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.e4.workbench/workbench.xmi" afterPath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.e4.workbench/workbench.xmi" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.ui.workbench/workingsets.xml" afterPath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.ui.workbench/workingsets.xml" />
+>>>>>>> origin/master
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="androidmouseproject.iws" />
@@ -60,22 +244,65 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
+<<<<<<< HEAD
       <file leaf-file-name="AboutBluetooth.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/MouseApp/src/itt/t00154755/mouseapp/AboutBluetooth.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
               <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
+=======
+<<<<<<< HEAD
+      <file leaf-file-name="AccelerometerService.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/MouseApp/src/itt/t00154755/mouseapp/AccelerometerService.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="425" max-vertical-offset="5542">
+              <caret line="46" column="0" selection-start-line="46" selection-start-column="0" selection-end-line="46" selection-end-column="0" />
+>>>>>>> origin/master
               <folding />
             </state>
           </provider>
         </entry>
       </file>
+<<<<<<< HEAD
       <file leaf-file-name="Client.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/MouseApp/src/itt/t00154755/mouseapp/Client.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.07718502">
               <caret line="15" column="3" selection-start-line="15" selection-start-column="3" selection-end-line="15" selection-end-column="3" />
               <folding />
+=======
+      <file leaf-file-name="Client.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/MouseApp/src/itt/t00154755/mouseapp/Client.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="4947" max-vertical-offset="7803">
+              <caret line="291" column="10" selection-start-line="291" selection-start-column="10" selection-end-line="291" selection-end-column="10" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Server.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/MouseServer/src/itt/t00154755/mouseserver/Server.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="1071" max-vertical-offset="1734">
+              <caret line="63" column="0" selection-start-line="63" selection-start-column="0" selection-end-line="63" selection-end-column="0" />
+              <folding>
+                <element signature="imports" expanded="true" />
+=======
+      <file leaf-file-name="Client.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/MouseApp/src/itt/t00154755/mouseapp/Client.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.33295062" vertical-offset="220" max-vertical-offset="8092">
+              <caret line="30" column="10" selection-start-line="30" selection-start-column="10" selection-end-line="30" selection-end-column="10" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#2605#2606#0" expanded="true" />
+                <element signature="e#2637#2638#0" expanded="true" />
+                <element signature="e#5929#5930#0" expanded="true" />
+                <element signature="e#5957#5958#0" expanded="true" />
+>>>>>>> origin/master
+              </folding>
+>>>>>>> origin/master
             </state>
           </provider>
         </entry>
@@ -88,6 +315,15 @@
     </FindUsagesManager>
   </component>
   <component name="Git.Settings">
+<<<<<<< HEAD
+=======
+    <option name="PREVIOUS_COMMIT_AUTHORS">
+      <list>
+        <option value="Christopher Donovan" />
+      </list>
+    </option>
+    <option name="SYNC_SETTING" value="DONT" />
+>>>>>>> origin/master
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GradleLocalSettings">
@@ -660,7 +896,11 @@
     </option>
     <option name="modificationStamps">
       <map>
+<<<<<<< HEAD
         <entry key="$PROJECT_DIR$" value="5661365281711" />
+=======
+        <entry key="$PROJECT_DIR$" value="5694492072887" />
+>>>>>>> origin/master
       </map>
     </option>
     <option name="projectBuildClasspath">
@@ -985,7 +1225,22 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
+<<<<<<< HEAD
+=======
+        <option value="$PROJECT_DIR$/MouseApp/build.gradle" />
+        <option value="$PROJECT_DIR$/MouseApp/src/itt/t00154755/mouseapp/tests/AppBTDevicesTest.java" />
+        <option value="$PROJECT_DIR$/MouseServer/src/itt/t00154755/mouseserver/AppServer.java" />
+        <option value="$PROJECT_DIR$/MouseServer/src/itt/t00154755/mouseserver/AppServerUtils.java" />
+        <option value="$PROJECT_DIR$/MouseServer/src/itt/t00154755/mouseserver/AppRobot.java" />
+<<<<<<< HEAD
+        <option value="$PROJECT_DIR$/MouseApp/src/itt/t00154755/mouseapp/AccelerometerService.java" />
+        <option value="$PROJECT_DIR$/MouseApp/build/generated/source/r/test/debug/itt/t00154755/mouseapp/ClientTest.java" />
         <option value="$PROJECT_DIR$/MouseApp/src/itt/t00154755/mouseapp/Client.java" />
+        <option value="$PROJECT_DIR$/MouseServer/src/itt/t00154755/mouseserver/Server.java" />
+=======
+>>>>>>> origin/master
+        <option value="$PROJECT_DIR$/MouseApp/src/itt/t00154755/mouseapp/Client.java" />
+>>>>>>> origin/master
       </list>
     </option>
   </component>
@@ -1000,10 +1255,17 @@
     <order />
   </component>
   <component name="ProjectFrameBounds">
+<<<<<<< HEAD
     <option name="x" value="-4" />
     <option name="y" value="-4" />
     <option name="width" value="1928" />
     <option name="height" value="1058" />
+=======
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="1382" />
+    <option name="height" value="744" />
+>>>>>>> origin/master
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -1050,8 +1312,15 @@
       <sortByType />
     </navigator>
     <panes>
+<<<<<<< HEAD
+=======
       <pane id="AndroidView" />
+<<<<<<< HEAD
       <pane id="Scratches" />
+=======
+>>>>>>> origin/master
+      <pane id="PackagesPane" />
+>>>>>>> origin/master
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -1060,10 +1329,69 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
           </PATH>
+<<<<<<< HEAD
         </subPane>
       </pane>
       <pane id="Scope" />
       <pane id="PackagesPane" />
+=======
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="androidmouseproject" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="androidmouseproject" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+<<<<<<< HEAD
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+      <pane id="AndroidView" />
+=======
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="androidmouseproject" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="androidmouseproject" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MouseApp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="androidmouseproject" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="androidmouseproject" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MouseApp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mouseapp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+>>>>>>> origin/master
+>>>>>>> origin/master
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -1073,6 +1401,29 @@
     <property name="MemberChooser.sorted" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="MemberChooser.copyJavadoc" value="false" />
+<<<<<<< HEAD
+    <property name="recentsLimit" value="5" />
+    <property name="options.lastSelected" value="vcs.Git" />
+    <property name="options.splitter.main.proportions" value="0.3" />
+    <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/jars/bluecove-2.1.0" />
+    <property name="FullScreen" value="false" />
+    <property name="LayoutCode.rearrangeEntries" value="true" />
+    <property name="last_directory_selection" value="$PROJECT_DIR$/MouseApp/build/generated/source/r/test/debug" />
+    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit3" />
+    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.includeInheritedMembers" value="true" />
+    <property name="findjar.last.used.dir" value="$PROJECT_DIR$/jars/bluecove-2.1.0" />
+    <property name="restartRequiresConfirmation" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="junit.framework.TestCase" />
+    </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="itt.t00154755.mouseapp" />
+    </key>
+=======
     <property name="options.lastSelected" value="template.copyright.formatting" />
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="options.splitter.details.proportions" value="0.2" />
@@ -1081,7 +1432,11 @@
     <property name="recentsLimit" value="5" />
     <property name="LayoutCode.rearrangeEntriesJava" value="false" />
     <property name="FullScreen" value="false" />
+<<<<<<< HEAD
     <property name="restartRequiresConfirmation" value="true" />
+=======
+>>>>>>> origin/master
+>>>>>>> origin/master
   </component>
   <component name="RunManager" selected="Android Application.MouseApp">
     <configuration default="true" type="AndroidRunConfigurationType" factoryName="Android Application">
@@ -1127,10 +1482,71 @@
       <option name="CLEAR_LOGCAT" value="false" />
       <option name="SHOW_LOGCAT_AUTOMATICALLY" value="true" />
       <option name="FILTER_LOGCAT_AUTOMATICALLY" value="true" />
+<<<<<<< HEAD
       <option name="SELECTED_MATRIX_CONFIGURATION_ID" value="0" />
       <option name="SELECTED_CLOUD_PROJECT_ID" value="" />
       <option name="IS_VALID_CLOUD_SELECTION" value="false" />
       <option name="INVALID_CLOUD_SELECTION_ERROR" value="" />
+=======
+      <method />
+    </configuration>
+    <configuration default="true" type="GriffonRunConfigurationType" factoryName="Griffon">
+      <module name="" />
+      <setting name="vmparams" value="" />
+      <setting name="cmdLine" value="run-app" />
+      <setting name="depsClasspath" value="true" />
+      <setting name="passParentEnv" value="true" />
+      <method />
+    </configuration>
+    <configuration default="true" type="GradleRunConfiguration" factoryName="Gradle">
+      <ExternalSystemSettings>
+        <option name="externalProjectPath" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list />
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <method />
+    </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+>>>>>>> origin/master
+      <method />
+    </configuration>
+    <configuration default="true" type="MavenRunConfiguration" factoryName="Maven">
+      <MavenSettings>
+        <option name="myGeneralSettings" />
+        <option name="myRunnerSettings" />
+        <option name="myRunnerParameters">
+          <MavenRunnerParameters>
+            <option name="profiles">
+              <set />
+            </option>
+            <option name="goals">
+              <list />
+            </option>
+            <option name="profilesMap">
+              <map />
+            </option>
+            <option name="resolveToWorkspace" value="false" />
+            <option name="workingDirPath" value="" />
+          </MavenRunnerParameters>
+        </option>
+      </MavenSettings>
       <method />
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -1226,13 +1642,22 @@
       <listeners />
       <method />
     </configuration>
+    <configuration default="true" type="GroovyScriptRunConfiguration" factoryName="Groovy">
+      <module name="" />
+      <setting name="path" value="" />
+      <setting name="vmparams" value="" />
+      <setting name="params" value="" />
+      <setting name="workDir" value="file://$PROJECT_DIR$" />
+      <setting name="debug" value="false" />
+      <method />
+    </configuration>
     <configuration default="false" name="MouseApp" type="AndroidRunConfigurationType" factoryName="Android Application">
       <module name="MouseApp" />
-      <option name="ACTIVITY_CLASS" value="" />
-      <option name="MODE" value="default_activity" />
+      <option name="ACTIVITY_CLASS" value="itt.t00154755.mouseapp.MainClientActivity" />
+      <option name="MODE" value="do_nothing" />
       <option name="DEPLOY" value="true" />
       <option name="ARTIFACT_NAME" value="" />
-      <option name="TARGET_SELECTION_MODE" value="SHOW_DIALOG" />
+      <option name="TARGET_SELECTION_MODE" value="USB_DEVICE" />
       <option name="USE_LAST_SELECTED_DEVICE" value="false" />
       <option name="PREFERRED_AVD" value="" />
       <option name="USE_COMMAND_LINE" value="false" />
@@ -1244,10 +1669,13 @@
       <option name="CLEAR_LOGCAT" value="false" />
       <option name="SHOW_LOGCAT_AUTOMATICALLY" value="true" />
       <option name="FILTER_LOGCAT_AUTOMATICALLY" value="true" />
+<<<<<<< HEAD
       <option name="SELECTED_MATRIX_CONFIGURATION_ID" value="0" />
       <option name="SELECTED_CLOUD_PROJECT_ID" value="" />
       <option name="IS_VALID_CLOUD_SELECTION" value="false" />
       <option name="INVALID_CLOUD_SELECTION_ERROR" value="" />
+=======
+>>>>>>> origin/master
       <RunnerSettings RunnerId="AndroidDebugRunner" />
       <ConfigurationWrapper RunnerId="AndroidDebugRunner" />
       <method />
@@ -1293,16 +1721,44 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
+<<<<<<< HEAD
     <frame x="-4" y="-4" width="1928" height="1058" extended-state="6" />
     <editor active="false" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32893288" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39163917" sideWeight="0.35394457" order="7" side_tool="false" content_ui="tabs" />
+=======
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <editor active="false" />
+    <layout>
+<<<<<<< HEAD
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32879046" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32879046" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39182281" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32879046" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32879046" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32925472" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32879046" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+=======
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32925472" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32925472" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3926585" sideWeight="0.35394457" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+>>>>>>> origin/master
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32893288" sideWeight="0.5021322" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+<<<<<<< HEAD
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32893288" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32893288" sideWeight="0.4978678" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -1312,6 +1768,25 @@
       <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18176973" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+=======
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39933258" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32925472" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+>>>>>>> origin/master
+      <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3926585" sideWeight="0.64605546" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32925472" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+<<<<<<< HEAD
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24962178" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+=======
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+>>>>>>> origin/master
+      <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24962178" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+>>>>>>> origin/master
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -1319,12 +1794,21 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+<<<<<<< HEAD
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32925472" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39933258" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Memory Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+=======
+<<<<<<< HEAD
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39182281" sideWeight="0.35394457" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32879046" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+=======
+>>>>>>> origin/master
+>>>>>>> origin/master
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -1339,6 +1823,7 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
+<<<<<<< HEAD
     <MESSAGE value="Update" />
     <option name="LAST_COMMIT_MESSAGE" value="Update" />
   </component>
@@ -1366,10 +1851,38 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="33" column="38" selection-start-line="33" selection-start-column="38" selection-end-line="33" selection-end-column="38" />
+=======
+    <option name="myTodoPanelSettings">
+      <TodoPanelSettings />
+    </option>
+    <MESSAGE value="Migrated from Eclipse to Android Studio." />
+    <option name="LAST_COMMIT_MESSAGE" value="Migrated from Eclipse to Android Studio." />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <option name="time" value="1" />
+    </breakpoint-manager>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/MouseApp/src/itt/t00154755/mouseapp/AccelerometerService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="425" max-vertical-offset="5542">
+          <caret line="46" column="0" selection-start-line="46" selection-start-column="0" selection-end-line="46" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
+    <entry file="file://$PROJECT_DIR$/MouseApp/src/itt/t00154755/mouseapp/Client.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="7803">
+          <caret line="291" column="10" selection-start-line="291" selection-start-column="10" selection-end-line="291" selection-end-column="10" />
+>>>>>>> origin/master
+          <folding />
+        </state>
+      </provider>
+    </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/MouseApp/src/itt/t00154755/mouseapp/ClientCommsInterface.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1395,10 +1908,27 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="30" column="26" selection-start-line="30" selection-start-column="26" selection-end-line="32" selection-end-column="55" />
+=======
+    <entry file="file://$PROJECT_DIR$/MouseServer/src/itt/t00154755/mouseserver/Server.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1071" max-vertical-offset="1734">
+          <caret line="63" column="0" selection-start-line="63" selection-start-column="0" selection-end-line="63" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MouseApp/src/itt/t00154755/mouseapp/AccelerometerService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="5542">
+          <caret line="46" column="0" selection-start-line="46" selection-start-column="0" selection-end-line="46" selection-end-column="0" />
+>>>>>>> origin/master
           <folding />
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/MouseApp/src/itt/t00154755/mouseapp/PairedBluetoothDevices.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1480,6 +2010,23 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="30" column="10" selection-start-line="30" selection-start-column="10" selection-end-line="30" selection-end-column="10" />
+=======
+    <entry file="file://$PROJECT_DIR$/MouseApp/src/itt/t00154755/mouseapp/Client.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="4947" max-vertical-offset="7803">
+          <caret line="291" column="10" selection-start-line="291" selection-start-column="10" selection-end-line="291" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MouseServer/src/itt/t00154755/mouseserver/Server.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1071" max-vertical-offset="1734">
+          <caret line="63" column="0" selection-start-line="63" selection-start-column="0" selection-end-line="63" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+>>>>>>> origin/master
         </state>
       </provider>
     </entry>
@@ -1511,6 +2058,8 @@
         </state>
       </provider>
     </entry>
+=======
+>>>>>>> origin/master
     <entry file="file://$PROJECT_DIR$/settings.gradle">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1581,6 +2130,7 @@
         <state />
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/MouseApp/res/values/array.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1606,10 +2156,18 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="30" column="26" selection-start-line="30" selection-start-column="26" selection-end-line="32" selection-end-column="55" />
+=======
+<<<<<<< HEAD
+    <entry file="file://$PROJECT_DIR$/MouseApp/src/itt/t00154755/mouseapp/AccelerometerService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="425" max-vertical-offset="5542">
+          <caret line="46" column="0" selection-start-line="46" selection-start-column="0" selection-end-line="46" selection-end-column="0" />
+>>>>>>> origin/master
           <folding />
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/MouseApp/src/itt/t00154755/mouseapp/ClientWaitingDialog.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.19296254">
@@ -1642,15 +2200,50 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
-          <folding />
+=======
+    <entry file="file://$PROJECT_DIR$/MouseApp/build/generated/source/buildConfig/debug/itt/t00154755/mouseapp/BuildConfig.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-6.12" vertical-offset="0" max-vertical-offset="289">
+          <caret line="11" column="29" selection-start-line="11" selection-start-column="29" selection-end-line="11" selection-end-column="29" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/MouseApp/src/itt/t00154755/mouseapp/Client.java">
       <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="7803">
+          <caret line="291" column="10" selection-start-line="291" selection-start-column="10" selection-end-line="291" selection-end-column="10" />
+>>>>>>> origin/master
+          <folding />
+        </state>
+      </provider>
+    </entry>
+<<<<<<< HEAD
+    <entry file="file://$PROJECT_DIR$/MouseApp/src/itt/t00154755/mouseapp/Client.java">
+      <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.07718502">
           <caret line="15" column="3" selection-start-line="15" selection-start-column="3" selection-end-line="15" selection-end-column="3" />
           <folding />
+=======
+    <entry file="file://$PROJECT_DIR$/MouseServer/src/itt/t00154755/mouseserver/Server.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1071" max-vertical-offset="1734">
+          <caret line="63" column="0" selection-start-line="63" selection-start-column="0" selection-end-line="63" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+=======
+    <entry file="file://$PROJECT_DIR$/MouseApp/src/itt/t00154755/mouseapp/Client.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33295062" vertical-offset="220" max-vertical-offset="8092">
+          <caret line="30" column="10" selection-start-line="30" selection-start-column="10" selection-end-line="30" selection-end-column="10" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#2605#2606#0" expanded="true" />
+            <element signature="e#2637#2638#0" expanded="true" />
+            <element signature="e#5929#5930#0" expanded="true" />
+            <element signature="e#5957#5958#0" expanded="true" />
+>>>>>>> origin/master
+          </folding>
+>>>>>>> origin/master
         </state>
       </provider>
     </entry>

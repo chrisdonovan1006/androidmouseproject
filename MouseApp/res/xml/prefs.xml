@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
-    
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
     <EditTextPreference
-        android:title="Display Name"
         android:key="username"
-        android:summary="Enter your name.">
-    </EditTextPreference>
+        android:summary="Enter your name."
+        android:title="Display Name"></EditTextPreference>
 
     <CheckBoxPreference
-        android:title="Show Data" 
         android:defaultValue="false"
         android:key="showdata"
-        android:summary="Show data on screen."/>
+        android:summary="Displays Current Accelerometer Data."
+        android:title="Display Data" />
 
     <ListPreference
-        android:title="Choose Color"
-        android:key="colorlist"
         android:entries="@array/colorlist"
         android:entryValues="@array/lValues"
-        android:summary="Change cursor color.">
-    </ListPreference>
+        android:key="colorlist"
+        android:summary="Change cursor color."
+        android:title="Choose Color"></ListPreference>
 
 </PreferenceScreen>

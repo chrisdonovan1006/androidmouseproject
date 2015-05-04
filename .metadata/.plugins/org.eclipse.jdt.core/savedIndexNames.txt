@@ -1,11 +1,40 @@
 INDEX VERSION 1.126+C:\Users\Christopher\Documents\GitHub\androidmouseproject\.metadata\.plugins\org.eclipse.jdt.core
+<<<<<<< HEAD
 384216248.index
 2548126886.index
 3015671029.index
+=======
+739078005.index
+3539130431.index
+<<<<<<< HEAD
+3187686134.index
+=======
+>>>>>>> origin/master
+3256372620.index
+>>>>>>> origin/master
 2708239607.index
-682530419.index
+4018706093.index
 1075156909.index
 3626931047.index
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+4022092425.index
+683184654.index
+1102969922.index
+1144188029.index
+4149142647.index
+297414738.index
+3015671029.index
+2706502329.index
+1676156536.index
+1820024274.index
+1510908829.index
+728132027.index
+384216248.index
+=======
+4018706093.index
+>>>>>>> origin/master
 683184654.index
 1102969922.index
 728132027.index
@@ -17,5 +46,9 @@ INDEX VERSION 1.126+C:\Users\Christopher\Documents\GitHub\androidmouseproject\.m
 3521617142.index
 4018706093.index
 1820024274.index
+<<<<<<< HEAD
 1144188029.index
 4149142647.index
+=======
+>>>>>>> origin/master
+>>>>>>> origin/master

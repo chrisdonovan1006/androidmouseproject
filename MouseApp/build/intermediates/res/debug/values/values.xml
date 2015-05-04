@@ -30,7 +30,8 @@
     <string name="connect">Connect</string>
     <string name="discoverable">Discoverable</string>
     <string name="exit">Exit</string>
-    <string name="infoaboutbt">This is information about bluetooth</string>
+    <string name="infoaboutbt">In order for this app to work correctly it first most be paired with the server device.
+    Once the client and server are paired they can now be connected.</string>
     <string name="left">left button</string>
     <string name="prefs">Preferences</string>
     <string name="right">right button</string>

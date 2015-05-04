@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<<<<<<< HEAD
 <pre-dex-items>
 
     <item
@@ -9,3 +10,15 @@
         sha1="48c94ae70fa65718b382098237806a5909bb096e"/>
 
 </pre-dex-items>
+=======
+<items version="2">
+
+    <item
+        jar="C:\Users\Christopher\Documents\GitHub\androidmouseproject\MouseApp\libs\android-support-v4.jar"
+        jumboMode="false" revision="19.1.0" sha1="48c94ae70fa65718b382098237806a5909bb096e">
+        <dex
+            dex="C:\Users\Christopher\Documents\GitHub\androidmouseproject\MouseApp\build\intermediates\pre-dexed\debug\android-support-v4-ec357888b36e5768fb0ad256b6254c7515c291fa.jar" />
+    </item>
+
+</items>
+>>>>>>> origin/master
